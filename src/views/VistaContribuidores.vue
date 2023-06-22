@@ -43,17 +43,41 @@
             <thead>
               <tr class="table-primary text-white">
                 <th scope="col">#</th>
+                <th scope="col">Imagen</th>
                 <th scope="col">Nombre de Usuario</th>
                 <th scope="col">Correo</th>
+                <th scope="col">Detalles</th>
+                <th scope="col">Swtich</th>
+                
                  
               </tr>
             </thead>
             <tbody>
           <tr v-for="item in users" v-bind:key="item.userID">
             <td>{{ item.userID }}</td>
+            <img
+          class="navbar-icon"
+          style="display: block; margin-left: auto; margin-right: auto; width: 50%"
+          src="../assets/user-avatar.svg"
+          width="75"
+          height="65"
+        />
             <td>{{ item.contrInfo.username }}</td>
             <td>{{ item.email }}</td>
-          
+            <td>
+              <button @click="switchUser(item)">
+                Switch to {{ item.contrInfo.username }}
+              </button>
+            </td>
+            <td>
+              <a
+                class="btn btn-primary text-white"
+                style="font-weight: bold"
+                :href="`/contribuidores/${item._id}`"
+              >
+                Detalles Usuario
+              </a>
+            </td>
 
           </tr>
         </tbody>
@@ -67,11 +91,13 @@
 <script>
 
 import axios from 'axios';
+import state from '@/store/globalState';
 export default {
   name: "Users",
   data() {
     return {
       users: [],
+      state
 
     };
   },
@@ -82,7 +108,24 @@ export default {
     } catch (error) {
       console.log(error)
     }
-  }
+  },
+
+
+  methods: {
+     switchUser(user) {
+      const userInfo = { name: user.contrInfo.username };
+      const userid = { name: user._id };
+      state.user = userInfo;
+      state.guest = false;
+      localStorage.setItem("user", JSON.stringify(userInfo));
+      localStorage.setItem("userID", JSON.stringify(userid));
+     },
+   },
+
+       
+   goToDetails(userID) {
+      this.$router.push({ path: `/contribuidores/${userID}` })
+    },
 };
 </script>
 
@@ -110,4 +153,12 @@ input[type='number'] {
   font-size: 20px;
   width: 40%;
 }
+
+.item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
 </style>

@@ -3,7 +3,7 @@
     <!-- PRIMERA FILA: TÍTULO VISTA Y BOTONES SUPERIORES -->
     <div class="row">
       <div class="col-7">
-        <h1>Crear un cliente</h1>
+        <h1>Registrarse</h1>
       </div>
       <div class="col-3">
         <a
@@ -17,7 +17,7 @@
             --bs-btn-padding-x: 0.8rem;
             --bs-btn-font-size: 1.15rem;
           "
-          >Regresar a la vista de clientes
+          >Regresar a la vista de usuarios
         </a>
       </div>
       <div class="col-2">
@@ -32,7 +32,7 @@
             --bs-btn-font-size: 1.15rem;
           "
         >
-          Crear cliente
+          Registrase
         </button>
       </div>
     </div>
@@ -43,35 +43,7 @@
       <div style="padding-bottom: 10%">
 
 
-        <form @submit.prevent="register"  method="post" id="form_crearUsuario">
-    <div>
-      <label for="userID">User ID:</label>
-      <input type="text" id="userID" v-model="user.userID" required />
-    </div>
-
-    <div>
-      <label for="username">Username:</label>
-      <input type="text" id="username" v-model="user.contrInfo.username" required />
-    </div>
-    <div>
-      <label for="email">Email:</label>
-      <input type="email" id="email" v-model="user.email" required />
-    </div>
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" id="password" v-model="user.password" required />
-    </div>
-
-    <div>
-      <label for="imageURL">Image URL:</label>
-      <input type="text" id="imageURL" v-model="user.contrInfo.imageURL" required />
-    </div>
-    <div>
-      <label for="profileURL">Profile URL:</label>
-      <input type="text" id="profileURL" v-model="user.contrInfo.profileURL" required />
-    </div>
-    <button type="submit">Register</button>
-  </form>
+   
         <form @submit="enviarCliente" method="post" id="form_crearCliente">
           <!-- Las filas del formulario estan separados por el div row m-3 -->
           <div class="row m-3">
@@ -83,30 +55,30 @@
  
  
           <div class="row m-3">
-            <h3>Company</h3>
+            <h3>Datos Usuario</h3>
           </div>
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Company Name:</p>
+              <p style="font-size: 18px; margin-top: 2%">User ID:</p>
             </div>
             <div class="col-10">
               <input
                 type="text"
-                name="company_name"
-                v-model="company_name"
+                name="user.userID"
+                v-model="user.userID"
                 style="width: 100%; margin-left: 0%%; font-size: 18px"
               />
             </div>
           </div>
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Company Adress:</p>
+              <p style="font-size: 18px; margin-top: 2%">Username:</p>
             </div>
             <div class="col-10">
               <input
                 type="text"
-                name="company_address"
-                v-model="company_address"
+                name="user.contrInfo.username"
+                v-model="user.contrInfo.username"
                 style="width: 100%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -117,9 +89,9 @@
             </div>
             <div class="col-10">
               <input
-                type="text"
-                name="company_email"
-                v-model="company_email"
+              type="email"
+                name="user.email"
+                v-model="user.email"
                 style="width: 100%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -127,13 +99,13 @@
 
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Phone:</p>
+              <p style="font-size: 18px; margin-top: 2%">Password:</p>
             </div>
             <div class="col-10">
               <input
-                type="text"
-                name="company_phone"
-                v-model="company_phone"
+               type="password"
+                name="user.password"
+                v-model="user.password"
                 style="width: 100%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -141,13 +113,13 @@
 
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Company VAT:</p>
+              <p style="font-size: 18px; margin-top: 2%">Image URL:</p>
             </div>
             <div class="col-10">
               <input
                 type="text"
-                name="company_VAT"
-                v-model="company_VAT"
+                name="user.contrInfo.imageURL"
+                v-model="user.contrInfo.imageURL"
                 style="width: 100%; margin-left: 0%; font-size: 18px"
               />
             </div>
@@ -155,117 +127,13 @@
 
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Legal Representative:</p>
+              <p style="font-size: 18px; margin-top: 2%">URL Perfil Github:</p>
             </div>
             <div class="col-10">
               <input
                 type="text"
-                name="company_RUT"
-                v-model="company_RUT"
-                style="width: 100%; margin-left: 0%; font-size: 18px"
-              />
-            </div>
-          </div>
-
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Legal Representative RUT:</p>
-            </div>
-            <div class="col-10">
-              <input
-                type="text"
-                name="company_RUT"
-                v-model="company_RUT"
-                style="width: 100%; margin-left: 0%; font-size: 18px"
-              />
-            </div>
-          </div>
-
-          <div class="row m-3">
-            <h3>Comex</h3>
-          </div>
-
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Comex Individual:</p>
-            </div>
-            <div class="col-10">
-              <input
-                type="text"
-                name="company_RUT"
-                v-model="company_RUT"
-                style="width: 100%; margin-left: 0%; font-size: 18px"
-              />
-            </div>
-          </div>
-
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Comex Phone:</p>
-            </div>
-            <div class="col-10">
-              <input
-                type="text"
-                name="company_RUT"
-                v-model="company_RUT"
-                style="width: 100%; margin-left: 0%; font-size: 18px"
-              />
-            </div>
-          </div>
-
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Comex Email:</p>
-            </div>
-            <div class="col-10">
-              <input
-                type="text"
-                name="company_RUT"
-                v-model="company_RUT"
-                style="width: 100%; margin-left: 0%; font-size: 18px"
-              />
-            </div>
-          </div>
-          <div class="row m-3">
-            <h3>Finance</h3>
-          </div>
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Finance Individual:</p>
-            </div>
-            <div class="col-10">
-              <input
-                type="text"
-                name="company_RUT"
-                v-model="company_RUT"
-                style="width: 100%; margin-left: 0%; font-size: 18px"
-              />
-            </div>
-          </div>
-
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Finance Phone:</p>
-            </div>
-            <div class="col-10">
-              <input
-                type="text"
-                name="company_RUT"
-                v-model="company_RUT"
-                style="width: 100%; margin-left: 0%; font-size: 18px"
-              />
-            </div>
-          </div>
-
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Finance Individual:</p>
-            </div>
-            <div class="col-10">
-              <input
-                type="text"
-                name="company_RUT"
-                v-model="company_RUT"
+                name="user.contrInfo.profileURL"
+                v-model="user.contrInfo.profileURL"
                 style="width: 100%; margin-left: 0%; font-size: 18px"
               />
             </div>
@@ -287,7 +155,7 @@ import axios from 'axios';
 
 const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`http://localhost:9000/users`, userData);
+    const response = await axios.post(`http://localhost:9000/api/users`, userData);
     return response.data;
   } catch (error) {
     console.error(error);

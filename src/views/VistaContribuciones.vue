@@ -149,6 +149,7 @@
 
 <script>
   import Multiselect from '@vueform/multiselect'
+  
 
   export default {
     components: { Multiselect },

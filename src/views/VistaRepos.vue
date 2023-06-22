@@ -46,20 +46,30 @@
     <!-- Este segundo contenedor es el que tiene habilitado para que su contenido vertical sea scrolleable-->
     <div class="overflow-auto" style="max-height: 100vh">
   <div class="container-fluid">
-        <Multiselect
-      v-model="value"
+    <Multiselect
+      key="multiselect-key"
+      v-model="currentTags"
       mode="tags"
       placeholder="Type and select tags"
-      :options="options"
+      :options="tags"
       :searchable="true"
     />
     <div class="grid-container">
-      <div class="item" v-for="repo in repositories" :key="repo.repositoryID">
+      <div class="item" v-for="repo in filteredRepositories" :key="repo.repositoryID">
         <div>{{ repo.title }}</div>
       <img :src="repo.imageURL" :alt="`Image ${index + 1}`">
       <div>Autor: {{ repo.author }}</div>
       <div>Tags: {{ repo.tags }}</div>    
-      <div>Rating: {{ repo.totalRating }}</div>
+      <div>Rating: {{ repo.totalRating }}</div>          
+        
+      
+      <button
+                class="btn btn-primary text-white"
+                style="font-weight: bold"
+                @click="goToDetails(repo._id)"
+              >
+                Ver Repo
+              </button>
 
      
     </div>
@@ -71,16 +81,30 @@
 </template>
 
 <script>
-
+import Multiselect from '@vueform/multiselect'
 
 export default {
+  components: { Multiselect },
   name: "Repositories",
   data() {
     return {
       repositories: [],
-      tags: []
+      tags: [],
+      currentTags: []
     };
   },
+
+  computed: {
+  filteredRepositories() {
+    if (this.currentTags.length === 0) {
+      return this.repositories;
+    }
+
+    return this.repositories.filter(repository => {
+      return this.currentTags.every(tag => repository.tags.includes(tag));
+    });
+  }
+},
   methods: {
     async fetchAllRepositories() {
       try {
@@ -92,11 +116,16 @@ export default {
     },
     async fetchAllTags() {
       try {
-        const responsetag = await this.axiosaxios.get("http://localhost:9000/api/unique-tags");
+        const responsetag = await this.axios.get("http://localhost:9000/api/unique-tags");
         this.tags = responsetag.data;
       } catch (error) {
         console.log(error);
       }
+    },
+
+    
+    goToDetails(repositoryID) {
+      this.$router.push({ path: `/repos/${repositoryID}` })
     },
   },
   created() {
