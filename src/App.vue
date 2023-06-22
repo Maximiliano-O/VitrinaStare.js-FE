@@ -20,7 +20,7 @@ import { RouterLink, RouterView } from 'vue-router'
           height="65"
         />
         <!-- Acá se ingresa el nombre del usuario que inició sesión -->
-        <p class="navbar-username">Nombre Usuario</p>
+        <p class="navbar-username">{{ username }}</p>
         <li>
           <RouterLink to="/">
             <p>Repositorios</p>
@@ -56,7 +56,7 @@ import { RouterLink, RouterView } from 'vue-router'
             />
             <!-- Hasta que se defina la metodología para cerrar sesión, se regresa a la raiz -->
             <a href="/">
-              <p>Cerrar sesión</p>
+              <p @click="logOff">Cerrar sesión</p>
             </a>
           </div>
         </li>
@@ -68,6 +68,31 @@ import { RouterLink, RouterView } from 'vue-router'
     </div>
   </div>
 </template>
+
+<script>
+
+import state from '@/store/globalState';
+
+export default {
+  computed: {
+    username() {
+      return state.user && state.user.name ? state.user.name : 'Invitado';
+    },
+  },
+
+
+  methods: {
+     logOff() {
+       state.user = null;
+       state.guest = true;
+       localStorage.removeItem("user");
+       localStorage.removeItem("userID");
+       this.$router.push('/');
+     },
+   },
+};
+</script>
+
 
 <style>
 .wrapper {

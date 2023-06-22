@@ -4,11 +4,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
  
-    {
-      path: '/operaciones/crearOperacion',
-      name: 'crearOperacion',
-      component: () => import('../views/VistaCrearOperacion.vue')
-    },
+  
     {
       path: '/clientes',
       name: 'clientes',
@@ -26,12 +22,14 @@ const router = createRouter({
     {
       path: '/contribuidores',
       name: 'contribuidores',
-      component: () => import('../views/VistaContribuidores.vue')
+      component: () => import('../views/VistaContribuidores.vue'),
     },
+
     {
-      path: '/reportes',
-      name: 'reportes',
-      component: () => import('../views/VistaReportes.vue')
+      path: '/contribuidores/:userID',
+      name: 'detalleContribuidor',
+      component: () => import('../views/VistaDetalleUsuario.vue'),
+      props: true
     },
 
     {
@@ -40,6 +38,13 @@ const router = createRouter({
       component: () => import('../views/VistaRepos.vue'),
       
       
+    },
+
+    {
+      path: '/repos/:repositoryID',
+      name: 'detalleRepo',
+      component: () => import('../views/VistaDetalleRepo.vue'),
+      props: true
     },
 
 
