@@ -19,16 +19,23 @@ import { RouterLink, RouterView } from 'vue-router'
           width="75"
           height="65"
         />
-        <!-- Acá se ingresa el nombre del usuario que inició sesión -->
-        <p class="navbar-username">{{ username }}</p>
+        <!-- <li>Es un guest?: {{state.guest}} </li>
+        <li>Es un user?: {{state.user}} </li> 
+        Acá se ingresa el nombre del usuario que inició sesión -->
+
+        
+      
+        
+        
+        <p class="navbar-username">{{ userData }}</p>
         <li>
           <RouterLink to="/">
             <p>Repositorios</p>
           </RouterLink>
         </li>
         <li>
-          <RouterLink to="/contribuciones">
-            <p>Contribuciones</p>
+          <RouterLink v-if="!isGuest" :to="getUserLink()">
+            <p>Mi Perfil</p>
           </RouterLink>
         </li>
 
@@ -38,10 +45,12 @@ import { RouterLink, RouterView } from 'vue-router'
           </RouterLink>
         </li>
         <li>
-          <RouterLink to="/reportes">
-            <p>Opciones</p>
+          <RouterLink to="/aboutStare">
+            <p>¿Qué es StArE?</p>
           </RouterLink>
         </li>
+
+        
 
         <li>
           
@@ -55,8 +64,22 @@ import { RouterLink, RouterView } from 'vue-router'
               height="25"
             />
             <!-- Hasta que se defina la metodología para cerrar sesión, se regresa a la raiz -->
-            <a href="/">
-              <p @click="logOff">Cerrar sesión</p>
+
+            <a v-if="isGuest">
+            <p
+     
+
+      data-bs-toggle="modal"
+      data-bs-target="#modal-login"
+    >
+      Iniciar Sesión
+    </p>
+  </a>
+
+
+      
+            <a href="/" v-if="!isGuest">
+            <p @click="logOff">Cerrar sesión</p>
             </a>
           </div>
         </li>
@@ -66,29 +89,213 @@ import { RouterLink, RouterView } from 'vue-router'
     <div id="content">
       <RouterView />
     </div>
+
+
+
+
+    <div
+        class="modal fade"
+        id="modal-login"
+        tabindex="-1"
+        aria-labelledby="modal-login-label"
+        aria-hidden="true"
+      >
+      >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="col-12 text-center">
+                <h1>Iniciar Sesión</h1>
+                ㅤ
+
+                
+              </div>
+
+
+
+              <div class="row m-3 justify-content-center">
+  <div class="col-10 text-center">
+    <p style="font-size: 18px; margin-top: 2%"><strong>Correo:</strong></p>
+    <input
+    
+      type="text"
+      name="input_email"
+      autocomplete="off"
+      v-model="input_email"
+      style="width: 100%; margin-left: auto; margin-right: auto; font-size: 18px"
+      required
+    />
+  </div>
+</div>
+
+<div class="row m-3 justify-content-center">
+  <div class="col-10 text-center">
+    <p style="font-size: 18px; margin-top: 2%"><strong>Contraseña:</strong></p>
+    <input
+    type="password"
+      name="input_password"
+      autocomplete="off"
+      v-model="input_password"
+      style="width: 100%; margin-left: auto; margin-right: auto; font-size: 18px"
+      required
+    />
+  </div>
+  
+</div>
+ㅤ
+              <div class="row">
+                <div class="col-12 text-center">
+                  <div class="row">
+                    <div class="col-6 text-end">
+                      <button
+                        type="button"
+                        class="btn btn-secondary text-white"
+                        data-bs-dismiss="modal"
+                        style="
+                          font-weight: bold;
+                          --bs-btn-padding-y: 0.45rem;
+                          --bs-btn-padding-x: 0.8rem;
+                          --bs-btn-font-size: 1.15rem;
+                        "
+                      >
+                        Regresar
+                      </button>
+                    </div>
+                    <div class="col-6 text-end">
+                      <button
+                        type="button"
+                        class="btn btn-primary text-white"
+                        
+                        @click="logIn"
+                        style="
+                          font-weight: bold;
+                          --bs-btn-padding-y: 0.45rem;
+                          --bs-btn-padding-x: 0.8rem;
+                          --bs-btn-font-size: 1.15rem;
+                        "
+                      >
+                          Log-in
+                      </button>
+                      
+                
+                 
+                    </div>
+                    Test name: {{ test_name }}
+                  </div>
+                  {{ input_password }}
+                </div>
+
+
+                
+              </div>
+            </div>
+            <div v-if="showError" class="error-message text-danger" style="font-weight: bold;">
+                  {{ message }}
+                </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+           
+
   </div>
 </template>
 
 <script>
 
 import state from '@/store/globalState';
+import axios from 'axios';
+
+var userData = localStorage.getItem('user')
 
 export default {
+  data() {
+    return {
+     
+        input_email: '',
+        input_password: '',
+        test_name:'',
+        showError: false,
+        message:'Las credenciales no coinciden'
+
+      
+    };
+  },
+
+  
   computed: {
     username() {
       return state.user && state.user.name ? state.user.name : 'Invitado';
     },
+
+    isGuest() {
+    return state.guest;
+  },
   },
 
 
   methods: {
      logOff() {
-       state.user = null;
-       state.guest = true;
-       localStorage.removeItem("user");
+       //state.user = null;
+       //state.guest = true;
+       localStorage.setItem("user", 'Invitado');;
+       localStorage.setItem("guest", 'true');
+       //localStorage.removeItem("user");
        localStorage.removeItem("userID");
        this.$router.push('/');
      },
+
+     logIn() {
+  const email = this.input_email; // Replace with the actual email
+  const password = this.input_password; // Replace with the actual password
+
+  axios.post(`http://localhost:9000/api/login`, { email, password })
+    .then(response => {
+      console.log(response.data);
+      const { loggedIn } = response.data;
+      if (loggedIn) {
+        // Login successful
+        //const { username, userID } = response.data.user; // Assuming the server response includes the user's name and userID
+        
+        const user = response.data.user
+
+        const userInfo = { name: user.contrInfo.username };
+        //const userid = { name: user._id };
+
+        
+        //this.test_name=username;
+        // Update the state or perform any other necessary actions
+        // For example:
+        state.user =  userInfo.name ;
+        state.guest = false;
+
+        //localStorage.setItem("user", name);
+        localStorage.setItem("user", userInfo.name);
+        localStorage.setItem("guest", 'false');
+        localStorage.setItem("userID", user._id);
+        //this.$router.push('/');
+        window.location.href = '/';
+
+        
+      } else {
+        // Login failed
+        // Handle the error or show an error message
+
+        this.showError = true
+      }
+    })
+    .catch(error => {
+      // Handle the error or show an error message
+    });
+    },
+
+    getUserLink() {
+      const id=localStorage.getItem('userID')
+      return `/contribuidores/${id}`;
+    }
+
    },
 };
 </script>

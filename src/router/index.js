@@ -47,6 +47,12 @@ const router = createRouter({
       props: true
     },
 
+    {
+      path: '/repos/:repositoryID/newRelease',
+      name: 'newreleaseRepo',
+      component: () => import('../views/VistaCrearRelease.vue'),
+      props: true
+    },
 
     
     {
@@ -58,17 +64,42 @@ const router = createRouter({
     },
 
     {
-      path: '/ejemplo',
+      path: '/ejemplo/:releaseID',
       name: 'ejemplo',
       component: () => import('../views/Ejemplo.vue'),
+      props: true
       
       
     },
 
     {
+      path: '/verificacion/:releaseID',
+      name: 'verificacion',
+      component: () => import('../views/EjemploVerificacion.vue'),
+      props: true
+      
+      
+    },
+
+    {
+      path: '/solicitarverificacion',
+      name: 'solicitarverificacion',
+      component: () => import('../views/VistaVerificarRepo.vue'),
+      
+      
+    },
+    {
       path: '/registrarse',
       name: 'registrarse',
       component: () => import('../views/VistaRegistrarse.vue'),
+      
+      
+    },
+
+    {
+      path: '/aboutStare',
+      name: 'aboutStare',
+      component: () => import('../views/AboutStare.vue'),
       
       
     }
