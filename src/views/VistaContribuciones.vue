@@ -10,7 +10,7 @@
         <a
           type="button"
           class="btn btn-primary text-white"
-          href="/clientes/crearCliente"
+          href="/contribuidores"
           style="
             font-weight: bold;
             --bs-btn-padding-y: 0.4rem;
@@ -69,76 +69,8 @@
         <div>mark@gmail.com</div>
         <div>Calle A</div>
       </div>
-      <div class="item">
-        <img src="https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image.png" alt="Image 2">
-
-        <div>Jacob</div>
-        <div>Jacob@gmail.com</div>
-        <div>Calle B</div>
-      </div>
-      <div class="item">
-        <img src="https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image.png" alt="Image 2">
-
-        <div>Jacob</div>
-        <div>Jacob@gmail.com</div>
-        <div>Calle B</div>
-      </div>
-      <div class="item">
-        <img src="https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image.png" alt="Image 2">
-
-        <div>Jacob</div>
-        <div>Jacob@gmail.com</div>
-        <div>Calle B</div>
-      </div>
-      <div class="item">
-        <img src="https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image.png" alt="Image 2">
-
-        <div>Jacob</div>
-        <div>Jacob@gmail.com</div>
-        <div>Calle B</div>
-      </div>
-      <div class="item">
-        <img src="https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image.png" alt="Image 2">
-
-        <div>Jacob</div>
-        <div>Jacob@gmail.com</div>
-        <div>Calle B</div>
-      </div>
-      <div class="item">
-        <img src="https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image.png" alt="Image 2">
-
-        <div>Jacob</div>
-        <div>Jacob@gmail.com</div>
-        <div>Calle B</div>
-      </div>
-      <div class="item">
-        <img src="https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image.png" alt="Image 2">
-
-        <div>Jacob</div>
-        <div>Jacob@gmail.com</div>
-        <div>Calle B</div>
-      </div>
-      <div class="item">
-        <img src="https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image.png" alt="Image 2">
-
-        <div>Jacob</div>
-        <div>Jacob@gmail.com</div>
-        <div>Calle B</div>
-      </div>
-      <div class="item">
-        <img src="https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image.png" alt="Image 2">
-
-        <div>Jacob</div>
-        <div>Jacob@gmail.com</div>
-        <div>Calle B</div>
-      </div>
-      <div class="item">
-        <img src="https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image.png" alt="Image 2">
-
-        <div>Jacob</div>
-        <div>Jacob@gmail.com</div>
-        <div>Calle B</div>
-      </div>
+ 
+      
       <!-- Add more grid items here -->
     </div>
   </div>

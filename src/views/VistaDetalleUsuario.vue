@@ -2,7 +2,8 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-7">
-          <h1>Detalle del Usuario</h1>
+          <h1 v-if="userID === current_id">Mi Perfil</h1>
+          <h1 v-else> Detalle del Usuario</h1>
         </div>
         <div class="col-3">
           <a
@@ -25,6 +26,10 @@
     <div class="row">
       <div class="col-md-6">
         <p style="font-size: 18px; margin-top: 2%"><strong>Email: </strong> {{user.email}}</p>
+
+        <div>
+    <p v-if="userID === current_id">{{current_user}}</p>
+  </div>
 
         
 
@@ -95,7 +100,9 @@
     data() {
       return {
         user: {},
-        repositories: []
+        repositories: [],
+        current_id: localStorage.getItem('userID'),
+        current_user: localStorage.getItem('user')
       };
     },
     methods: {

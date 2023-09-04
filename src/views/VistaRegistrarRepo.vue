@@ -9,7 +9,7 @@
         <a
           type="button"
           class="btn btn-primary text-white"
-          href="/clientes"
+          href="/"
           style="
             margin-left: 15%;
             font-weight: bold;
@@ -26,7 +26,7 @@
     <!-- Este segundo contenedor es el que tiene habilitado para que su contenido vertical sea scrolleable-->
     <div class="overflow-auto" style="max-height: 100vh">
       <div style="padding-bottom: 10%">
-        <form @submit="enviarCliente" method="post" id="form_crearCliente">
+        <form @submit.prevent="register" method="post" id="form_crearCliente">
           <!-- Las filas del formulario estan separados por el div row m-3 -->
           <div class="row m-3">
             <!-- El uso del col es para mantener el título con la selección alineados -->
@@ -42,13 +42,13 @@
 
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Título Repo:</p>
+              <p style="font-size: 18px; margin-top: 2%">Título:</p>
             </div>
             <div class="col-10">
               <input
                 type="text"
-                name="company_name"
-                v-model="company_name"
+                name="repository.repositoryName"
+                v-model="repository.title"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -58,13 +58,28 @@
           
           <div class="row m-3">
             <div class="col-2">
+              <p style="font-size: 18px; margin-top: 2%">Nombre Repositorio:</p>
+            </div>
+            <div class="col-10">
+              <input
+                type="text"
+                name="repository.repositoryDesc"
+                v-model="repository.repositoryName"
+                style="width: 40%; margin-left: 0%%; font-size: 18px"
+              />
+            </div>
+          </div>
+
+
+          <div class="row m-3">
+            <div class="col-2">
               <p style="font-size: 18px; margin-top: 2%">Descripción Repo:</p>
             </div>
             <div class="col-10">
               <input
                 type="text"
-                name="company_name"
-                v-model="company_name"
+                name="repository.repositoryDesc"
+                v-model="repository.repositoryDesc"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -77,8 +92,8 @@
             <div class="col-10">
               <input
                 type="text"
-                name="company_name"
-                v-model="company_name"
+                name="repository.repositoryName"
+                v-model="repository.repositoryDoc"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -92,8 +107,8 @@
             <div class="col-10">
               <input
                 type="text"
-                name="company_name"
-                v-model="company_name"
+                name="repository.license"
+                v-model="repository.license"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -106,8 +121,8 @@
             <div class="col-10">
               <input
                 type="text"
-                name="company_name"
-                v-model="company_name"
+                name="repository.repositoryUrl"
+                v-model="repository.repositoryUrl"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -120,25 +135,13 @@
             <div class="col-10">
               <input
                 type="text"
-                name="company_address"
-                v-model="company_address"
+                name="repository.repositoryName"
+                v-model="repository.imageURL"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
           </div>
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Repo Details:</p>
-            </div>
-            <div class="col-10">
-              <input
-                type="text"
-                name="company_email"
-                v-model="company_email"
-                style="width: 40%; margin-left: 0%%; font-size: 18px"
-              />
-            </div>
-          </div>
+
 
           <div class="row m-3">
             <div class="col-2">
@@ -147,8 +150,8 @@
             <div class="col-10">
               <input
                 type="text"
-                name="company_phone"
-                v-model="company_phone"
+                name="repository.repositoryName"
+                v-model="repository.tags"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -160,7 +163,6 @@
         <button
           type="submit"
           class="btn btn-primary text-white"
-          v-on:click="enviarCliente"
           style="
             font-weight: bold;
             --bs-btn-padding-y: 0.4rem;
@@ -171,12 +173,13 @@
           Agregar Repositorio
         </button>
       </div>
- 
+
 
   
         </form>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -184,46 +187,102 @@
 
 
 
-const baseURL = '/api'; // Replace with your API base URL
+import axios from 'axios';
+
+axios.defaults.timeout = 5000;
 
 const registerRepository = async (repositoryData) => {
-  try {
-    const response = await this.axios.post(`http://localhost:9000/repositories`, repositoryData);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+      try {
+        const response = await axios.post(`http://localhost:9000/api/repoV2`, repositoryData);
+        console.log('Server response:', response);
+        return response.data;
+      } catch (error) {
+        //console.error(error);
+        console.log('Error:', error);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      console.error('Error from server:', error.response);
+        throw error;
+      }
+    };
 
 export default {
   name: 'VistaRegistrarRepo',
   data() {
     return {
+
+      
       repository: {
-        repositoryName: '',
-        repositoryDesc: '',
-        license: '',
-        repositoryUrl: '',
-        contributorID: '',
-        ownerID: '',
-        author: '',
+
+        
+        //repositoryID: 20,
+
+
+
+        //contributorID: '',
+        contributorID: localStorage.getItem('userID'),
+
+
+
+
+        //ownerID: 20,
+
+
+        //author: '',
+        author: localStorage.getItem('user'),
         title: '',
         type: 'public',
+        imageURL:'',
+        tags:[],
+
+        
+        repositoryName: '',
+        repositoryDesc: '',
+        repositoryDoc: '',
+        license: '',
+        //releases: [],
+        repositoryUrl: ''
+        
+
+
+        
       },
     };
   },
   methods: {
-    async registerRepository() {
+
+    async register() {
+      //const author = localStorage.getItem('user');
+      //this.repository.author = JSON.parse(username).name;
+      //this.repository.author = author;
+      //const id = localStorage.getItem('userID');
+      //this.repository.contributorID = JSON.parse(id).name;
+      //this.repository.contributorID = id;
+
       try {
-        const response = await registerRepository(this.repository);
-        console.log('Repository registered:', response);
+        //const response = await registerRepository(this.repository);
+        //console.log('Repository registered:', response);
         // Redirect to the dashboard or another page
+               const response = await fetch(`http://localhost:9000/api/repoV2`, {
+         method: 'POST',
+         body: JSON.stringify(this.repository),
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         
+       });
+       this.$router.push('/');
+
+       if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+       
       } catch (error) {
         console.error('Error registering repository:', error);
       }
     },
-  },
+  }
+  
 };
 </script>
 

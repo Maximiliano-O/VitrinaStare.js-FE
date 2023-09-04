@@ -21,7 +21,7 @@
         <a
           type="button"
           class="btn btn-primary text-white"
-          href="/operaciones/"
+          href="/"
           style="
             --bs-btn-padding-y: 0.4rem;
             --bs-btn-padding-x: 0.8rem;

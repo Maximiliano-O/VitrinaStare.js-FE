@@ -42,7 +42,7 @@
           <table class="table">
             <thead>
               <tr class="table-primary text-white">
-                <th scope="col">#</th>
+                
                 <th scope="col">Imagen</th>
                 <th scope="col">Nombre de Usuario</th>
                 <th scope="col">Correo</th>
@@ -54,7 +54,7 @@
             </thead>
             <tbody>
           <tr v-for="item in users" v-bind:key="item.userID">
-            <td>{{ item.userID }}</td>
+            
             <img
           class="navbar-icon"
           style="display: block; margin-left: auto; margin-right: auto; width: 50%"
@@ -117,8 +117,12 @@ export default {
       const userid = { name: user._id };
       state.user = userInfo;
       state.guest = false;
-      localStorage.setItem("user", JSON.stringify(userInfo));
-      localStorage.setItem("userID", JSON.stringify(userid));
+      //localStorage.setItem("user",user.contrInfo.username);
+      //localStorage.setItem("user", JSON.stringify(userInfo));
+      localStorage.setItem("user", userInfo.name);
+      localStorage.setItem("userID", user._id);
+      localStorage.setItem("guest", 'false');
+      window.location.href = '/contribuidores'
      },
    },
 

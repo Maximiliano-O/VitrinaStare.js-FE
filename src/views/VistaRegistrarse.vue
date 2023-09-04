@@ -9,7 +9,7 @@
         <a
           type="button"
           class="btn btn-primary text-white"
-          href="/clientes"
+          href="/contribuidores"
           style="
             margin-left: 15%;
             font-weight: bold;
@@ -62,13 +62,14 @@
               <p style="font-size: 18px; margin-top: 2%">User ID:</p>
             </div>
             <div class="col-10">
-              <input
-                type="text"
-                name="user.userID"
-                v-model="user.userID"
-                style="width: 100%; margin-left: 0%%; font-size: 18px"
-              />
-            </div>
+        <input
+    data-testid="userID"
+    type="text"
+    name="user.userID"
+    v-model="user.userID"
+    style="width: 100%; margin-left: 0%%; font-size: 18px"
+  />
+              </div>
           </div>
           <div class="row m-3">
             <div class="col-2">
@@ -76,6 +77,7 @@
             </div>
             <div class="col-10">
               <input
+                data-testid="username"
                 type="text"
                 name="user.contrInfo.username"
                 v-model="user.contrInfo.username"
@@ -89,6 +91,7 @@
             </div>
             <div class="col-10">
               <input
+              data-testid="email"
               type="email"
                 name="user.email"
                 v-model="user.email"
@@ -103,6 +106,7 @@
             </div>
             <div class="col-10">
               <input
+              data-testid="password"
                type="password"
                 name="user.password"
                 v-model="user.password"
@@ -117,6 +121,7 @@
             </div>
             <div class="col-10">
               <input
+              data-testid="imageURL"
                 type="text"
                 name="user.contrInfo.imageURL"
                 v-model="user.contrInfo.imageURL"
@@ -131,6 +136,7 @@
             </div>
             <div class="col-10">
               <input
+               data-testid="profileURL"
                 type="text"
                 name="user.contrInfo.profileURL"
                 v-model="user.contrInfo.profileURL"
@@ -167,7 +173,7 @@ export default {
   data() {
     return {
       user: {
-        userID: '',
+        //userID: '',
         email: '',
         password: '',
         contrInfo: {
@@ -183,6 +189,7 @@ export default {
       try {
         const response = await registerUser(this.user);
         console.log('User registered:', response);
+        this.$router.push({name: 'contribuidores'})
         // Redirect to login or dashboard page
       } catch (error) {
         console.error('Error registering user:', error);

@@ -1,30 +1,34 @@
 <template>
      <div class="overflow-auto" style="max-height: 100vh">
+      <div class="row">
+      <div class="col-7">
+        <h1>Sandbox</h1>
+      </div>
+      <div class="col-3">
+        <a
+          type="button"
+          class="btn btn-primary text-white"
+          href="/"
+          style="
+            margin-left: 15%;
+            font-weight: bold;
+            --bs-btn-padding-y: 0.45rem;
+            --bs-btn-padding-x: 0.8rem;
+            --bs-btn-font-size: 1.15rem;
+          "
+          >Volver a repositorios
+        </a>
+        ㅤ
+      </div>
+
+      ㅤ
+    </div>
     <div style="width: 100%;">
-      <GitHubCodeSandbox owner="StArE-js" repo="stare.js-client" subdir="examples/client-only/public" />
+       
+      <GitHubCodeSandbox owner="StArE-js" repo="stare.js-client" subdir="examples/client-only/public"  :url="release.codesandbox_URL" />
     </div>
     ㅤ
-    <div class="comments-section">
-  <div class="comment">
-    <div class="comment-author">User1</div>
-    <div class="comment-body">This is a comment.</div>
-    <div class="comment-replies">
-      <div class="comment">
-        <div class="comment-author">User2</div>
-        <div class="comment-body">This is a reply to the comment.</div>
-      </div>
-      <!-- More replies go here -->
-    </div>
-  </div>
-  <div class="comment">
-    <div class="comment-author">User3</div>
-    <div class="comment-body">This is another comment.</div>
-    <div class="comment-replies">
-      <!-- Replies go here -->
-    </div>
-  </div>
-  <!-- More comments go here -->
-</div>
+  
 
 
 </div>
@@ -35,9 +39,40 @@
   import GitHubCodeSandbox from "@/components/GitSB.vue";
   
   export default {
+
+    props: ['releaseID'],
     components: {
       GitHubCodeSandbox,
     },
+
+    data() {
+      return {
+     
+        release: {},
+
+      };
+    },
+
+    methods: {
+
+    async fetchData() {
+      try {
+        
+        const url = `http://localhost:9000/api/release/${this.releaseID}`;
+        const response = await this.axios.get(url);
+        this.release = response.data;
+      } catch (err) {
+        console.log('Error fetching data:', err);
+      }
+    }
+
+  },
+
+
+    mounted() {
+      this.fetchData();
+      
+    }
   };
   </script>
 
