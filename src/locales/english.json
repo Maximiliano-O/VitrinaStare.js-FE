@@ -1,0 +1,101 @@
+{
+    
+    "update":"Update",
+    "email": "Email",
+    "password": "Password",
+    "return": "Return",
+    "login": "Log in",
+    "logOff": "Log Off",
+    "repositories": "Repositories",
+    "repository": "Repositories",
+    "guest": "Guest",
+    "comments": "Comments",
+    "myProfile": "My Profile",
+    "editProfile": "Edit Profile",
+    "repoBackSingle": "Return to Repository",
+    "repoBack": "Return to Repositories",
+    "userBack": "Return to User",
+
+    "writeComment": "Write a Comment",
+    "postComment": "Post Comment",
+    "rateRepo": "Rate Publication",
+    "addRelease": "Add Release",
+    "releases": "Releases",
+    "version": "Version",
+    "verify": "Verify",
+    "run":"Run",
+    "verified?": "Verified?",
+    "date":"Date",
+    "confirmRating": "Confirm Rating",
+
+    
+
+    "registerRepo": "Register a Repository",
+    "updateRepo": "Update a Repository",
+    "repoName": "Repository Name",
+    "description": "Description",
+    "postRepo": "Post Repository",
+    "license": "License",
+    "urlRepoImage": "Image URL",
+    "repoDoc": "Repo Documentation",
+
+
+    "requiredField": "Required Field(*)",
+    "urlGitHub":"Github User URL",
+    "urlImage":"User Image URL",
+    "urlRepo":"Repository URL",
+    "userInfo":"User Information",
+    "returnUserList": "Return to User List",
+
+    "repositoryDetails": "Repository Details",
+    "lastVerifiedVersion": "Last Verified Version",
+    "browseRelease": "Browse Releases",
+
+
+    "author": "Author",
+    "tags": "Tags",
+    "newTags": "Tags separated by spaces ('tag1 tag2 tag3')",
+    "verified": "Verified",
+    "select": "Select",
+
+    "edit": "Edit",
+    
+
+
+    "sidebarRepositories": "Repositories",
+    "sidebarUserProfile": "My Profile",
+    "sidebarUsers": "Users",
+    "sidebarStare": "What is StArE?",
+    "sidebarLogin": "My Profile",
+    "sidebarLogOff": "My Profile",
+    "sidebarLoginTitle": "Log In",
+
+
+    "repositoriesView": "Repositories View",
+    "searchRepositories": "Search Repositories...",
+    "typeAndSelectTags": "Type and select tags",
+    "registerRepository": "Register a Repository",
+
+    "defaultOrder": "Default Order",
+    "ascendingRating": "Ascending Rating",
+    "descendingRating": "Descending Rating",
+
+    "title": "Title",
+    "Name of Repository": "Title",
+
+
+    "userList": "User List",
+    "username": "Username",
+    "userDetails": "User Details",
+    "image": "Image",
+    "signUp": "Sign Up",
+
+
+
+   "stareQuestion":"What is StArE.js?",
+   "stareLine1": "Correct visualization makes information easier to understand. Sometimes a picture speaks a thousand words, so we want to provide tools that make the process of viewing search engine results easier.",
+   "stareLine2": "StArE.js is an open source project intended to make it easier for developers to create alternative search engine results page (SERP) displays. Stare.js provides a modular and extensible processing pipeline capable of (1) transform SERP, (2) extract features from individual search results and (3) display SERP in multiple ways.",
+   "stareWebsite":"StarE.js Website",
+   "stareGithub":"StarE.js Github"
+  
+  }

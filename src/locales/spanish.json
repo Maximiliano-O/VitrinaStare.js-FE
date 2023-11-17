@@ -1,0 +1,93 @@
+{
+   "update":"Actualizar",
+    "email": "Correo",
+    "password": "Contraseña",
+    "return": "Volver",
+    "login": "Iniciar Sesión",
+    "logOff": "Cerrar Sesión",
+    "repositories": "Repositorios",
+    "repository": "Repositorio",
+    "guest": "Invitado",
+    "comments": "Comentarios",
+    "myProfile": "Mi Perfil",
+    "editProfile": "Edit Profile",
+    "repoBackSingle": "Volver a Repositorio",
+    "repoBack": "Volver a Repositorios",
+    "userBack": "Volver a usuario",
+
+    "writeComment": "Escribe un comentario:",
+    "postComment": "Publicar Comentario",
+    "rateRepo": "Calificar Publicación",
+    "addRelease": "Añadir Versión",
+    "releases": "Versiones",
+    "version": "Versión",
+    "verified?": "¿Verificada?",
+    "verify": "Verificar",
+    "run":"Ejecutar",
+    "date":"Fecha",
+    "Confirm Rating": "Confirmar Rating",
+
+
+    "registerRepo": "Registrar un Repositorio",
+    "updateRepo": "Actualizar un Repositorio",
+    "repoName": "Nombre Repositorio",
+    "description": "Descripción",
+    "postRepo": "Publicar Repositorio",
+    "license": "Licencia",
+    "urlRepoImage": "URL Imagen",
+    "repoDoc":  "Documentación Repo",
+
+
+    "requiredField": "Campo Obligatorio(*)",
+    "urlGitHub":"URL Usuario Github",
+    "urlImage":"URL de Imagen de Perfil",
+    "urlRepo":"URL de Repositorio",
+    "userInfo":"Datos del Usuario",
+    "returnUserList": "Volver a la lista de usuarios",
+
+    "repositoryDetails": "Detalles del Repositorio",
+    "lastVerifiedVersion": "Última Versión Verificada",
+    "browseRelease": "Ver Releases",
+
+    "author": "Autor",
+    "tags": "Etiquetas",
+    "newTags": "Etiquetas separadas por espacios ('etiqueta1 etiqueta2 etiqueta3')",
+    "verified": "Verificado",
+    "select": "Select",
+
+    "edit": "Editar",
+
+    "sidebarRepositories": "Repositorios",
+    "sidebarUserProfile": "Mi Perfil",
+    "sidebarUsers": "Usuarios",
+    "sidebarStare": "¿Qué es StArE?",
+    "sidebarLogin": "My Profile",
+    "sidebarLogOff": "My Profile",
+    "sidebarLoginTitle": "Log In",
+
+    "repositoriesView": "Vista Repositorios",
+    "searchRepositories": "Buscar Repositorios...",
+    
+    "typeAndSelectTags": "Escribe y selecciona etiquetas",
+    "registerRepository": "Register a Repository",
+
+    "defaultOrder": "Orden Original",
+    "ascendingRating": "Puntaje Ascendiente",
+    "descendingRating": "Puntaje Descendiente",
+
+    "title": "Title",
+    "Name of Repository": "Title",
+
+    "userList": "Lista de Usuarios",
+    "username": "Nombre de Usuario",
+    "userDetails": "Detalles Usuario",
+    "image": "Imagen",
+    "signUp": "Registrarse",
+
+    "stareQuestion":"¿Qué es StArE.js?",
+    "stareLine1": "La visualización correcta hace que la información sea más fácil de entender. A veces, una imagen habla más que mil palabras, por eso queremos brindar herramientas que faciliten el proceso de visualización de los resultados de los motores de búsqueda.",
+    "stareLine2": "StArE.js es un proyecto de código abierto destinado a facilitar a los desarrolladores la creación de visualizaciones alternativas de la página de resultados del motor de búsqueda (SERP). Stare.js proporciona una canalización de procesamiento modular y extensible capaz de (1) transformar SERP, (2) extraer funciones de resultados de búsqueda individuales y (3) visualizar SERP de múltiples maneras.",
+    "stareWebsite":"Sitio Web de StarE.js ",
+    "stareGithub":"Github de StarE.js"
+  
+  }
