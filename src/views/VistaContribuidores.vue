@@ -3,7 +3,7 @@
     <!-- PRIMERA FILA: TÍTULO VISTA Y BOTONES SUPERIORES -->
     <div class="row">
       <div class="col-8">
-        <h1>Vista Contribuidores</h1>
+        <h1>{{ $t('userList') }}</h1>
       </div>
 
       <div class="col-2">
@@ -18,7 +18,7 @@
             --bs-btn-font-size: 1.15rem;
           "
         >
-          Registrarse
+        {{ $t('signUp') }}
         </a>
         
       </div>
@@ -43,9 +43,9 @@
             <thead>
               <tr class="table-primary text-white">
                 
-                <th scope="col">Imagen</th>
-                <th scope="col">Nombre de Usuario</th>
-                <th scope="col">Correo</th>
+                <th scope="col">{{ $t('image') }}</th>
+                <th scope="col"> {{ $t('username') }}</th>
+                <th scope="col"> {{ $t('email') }}</th>
                 <th scope="col">Detalles</th>
                 <th scope="col">Swtich</th>
                 
@@ -62,11 +62,11 @@
           width="75"
           height="65"
         />
-            <td>{{ item.contrInfo.username }}</td>
+            <td>{{ item.username }}</td>
             <td>{{ item.email }}</td>
             <td>
               <button @click="switchUser(item)">
-                Switch to {{ item.contrInfo.username }}
+                Switch to {{ item.username }}
               </button>
             </td>
             <td>
@@ -75,7 +75,7 @@
                 style="font-weight: bold"
                 :href="`/contribuidores/${item._id}`"
               >
-                Detalles Usuario
+              {{ $t('userDetails') }}
               </a>
             </td>
 
@@ -103,7 +103,7 @@ export default {
   },
   async mounted() {
     try {
-      const response_cli = await axios.get('http://localhost:9000/api/users')
+      const response_cli = await axios.get('http://localhost:9000/api/usersV2')
       this.users = response_cli.data
     } catch (error) {
       console.log(error)
@@ -113,7 +113,7 @@ export default {
 
   methods: {
      switchUser(user) {
-      const userInfo = { name: user.contrInfo.username };
+      const userInfo = { name: user.username };
       const userid = { name: user._id };
       state.user = userInfo;
       state.guest = false;

@@ -60,6 +60,7 @@
           <div class="row m-3">
             <div class="col-2">
               <p style="font-size: 18px; margin-top: 2%">Nombre Release:</p>
+              <p style="font-size: 15px; color: red; margin-top: 2%">Campo Obligatorio</p>
             </div>
             <div class="col-10">
               <input
@@ -67,12 +68,14 @@
                 name="name"
                 v-model="name"
                 style="width: 100%; margin-left: 0%%; font-size: 18px"
+                required
               />
             </div>
           </div>
           <div class="row m-3">
             <div class="col-2">
               <p style="font-size: 18px; margin-top: 2%">Descripción Release:</p>
+              <p style="font-size: 15px; color: whitesmoke; margin-top: 2%">.</p>
             </div>
             <div class="col-10">
               <input
@@ -86,6 +89,7 @@
           <div class="row m-3">
             <div class="col-2">
               <p style="font-size: 18px; margin-top: 2%">CodeSandbox URL:</p>
+              <p style="font-size: 15px; color: red; margin-top: 2%">Campo Obligatorio</p>
             </div>
             <div class="col-10">
               <input

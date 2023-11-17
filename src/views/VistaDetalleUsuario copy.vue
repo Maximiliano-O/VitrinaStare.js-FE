@@ -18,91 +18,83 @@
     <a
       type="button"
       class="btn btn-primary text-white"
-      @click="goToEdit(userID)"
+      href="/contribuidores"
       style="margin-left: 15%; font-weight: bold; --bs-btn-padding-y: 0.45rem; --bs-btn-padding-x: 0.8rem; --bs-btn-font-size: 1.15rem;"
       >{{ $t('Edit Profile') }}
     </a>
   </div>
 </div>
 
-<h2>{{ user.username }}</h2>
-ㅤ
-<div class="jumbotron" style="height: 80vh">
-  <div class="container">
+
+
+
+      </div>
+      <div class="jumbotron d-flex align-items-center" style="height: 80vh;">
+      <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <div class="row">
-          <div class="col">
-            <p style="font-size: 18px; margin-top: 2%">
-              <strong>{{ $t('email') }} </strong> {{ user.email }}
-            </p>
-          </div>
-          <div class="col">
-            <p style="font-size: 18px; margin-top: 2%">
-              <strong>{{ $t('urlGitHub') }}: </strong> {{ user.urlGithubProfile }}
-            </p>
-          </div>
-        </div>
-        <!--
-        <div class="row">
-          <div class="col">
-            <p style="font-size: 18px; margin-top: 2%">
-              <strong>Descripcion: </strong> {{ user.description }}
-            </p>
-          </div>
-        </div>
-         -->
-      </div>
+        <p style="font-size: 18px; margin-top: 2%"><strong>Email: </strong> {{user.email}}</p>
+
+        <div>
+    <p v-if="userID === current_id">{{current_user}}</p>
+  </div>
+
+        
+
+     
+
+    
+
+    </div>
+
+
+
     </div>
   </div>
 
-  ㅤ
-  <h4>Publicaciones</h4>
-  ㅤ
-  <div class="overflow-auto" style="max-height: 100vh">
+      <!-- Este segundo contenedor es el que tiene habilitado para que su contenido vertical sea scrolleable-->
+      <div class="overflow-auto" style="max-height: 90vh">
+  <div class="container-fluid">
+    <Multiselect
+      key="multiselect-key"
+      v-model="currentTags"
+      mode="tags"
+      placeholder="Type and select tags"
+      :options="tags"
+      :searchable="true"
+    />
+    <div class="grid-container">
+      <div class="item" v-for="repo in repositories" :key="repo.repositoryID">
+        <div>{{ repo.title }}</div>
+      <img :src="repo.imageURL" :alt="`Image ${index + 1}`">
+      <div>Autor: {{ repo.author }}</div>
+      <div>Tags: {{ repo.tags }}</div>    
+      <div>Rating: {{ repo.totalRating }}</div>          
+        
+      
+      <button
+                class="btn btn-primary text-white"
+                style="font-weight: bold"
+                @click="goToDetails(repo._id)"
+              >
+                Ver Repo
+              </button>
 
-<div class="grid-container" style="display: grid;">
-  <div class="item" v-for="repo in repositories" :key="repo.repositoryID">
-
-    <div class="flex-container">
-    <div style="font-weight: bold; font-size: 18px">{{ repo.title }}</div>
-    <p style="font-size: 24px; margin-top: 2%; text-align: right;"> <strong> {{repo.totalRating}} ★ </strong></p>
+     
+    </div>
+      <!-- Add more grid items here -->
+    </div>
   </div>
-    ㅤ
-  <img :src="repo.imageURL" :alt="`Image ${index + 1}`">
-  <div>{{ $t('author') }}: {{ repo.author }}</div>
-  <div>{{ $t('tags') }}: {{ repo.tags }}</div>    
- 
-  <div>{{ $t('verified') }}: {{ repo.verified }}</div>         
-    
-  
-  <button
-            class="btn btn-primary text-white"
-            style="font-weight: bold"
-            @click="goToRepo(repo._id)"
-          >
-          {{ $t('select') }}
-          </button>
 
- 
-</div>
-</div>
-</div>
-</div>
+  </div>
 
-
-    
- 
-    
-
-
+  </div>
 
 
       
     </div>
 
 
-  </div>
 
     ㅤ
 
@@ -124,7 +116,7 @@
     methods: {
       async fetchData() {
         try {
-          const url = `http://localhost:9000/api/usersV2/${this.userID}`;
+          const url = `http://localhost:9000/api/users/${this.userID}`;
           const response = await this.axios.get(url);
           this.user = response.data;
         } catch (err) {
@@ -134,24 +126,14 @@
 
     async fetchAllRepositories() {
       try {
-        const response = await this.axios.get("http://localhost:9000/api/repoV2");
+        const response = await this.axios.get("http://localhost:9000/api/repositories");
         this.repositories = response.data;
       } catch (error) {
         console.log(error);
       }
     },
-    
-    goToRepo(repositoryID) {
-      this.$router.push({ path: `/repos/${repositoryID}` })
+
     },
-
-    goToEdit(userID) {
-      this.$router.push({ path: `/contribuidores/${userID}/edit` })
-    },
-    },
-
-
-
     mounted() {
       this.fetchData();
       this.fetchAllRepositories();

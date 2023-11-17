@@ -3,13 +3,13 @@
     <!-- PRIMERA FILA: TÍTULO VISTA Y BOTONES SUPERIORES -->
     <div class="row">
       <div class="col-7">
-        <h1>{{ $t('registerRepo') }}</h1>
+        <h1>{{ $t('updateRepo') }} </h1>
       </div>
       <div class="col-3">
         <a
           type="button"
           class="btn btn-primary text-white"
-          href="/"
+          @click="goToRepo(repositoryID)"
           style="
             margin-left: 15%;
             font-weight: bold;
@@ -17,10 +17,10 @@
             --bs-btn-padding-x: 0.8rem;
             --bs-btn-font-size: 1.15rem;
           "
-          >{{ $t('repoBack') }}
+          >{{ $t('repoBackSingle') }}
         </a>
       </div>
-
+    
 
     </div>
     <!-- Este segundo contenedor es el que tiene habilitado para que su contenido vertical sea scrolleable-->
@@ -48,8 +48,8 @@
             <div class="col-10">
               <input
                 type="text"
-                name="repository.repositoryName"
-                v-model="repository.title"
+                name="repo.title"
+                v-model="repo.title"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -65,8 +65,8 @@
             <div class="col-10">
               <input
                 type="text"
-                name="repository.repositoryDesc"
-                v-model="repository.repositoryName"
+                name="repo.repositoryDesc"
+                v-model="repo.repositoryName"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -81,8 +81,8 @@
             <div class="col-10">
               <input
                 type="text"
-                name="repository.repositoryDesc"
-                v-model="repository.repositoryDesc"
+                name="repo.repositoryDesc"
+                v-model="repo.repositoryDesc"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -96,8 +96,8 @@
             <div class="col-10">
               <input
                 type="text"
-                name="repository.repositoryName"
-                v-model="repository.repositoryDoc"
+                name="repo.repositoryName"
+                v-model="repo.repositoryDoc"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -112,8 +112,8 @@
             <div class="col-10">
               <input
                 type="text"
-                name="repository.license"
-                v-model="repository.license"
+                name="repo.license"
+                v-model="repo.license"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -121,17 +121,10 @@
           
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">{{ $t('urlRepo') }}:</p>
-              <p style="font-size: 15px; color: red; margin-top: 2%">{{ $t('requiredField') }}</p>
+              <p style="font-size: 18px; margin-top: 2%">{{ $t('urlRepo') }}:  ㅤ {{repo.repositoryUrl}}</p>
+            
             </div>
-            <div class="col-10">
-              <input
-                type="text"
-                name="repository.repositoryUrl"
-                v-model="repository.repositoryUrl"
-                style="width: 40%; margin-left: 0%%; font-size: 18px"
-              />
-            </div>
+   
           </div>
 
           <div class="row m-3">
@@ -142,8 +135,8 @@
             <div class="col-10">
               <input
                 type="text"
-                name="repository.repositoryName"
-                v-model="repository.imageURL"
+                name="repo.repositoryName"
+                v-model="repo.imageURL"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -158,8 +151,8 @@
             <div class="col-10">
               <input
                 type="text"
-                name="repository.repositoryName"
-                v-model="repository.tags"
+                name="repo.repositoryName"
+                v-model="repo.tags"
                 style="width: 40%; margin-left: 0%%; font-size: 18px"
               />
             </div>
@@ -178,7 +171,7 @@
             --bs-btn-font-size: 1.15rem;
           "
         >
-        {{ $t('postRepo') }}
+        {{ $t('update') }}
           
         </button>
       </div>
@@ -217,10 +210,12 @@ const registerRepository = async (repositoryData) => {
 
 export default {
   name: 'VistaRegistrarRepo',
+
+  props: ['repositoryID'],
   data() {
     return {
 
-      
+      repo:{},
       repository: {
 
         
@@ -229,7 +224,7 @@ export default {
 
 
         //contributorID: '',
-        contributorID: localStorage.getItem('userID'),
+        contributorID: '',
 
 
 
@@ -238,7 +233,7 @@ export default {
 
 
         //author: '',
-        author: localStorage.getItem('user'),
+        author: '',
         title: '',
         type: 'public',
         imageURL:'',
@@ -267,19 +262,26 @@ export default {
       //const id = localStorage.getItem('userID');
       //this.repository.contributorID = JSON.parse(id).name;
       //this.repository.contributorID = id;
-      this.repository.tags = this.repository.tags.split(' ');
+
+
+
+  
+
+        this.repo.tags = this.repo.tags.split(' ');
       try {
         //const response = await registerRepository(this.repository);
         //console.log('Repository registered:', response);
         // Redirect to the dashboard or another page
-               const response = await fetch(`http://localhost:9000/api/repoV2`, {
-         method: 'POST',
-         body: JSON.stringify(this.repository),
+               const response = await fetch(`http://localhost:9000/api/repoV2/${this.repositoryID}`, {
+         method: 'PUT',
+         body: JSON.stringify(this.repo),
          headers: {
            'Content-Type': 'application/json',
          },
          
        });
+
+       this.goToRepo(this.repositoryID);
        //this.$router.push('/');
        //alert('Faltan campos obligatorios')
 
@@ -294,7 +296,35 @@ export default {
         alert('Faltan campos obligatorios2');
       }
     },
-  }
+
+
+    async fetchData() {
+        try {
+          //const url = `http://localhost:9000/api/repositories/${this.repositoryID}`;
+          const url = `http://localhost:9000/api/repoV2/${this.repositoryID}`;
+          const response = await axios.get(url);
+          this.repo = response.data;
+        } catch (err) {
+          console.log('Error fetching data:', err);
+        }
+      },
+
+
+      goToRepo(repositoryID) {
+      this.$router.push({ path: `/repos/${repositoryID}` })
+    },
+
+
+  
+  },
+
+  mounted() {
+      this.fetchData();
+      
+      
+
+      
+    },
   
 };
 </script>

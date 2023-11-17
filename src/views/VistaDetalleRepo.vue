@@ -3,7 +3,7 @@
       <div class="overflow-auto" style="max-height: 80vh">
       <div class="row">
         <div class="col-7">
-          <h1>Detalle del Repo</h1>
+          <h1>{{ $t('repositoryDetails') }}</h1>
         </div>
         <div class="col-3">
           <a
@@ -17,27 +17,50 @@
               --bs-btn-padding-x: 0.8rem;
               --bs-btn-font-size: 1.15rem;
             "
-            >Regresar a la vista de Repositorios
+            >{{ $t('repoBack') }}
           </a>
 
           
         </div>
 
         <div class="col-2">
-          <button
+   
+
+          <p style="font-size: 30px; margin-top: 2%">Rating: <strong> {{repo.totalRating}} ★ </strong></p>
+
+
+        
+
+          
+        </div>
+      </div>
+      <div class="jumbotron d-flex align-items-center" style="height: auto;">
+      <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <p style="font-size: 18px; margin-top: 2%"><strong>Título: </strong> {{repo.title}} </p>
+        <p style="font-size: 18px; margin-top: 2%"><strong>{{ $t('author') }}: </strong> {{repo.author}}</p>
+        <p style="font-size: 18px; margin-top: 2%"><strong>{{ $t('tags') }}: </strong> {{repo.tags}}</p>
+
+        <p style="font-size: 18px; margin-top: 2%"><strong>{{ $t('verified') }}: </strong> No</p>
+        
+        
+
+        <p style="font-size: 18px; margin-top: 2%"><strong>{{ $t('lastVerifiedVersion') }}: </strong> null</p>
+        <button
           type="submit"
           class="btn btn-primary text-white"
           data-bs-toggle="modal"
           data-bs-target="#modal-eliminacion"
           style="
-            margin-left: 15%;
+            
             font-weight: bold;
             --bs-btn-padding-y: 0.4rem;
             --bs-btn-padding-x: 0.8rem;
             --bs-btn-font-size: 1.15rem;
           "
         >
-          Ver Releases
+        {{ $t('browseRelease') }}
         </button>
 
         <button
@@ -54,29 +77,17 @@
             --bs-btn-font-size: 1.15rem;
           "
         >
-          Dar Rating
+        {{ $t('rateRepo') }}
         </button>
 
 
-        
-
-          
-        </div>
-      </div>
-      <div class="jumbotron d-flex align-items-center" style="height: auto;">
-      <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <p style="font-size: 18px; margin-top: 2%"><strong>Título: </strong> {{repo.title}} </p>
-        <p style="font-size: 18px; margin-top: 2%"><strong>Autor: </strong> {{repo.author}}</p>
-        <p style="font-size: 18px; margin-top: 2%"><strong>Tags: </strong> {{repo.tags}}</p>
-        <p style="font-size: 18px; margin-top: 2%"><strong>Rating: </strong> {{repo.totalRating}}</p>
-        <p style="font-size: 18px; margin-top: 2%"><strong>ID autor: </strong> {{repo.contributorID}}</p>
-        <p style="font-size: 18px; margin-top: 2%"><strong>ID actual: </strong> {{id}}</p>
-        
-
-        <p style="font-size: 18px; margin-top: 2%"><strong>Ultima versión aprobada: </strong> null</p>
-         
+        <button
+                class="btn btn-primary text-white"
+                style="font-weight: bold"
+                @click="goToEdit(repo._id)"
+              >
+              {{ $t('edit') }}
+              </button>
 
       </div>
 
@@ -94,21 +105,23 @@
     </div>
 
   <div class="container-fluid">
-    <h2>Comentarios</h2>
+    <h2>{{ $t('comments') }}</h2>
 
     
     <form @submit.prevent="addComment">
       <div v-if="isguest==='false'" class="mb-3">
-        <label for="comment" class="form-label">Escribe un comentario:</label>
+        <label for="comment" class="form-label">{{ $t('writeComment') }}:</label>
         <textarea class="form-control" id="comment" v-model="newCommentText" rows="3"></textarea>
       </div>
-      <button v-if="isguest==='false'" type="submit"  class="btn btn-primary text-white">Enviar</button>
+      <button v-if="isguest==='false'" type="submit"  class="btn btn-primary text-white">{{ $t('postComment') }}</button>
     </form>
     
     <div v-for="comment in allComments" :key="comment" class="mt-4">
-      <div class="fw-bold">{{ comment.username }}</div>
-      <div>{{ comment.body }}</div>
-    </div>
+  <span class="fw-bold" mr-3>{{ comment.username }}  </span>
+  ㅤ
+  <span>   {{ comment.date }}</span>
+  <div>{{ comment.body }}</div>
+</div>
   </div>
 
   <div
@@ -131,13 +144,13 @@
                   <table class="table">
                     <thead>
                       <tr class="table-primary text-white">
-                        <th scope="col" style="color: white">Versión</th>
+                        <th scope="col" style="color: white">{{ $t('version') }}</th>
                         
                         
-                        <th scope="col" style="color: white">¿Verificada?</th>
-                        <th scope="col" style="color: white">Verificar</th>
-                        <th scope="col" style="color: white">Run</th>
-                        <th scope="col" style="color: white">Fecha</th>
+                        <th scope="col" style="color: white">{{ $t('verified?') }}</th>
+                        <th scope="col" style="color: white">{{ $t('verify') }}</th>
+                        <th scope="col" style="color: white">{{ $t('run') }}</th>
+                        <th scope="col" style="color: white">{{ $t('date') }}</th>
                       </tr>
                     </thead>
                     <tbody style="background-color: white">
@@ -152,7 +165,7 @@
                             style="font-weight: bold; font-size: 14px"
                             @click="verify(item._id)"
                           >
-                            Verify
+                          {{ $t('verify') }}
                           </button>
                         </td>
 
@@ -162,7 +175,7 @@
                             style="font-weight: bold; font-size: 14px"
                             @click="run(item._id)"
                           >
-                            Run
+                          {{ $t('run') }}
                           </button>
                         </td>
 
@@ -188,7 +201,7 @@
                           --bs-btn-font-size: 1.15rem;
                         "
                       >
-                        Regresar
+                      {{ $t('return') }}
                       </button>
                     </div>
                   
@@ -206,7 +219,7 @@
                           --bs-btn-font-size: 1.15rem;
                         "
                       >
-                        Añadir Release
+                      {{ $t('Add Release') }}
                       </button>
                     </div>
                     <div class="col-6 text-start">
@@ -268,7 +281,7 @@
                           --bs-btn-font-size: 1.15rem;
                         "
                       >
-                        Regresar
+                      {{ $t('return') }}
                       </button>
                     </div>
                   
@@ -286,7 +299,7 @@
                           --bs-btn-font-size: 1.15rem;
                         "
                       >
-                        Enviar Rating
+                      {{ $t('confirmRating') }}
                       </button>
                     </div>
                     <div class="col-6 text-start">
@@ -451,6 +464,9 @@ import StarRating from '@/components/StarRating.vue';
     },
       
 
+    goToEdit(repositoryID) {
+      this.$router.push({ path: `/repos/${repositoryID}/edit` })
+    },
    
     newRelease(repositoryID) {
       this.$router.push({ path: `/repos/${repositoryID}/newRelease` })
@@ -476,6 +492,12 @@ import StarRating from '@/components/StarRating.vue';
   </script>
   
   <style>
+
+.col-md-6 img {
+    width: 600px;    /* Set the width to your desired value */
+    height: 400px;   /* Set the height to your desired value */
+    object-fit: cover; /* This will ensure the aspect ratio of the image is maintained */
+}
   /* Color de fondo de la vista */
   body {
     background-color: #ebeef3;

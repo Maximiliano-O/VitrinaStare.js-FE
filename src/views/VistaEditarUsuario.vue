@@ -3,13 +3,13 @@
     <!-- PRIMERA FILA: TÍTULO VISTA Y BOTONES SUPERIORES -->
     <div class="row">
       <div class="col-7">
-        <h1>Registrarse</h1>
+        <h1> {{ $t('update') }}</h1>
       </div>
       <div class="col-3">
         <a
           type="button"
           class="btn btn-primary text-white"
-          href="/contribuidores"
+          @click="goToUser(userID)"
           style="
             margin-left: 15%;
             font-weight: bold;
@@ -17,7 +17,7 @@
             --bs-btn-padding-x: 0.8rem;
             --bs-btn-font-size: 1.15rem;
           "
-          >Regresar a la vista de usuarios
+          >{{ $t('userBack') }}
         </a>
       </div>
       <div class="col-2">
@@ -32,7 +32,7 @@
             --bs-btn-font-size: 1.15rem;
           "
         >
-          Registrase
+        {{ $t('update') }}
         </button>
       </div>
     </div>
@@ -55,39 +55,32 @@
  
  
           <div class="row m-3">
-            <h3>Datos Usuario</h3>
+            <h3>{{ $t('userInfo') }}</h3>
           </div>
+
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">User ID:</p>
-            </div>
-            <div class="col-10">
-        <input
-    data-testid="userID"
-    type="text"
-    name="user.userID"
-    v-model="user.userID"
-    style="width: 100%; margin-left: 0%%; font-size: 18px"
-  />
-              </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Username:</p>
+              <p style="font-size: 18px; margin-top: 2%">{{ $t('username') }}: {{ user.username }}</p>
+              <!--
+              <p style="font-size: 15px; color: red; margin-top: 2%">{{ $t('requiredField') }}</p>
             </div>
             <div class="col-10">
               <input
                 data-testid="username"
                 type="text"
-                name="user.contrInfo.username"
-                v-model="user.contrInfo.username"
+                name="user.username"
+                v-model="user.username"
                 style="width: 100%; margin-left: 0%%; font-size: 18px"
               />
+              -->
             </div>
           </div>
+
+
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Email:</p>
+              <p style="font-size: 18px; margin-top: 2%">{{ $t('email') }}:</p>
+              <p style="font-size: 15px; color: red; margin-top: 2%">{{ $t('requiredField') }}</p>
             </div>
             <div class="col-10">
               <input
@@ -100,50 +93,41 @@
             </div>
           </div>
 
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Password:</p>
-            </div>
-            <div class="col-10">
-              <input
-              data-testid="password"
-               type="password"
-                name="user.password"
-                v-model="user.password"
-                style="width: 100%; margin-left: 0%%; font-size: 18px"
-              />
-            </div>
-          </div>
+ 
 
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Image URL:</p>
+              <p style="font-size: 18px; margin-top: 2%">{{ $t('urlImage') }}:</p>
+              <p style="font-size: 15px; color: whitesmoke; margin-top: 2%">.</p>
             </div>
             <div class="col-10">
               <input
               data-testid="imageURL"
                 type="text"
-                name="user.contrInfo.imageURL"
-                v-model="user.contrInfo.imageURL"
+                name="user.imageURL"
+                v-model="user.imageURL"
                 style="width: 100%; margin-left: 0%; font-size: 18px"
               />
             </div>
           </div>
-
+<!--
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">URL Perfil Github:</p>
+              <p style="font-size: 18px; margin-top: 2%">{{ $t('description') }}:</p>
+              <p style="font-size: 15px; color: whitesmoke; margin-top: 2%">.</p>
             </div>
             <div class="col-10">
               <input
-               data-testid="profileURL"
+              data-testid="imageURL"
                 type="text"
-                name="user.contrInfo.profileURL"
-                v-model="user.contrInfo.profileURL"
+                name="user.description"
+                v-model="user.description"
                 style="width: 100%; margin-left: 0%; font-size: 18px"
               />
             </div>
           </div>
+ -->
+     
 
 
 
@@ -159,9 +143,10 @@
 <script>
 import axios from 'axios';
 
-const registerUser = async (userData) => {
+const registerUser = async (userData, userID) => {
   try {
-    const response = await axios.post(`http://localhost:9000/api/users`, userData);
+    //const response = await axios.post(`http://localhost:9000/api/users`, userData);
+    const response = await axios.put(`http://localhost:9000/api/usersV2/${userID}`, userData);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -170,31 +155,59 @@ const registerUser = async (userData) => {
 };
 
 export default {
+  props: ['userID'],
   data() {
     return {
-      user: {
+      user:{},
+      user2: {
         //userID: '',
         email: '',
         password: '',
-        contrInfo: {
+        //contrInfo: {
           username: '',
           imageURL: '',
-          profileURL: ''
-        }
+          //profileURL: ''
+          urlGithubProfile: ''
+        //}
       }
     };
   },
   methods: {
     async register() {
       try {
-        const response = await registerUser(this.user);
+        const response = await registerUser(this.user, this.userID);
         console.log('User registered:', response);
-        this.$router.push({name: 'contribuidores'})
+        //this.$router.push({name: 'contribuidores'})
         // Redirect to login or dashboard page
+        this.goToUser(this.userID);
       } catch (error) {
         console.error('Error registering user:', error);
       }
-    }
+    },
+
+
+    async fetchData() {
+        try {
+          const url = `http://localhost:9000/api/usersV2/${this.userID}`;
+          const response = await this.axios.get(url);
+          this.user = response.data;
+        } catch (err) {
+          console.log('Error fetching data:', err);
+        }
+      },
+
+      goToUser(userID) {
+      this.$router.push({ path: `/contribuidores/${userID}` })
+    },
+
+
+
+      
+    },
+
+    mounted() {
+      this.fetchData();
+
   }
 };
 </script>
