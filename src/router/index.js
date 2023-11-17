@@ -32,6 +32,14 @@ const router = createRouter({
       props: true
     },
 
+
+    {
+      path: '/contribuidores/:userID/edit',
+      name: 'editarContribuidor',
+      component: () => import('../views/VistaEditarUsuario.vue'),
+      props: true
+    },
+
     {
       path: '/',
       name: 'repos',
@@ -47,10 +55,18 @@ const router = createRouter({
       props: true
     },
 
+
+    {
+      path: '/repos/:repositoryID/edit',
+      name: 'editarRepo',
+      component: () => import('../views/VistaEditarRepo.vue'),
+      props: true
+    },
+
     {
       path: '/repos/:repositoryID/newRelease',
       name: 'newreleaseRepo',
-      component: () => import('../views/VistaCrearRelease.vue'),
+      component: () => import('../views/VistaRegistrarRelease.vue'),
       props: true
     },
 
@@ -91,7 +107,7 @@ const router = createRouter({
     {
       path: '/registrarse',
       name: 'registrarse',
-      component: () => import('../views/VistaRegistrarse.vue'),
+      component: () => import('../views/VistaRegistrarUsuario.vue'),
       
       
     },

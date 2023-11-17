@@ -30,23 +30,23 @@ import { RouterLink, RouterView } from 'vue-router'
         <p class="navbar-username">{{ userData }}</p>
         <li>
           <RouterLink to="/">
-            <p>Repositorios</p>
+            <p>{{ $t('sidebarRepositories') }}</p>
           </RouterLink>
         </li>
         <li>
           <RouterLink v-if="!isGuest" :to="getUserLink()">
-            <p>Mi Perfil</p>
+            <p>{{ $t('sidebarUserProfile') }}</p>
           </RouterLink>
         </li>
 
         <li>
           <RouterLink to="/contribuidores">
-            <p>Usuarios</p>
+            <p>{{ $t('sidebarUsers') }}</p>
           </RouterLink>
         </li>
         <li>
           <RouterLink to="/aboutStare">
-            <p>¿Qué es StArE?</p>
+            <p> {{ $t('sidebarStare') }}</p>
           </RouterLink>
         </li>
 
@@ -71,15 +71,16 @@ import { RouterLink, RouterView } from 'vue-router'
 
       data-bs-toggle="modal"
       data-bs-target="#modal-login"
+      
     >
-      Iniciar Sesión
+    {{ $t('login') }}
     </p>
   </a>
 
 
       
             <a href="/" v-if="!isGuest">
-            <p @click="logOff">Cerrar sesión</p>
+            <p @click="logOff">{{ $t('logOff') }}</p>
             </a>
           </div>
         </li>
@@ -178,6 +179,20 @@ import { RouterLink, RouterView } from 'vue-router'
                           Log-in
                       </button>
                       
+                      <button
+  type="button"
+  class="btn btn-primary text-white"
+  @click="logInWithGithub"
+  :disabled="loginButtonDisabled"
+  style="
+    font-weight: bold;
+    --bs-btn-padding-y: 0.45rem;
+    --bs-btn-padding-x: 0.8rem;
+    --bs-btn-font-size: 1.15rem;
+  "
+>
+  Log-in with GitHub
+</button>
                 
                  
                     </div>
@@ -207,6 +222,9 @@ import { RouterLink, RouterView } from 'vue-router'
 
 import state from '@/store/globalState';
 import axios from 'axios';
+import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/firebase/firebaseConfig";
+
 
 var userData = localStorage.getItem('user')
 
@@ -291,6 +309,56 @@ export default {
     });
     },
 
+    logInWithGithub() {
+
+      this.loginButtonDisabled = true;
+       const provider = new GithubAuthProvider();
+
+       signInWithPopup(auth, provider)
+         .then((result) => {
+           // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+           const credential = GithubAuthProvider.credentialFromResult(result);
+           const token = credential.accessToken;
+           // The signed-in user info.
+           const user = result.user;
+
+           // You can update the state or perform any other necessary actions
+           // For example:
+           state.user = user.displayName;
+           state.guest = false;
+
+           localStorage.setItem("user", user.displayName);
+           localStorage.setItem("guest", 'false');
+           localStorage.setItem("userID", user.uid);
+           window.location.href = '/';
+         })
+         .catch((error) => {
+      // Check if the popup was closed by the user
+      if (error.code === 'auth/popup-closed-by-user') {
+        // Show a message to the user
+        console.log('Sign-in was cancelled. Please try again.');
+      }
+    })
+    .finally(() => {
+      // Enable the login button again
+      this.loginButtonDisabled = false;
+    });
+     },
+
+
+      getUserByEmail(email) {
+    axios
+      .get(`http://localhost:9000/users/email/${email}`)
+      .then(response => {
+        console.log(response.data);
+        // Handle the response data as needed
+      })
+      .catch(error => {
+        console.error(error);
+        // Handle the error as needed
+      });
+  },
+
     getUserLink() {
       const id=localStorage.getItem('userID')
       return `/contribuidores/${id}`;
@@ -317,7 +385,7 @@ export default {
   min-width: 215px;
   max-width: 215px;
   max-height: 100vh;
-  background: #6596cc;
+  background: #b6b6b7;
   color: #fff;
   transition: all 0.3s;
 }
@@ -327,7 +395,7 @@ export default {
 }
 
 #sidebar .sidebar-header {
-  background: #6596cc;
+  background: #b6b6b7;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -344,7 +412,7 @@ export default {
 
 #sidebar ul li p {
   text-align: center;
-  background: #6596cc;
+  background: #b6b6b7;
   color: #fff;
   font-weight: bold;
   font-size: 16px;
@@ -368,7 +436,7 @@ export default {
 
 #sidebar ul p.navbar-username {
   text-align: center;
-  background: #6596cc;
+  background: #b6b6b7;
   color: #fff;
   font-weight: bold;
   font-size: 18px;
