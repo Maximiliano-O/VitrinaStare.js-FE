@@ -1,12 +1,14 @@
 <template>
+<div v-if="allowed==='true'">
 
-
+  <div v-if="status.isReviewed===false">
+<div class="overflow-auto" style="max-height: 96vh">
 
 <div class="container-fluid">
-    <!-- PRIMERA FILA: TÍTULO VISTA Y BOTONES SUPERIORES -->
+   
     <div class="row">
       <div class="col-7">
-        <h1>Verificación Release</h1>
+        <h1>{{ $t('verifyRelease') }}</h1>
         
       </div>
       <div class="col-3">
@@ -22,7 +24,7 @@
         --bs-btn-font-size: 1.15rem;
       "
     >
-      Aprobar Release
+    {{ $t('approveRelease') }}
     </button>
       </div>
       <div class="col-2">
@@ -38,7 +40,7 @@
         --bs-btn-font-size: 1.15rem;
       "
     >
-      Rechazar Release
+    {{ $t('rejectRelease') }}
     </button>
       </div>
     </div>
@@ -77,12 +79,12 @@
                   </div>
                   <div class="col-8 text-center">
                     <p style="font-weight: bold; font-size: 1.15rem; margin-top: 5%">
-                      ¿Está seguro de rechazar esta publicación?
+                      {{ $t('verifyReject') }}
                     </p>
                   </div>
                 </div>
                 <div class="row">
-                  <p style="font-size: medium">Observaciones:</p>
+                  <p style="font-size: medium">{{ $t('Observations') }}:</p>
                 </div>
                 <div class="row">
                   <textarea
@@ -106,7 +108,7 @@
                         --bs-btn-font-size: 1.15rem;
                       "
                     >
-                      Regresar
+                    {{ $t('return') }}
                     </button>
                   </div>
 
@@ -115,7 +117,7 @@
                       type="button"
                       class="btn btn-danger text-white"
                       data-bs-dismiss="modal"
-                      @click="postRechazo"
+                      @click="rechazo"
                       style="
                         font-weight: bold;
                         --bs-btn-padding-y: 0.45rem;
@@ -123,7 +125,7 @@
                         --bs-btn-font-size: 1.15rem;
                       "
                     >
-                      Confirmar Rechazo
+                    {{ $t('confirmReject') }}
                     </button>
                   </div>
                 </div>
@@ -132,7 +134,11 @@
           </div>
         </div>
       </div>
-
+      <!--
+{{ reviewerIDs }}
+{{ userID }}
+{{ allowed }}
+-->
 
             <!-- Modal confirmación  -->
             <div
@@ -152,13 +158,13 @@
                   </div>
                   <div class="col-8 text-center">
                     <p style="font-weight: bold; font-size: 1.15rem; margin-top: 5%">
-                      ¿Está seguro de aprobar esta publicación?
+                      {{ $t('verifyApprove') }}
                     </p>
                   </div>
                 </div>
 
                 <div class="row">
-                  <p style="font-size: medium">Observaciones:</p>
+                  <p style="font-size: medium">{{ $t('Observations') }}:</p>
                 </div>
                 <div class="row">
                   <textarea
@@ -182,7 +188,7 @@
                         --bs-btn-font-size: 1.15rem;
                       "
                     >
-                      Regresar
+                    {{ $t('return') }}
                     </button>
                   </div>
 
@@ -191,7 +197,7 @@
                       type="button"
                       class="btn btn-primary text-white"
                       data-bs-dismiss="modal"
-                      @click="postApruebo"
+                      @click="apruebo"
                       style="
                         font-weight: bold;
                         --bs-btn-padding-y: 0.45rem;
@@ -199,7 +205,7 @@
                         --bs-btn-font-size: 1.15rem;
                       "
                     >
-                      Confirmar Aprobación
+                    {{ $t('confirmApprove') }}
                     </button>
                   </div>
                 </div>
@@ -208,7 +214,28 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div v-else>
+    
+    <h2>{{ $t('alreadyVerified') }}</h2>
   
+    
+  
+    </div>
+
+</div>
+  <div v-else>
+    
+    <h2>{{ $t('accessDenied') }}</h2>
+  
+    <p style="font-size: 18px; margin-top: 2%">{{ $t('accessDeniedMessage') }}</p>
+  
+   
+  
+    </div>
+
   </template>
   
   <script>
@@ -224,13 +251,18 @@
     return {
       
       release: {},
+      status:{},
       reviewerID: '',
       isReviewed: false,
       isSafe: false,
       additionalComments: '',
       reviewDate: null,
       comentarioRechazo: '',
-      comentarioApruebo: ''
+      comentarioApruebo: '',
+      userID: localStorage.getItem('userID'),
+      statusID:'',
+      reviewerIDs:[],
+      allowed:''
     };
   },
 
@@ -245,54 +277,93 @@
 
 
 
-    async fetchData() {
+    async fetchRelease() {
       try {
         
         const url = `http://localhost:9000/api/release/${this.releaseID}`;
         const response = await this.axios.get(url);
         this.release = response.data;
+        this.reviewerIDs = this.release.statuses.map(status => status.reviewerID);
       } catch (err) {
         console.log('Error fetching data:', err);
       }
     },
 
-    async postApruebo() {
+    async fetchStatus() {
       try {
-        //const response = await this.axios.post('http://localhost:9000/api/status', {
-          const response = await this.axios.post(`http://localhost:9000/api/release/${this.releaseID}/status`, {
-          releaseID: this.releaseID,
-          reviewerID: this.reviewerID,
+        
+        const url = `http://localhost:9000/api/release/${this.releaseID}/${this.userID}/status`;
+        const response = await this.axios.get(url);
+        this.statusID = response.data.statusId;
+      } catch (err) {
+        console.log('Error fetching data:', err);
+      }
+    },
+
+    async apruebo() {
+      try {
+        
+          const response = await this.axios.put(`http://localhost:9000/api/release/${this.releaseID}/status/${this.statusID}`, {
+
           isReviewed: true,
           isSafe: true,
           additionalComments: this.comentarioApruebo,
           
         });
-        console.log(response.data); // Handle the response as needed
+        console.log(response.data); 
+        checkRepoVerified();
+        this.$router.push('/');
       } catch (error) {
         console.error(error);
       }
     },
 
-    async postRechazo() {
+    async rechazo() {
       try {
-        //const response = await this.axios.post('http://localhost:9000/api/status', {
-          const response = await this.axios.post(`http://localhost:9000/api/release/${this.releaseID}/status`, {
-          releaseID: this.releaseID,
-          reviewerID: this.reviewerID,
+     
+          const response = await this.axios.put(`http://localhost:9000/api/release/${this.releaseID}/status/${this.statusID}`, {
+
           isReviewed: true,
           isSafe: false,
           additionalComments: this.comentarioRechazo,
        
         });
-        console.log(response.data); // Handle the response as needed
+        console.log(response.data); 
+        this.$router.push('/');
       } catch (error) {
         console.error(error);
       }
+    },
+
+
+    async checkRepoVerified(){
+      try {
+        
+        const url = `http://localhost:9000/api/repoV2/verify`;
+        const response = await this.axios.post(url);
+        
+      } catch (err) {
+        console.log('Error fetching data:', err);
+      }
+    },
+
+
+    checkIfAllowed(){
+      if (this.reviewerIDs.includes(this.userID)) {
+
+        this.allowed='true'
+        console.log('The reviewerID is in the array');
+        } else {
+          this.allowed='false'
+        console.log('The reviewerID is not in the array');
+        }
     }
   },
 
-  mounted() {
-      this.fetchData();
+ async mounted() {
+      await this.fetchRelease();
+      this.fetchStatus();
+      this.checkIfAllowed();
       
     }
 }
