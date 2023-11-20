@@ -1,14 +1,37 @@
 <template>
+  <div class="overflow-auto" style="max-height: 96vh">
     <div class="container-fluid">
       <div class="overflow-auto" style="max-height: 80vh">
       <div class="row">
         <div class="col-7">
           <h1>{{ $t('repositoryDetails') }}</h1>
         </div>
-        <div class="col-3">
+        
+        <div class="col-1">
+                <div v-if="repo.contributorID === comment.authorID">
+
+        <button
+        
+                class="btn btn-primary text-white"
+                style="
+          background-color: #6251b7c3;
+            
+            font-weight: bold;
+            --bs-btn-padding-y: 0.4rem;
+            --bs-btn-padding-x: 0.8rem;
+            --bs-btn-font-size: 1.15rem;
+          "
+                @click="goToEdit(repo._id)"
+              >
+              {{ $t('edit') }}
+              </button>
+
+            </div>
+          </div>
+        <div class="col-2">
           <a
             type="button"
-            class="btn btn-primary text-white"
+            class="btn btn-secondary text-white"
             href="/"
             style="
               margin-left: 15%;
@@ -19,19 +42,15 @@
             "
             >{{ $t('repoBack') }}
           </a>
-
+          
+          ㅤ
           
         </div>
 
         <div class="col-2">
    
-
           <p style="font-size: 30px; margin-top: 2%">Rating: <strong> {{repo.totalRating}} ★ </strong></p>
 
-
-        
-
-          
         </div>
       </div>
       <div class="jumbotron d-flex align-items-center" style="height: auto;">
@@ -42,17 +61,25 @@
         <p style="font-size: 18px; margin-top: 2%"><strong>{{ $t('author') }}: </strong> {{repo.author}}</p>
         <p style="font-size: 18px; margin-top: 2%"><strong>{{ $t('tags') }}: </strong> {{repo.tags}}</p>
 
-        <p style="font-size: 18px; margin-top: 2%"><strong>{{ $t('verified') }}: </strong> No</p>
-        
-        
+        <p v-if="latestVerName!=''" style="font-size: 18px; margin-top: 2%"><strong>{{ $t('verified') }}: </strong> Si</p>
 
-        <p style="font-size: 18px; margin-top: 2%"><strong>{{ $t('lastVerifiedVersion') }}: </strong> null</p>
+        <p v-else style="font-size: 18px; margin-top: 2%">
+          <strong>{{ $t('lastVerifiedVersion') }}:</strong>  No
+        </p>
+
+        <p v-if="latestVerName!=''" style="font-size: 18px; margin-top: 2%">
+          <strong>{{ $t('lastVerifiedVersion') }}: </strong> {{latestVerName}} {{latestVerDate}}
+        </p>
+        <p v-else style="font-size: 18px; margin-top: 2%">
+          <strong>{{ $t('lastVerifiedVersion') }}:</strong>  {{ $t('none') }}
+        </p>
         <button
           type="submit"
           class="btn btn-primary text-white"
           data-bs-toggle="modal"
           data-bs-target="#modal-eliminacion"
           style="
+          background-color: #6251b7c3;
             
             font-weight: bold;
             --bs-btn-padding-y: 0.4rem;
@@ -70,6 +97,7 @@
           data-bs-toggle="modal"
           data-bs-target="#modal-rating"
           style="
+          background-color: #6251b7c3;
             margin-left: 15%;
             font-weight: bold;
             --bs-btn-padding-y: 0.4rem;
@@ -79,15 +107,6 @@
         >
         {{ $t('rateRepo') }}
         </button>
-
-
-        <button
-                class="btn btn-primary text-white"
-                style="font-weight: bold"
-                @click="goToEdit(repo._id)"
-              >
-              {{ $t('edit') }}
-              </button>
 
       </div>
 
@@ -100,10 +119,10 @@
     </div>
   </div>
   </div>
-  
       
     </div>
 
+    ㅤ
   <div class="container-fluid">
     <h2>{{ $t('comments') }}</h2>
 
@@ -113,9 +132,19 @@
         <label for="comment" class="form-label">{{ $t('writeComment') }}:</label>
         <textarea class="form-control" id="comment" v-model="newCommentText" rows="3"></textarea>
       </div>
-      <button v-if="isguest==='false'" type="submit"  class="btn btn-primary text-white">{{ $t('postComment') }}</button>
+      <button v-if="isguest==='false'" type="submit"  class="btn btn-primary text-white"          
+      
+      style="
+          background-color: #6251b7c3;
+            
+            font-weight: bold;
+            --bs-btn-padding-y: 0.4rem;
+            --bs-btn-padding-x: 0.8rem;
+            --bs-btn-font-size: 1.15rem;
+          "
+           >{{ $t('postComment') }}</button>
     </form>
-    
+    ㅤ
     <div v-for="comment in allComments" :key="comment" class="mt-4">
   <span class="fw-bold" mr-3>{{ comment.username }}  </span>
   ㅤ
@@ -143,14 +172,14 @@
                 <div class="table-responsive" style="margin-bottom: 1.5%">
                   <table class="table">
                     <thead>
-                      <tr class="table-primary text-white">
-                        <th scope="col" style="color: white">{{ $t('version') }}</th>
+                      <tr class="custom-row">
+                        <th scope="col" >{{ $t('version') }}</th>
                         
                         
-                        <th scope="col" style="color: white">{{ $t('verified?') }}</th>
-                        <th scope="col" style="color: white">{{ $t('verify') }}</th>
-                        <th scope="col" style="color: white">{{ $t('run') }}</th>
-                        <th scope="col" style="color: white">{{ $t('date') }}</th>
+                        <th scope="col" >{{ $t('verified?') }}</th>
+                        <th scope="col" >{{ $t('verify') }}</th>
+                        <th scope="col" >{{ $t('run') }}</th>
+                        <th scope="col" >{{ $t('date') }}</th>
                       </tr>
                     </thead>
                     <tbody style="background-color: white">
@@ -160,23 +189,27 @@
                         
 
                         <td>
-                          <button
+
+
+                          <a
+                            type="button"
                             class="btn btn-primary text-white"
-                            style="font-weight: bold; font-size: 14px"
-                            @click="verify(item._id)"
-                          >
-                          {{ $t('verify') }}
-                          </button>
+                            :href="'/verificacion/' + item._id"
+                            style="font-weight: bold; font-size: 14px; background-color: #6251b7c3;"
+                            >{{ $t('verify') }}
+                          </a>
+      
                         </td>
 
                         <td>
-                          <button
+                          <a
+                          type="button"
                             class="btn btn-primary text-white"
-                            style="font-weight: bold; font-size: 14px"
-                            @click="run(item._id)"
+                            style="font-weight: bold; font-size: 14px ; background-color: #6251b7c3;"
+                            :href="'/sandbox/' + item._id"
                           >
                           {{ $t('run') }}
-                          </button>
+                        </a>
                         </td>
 
                         <td>{{ item.created_at }}</td>
@@ -213,13 +246,14 @@
                         data-bs-dismiss="modal"
                         @click="newRelease(repositoryID)"
                         style="
+                        background-color: #6251b7c3;
                           font-weight: bold;
                           --bs-btn-padding-y: 0.45rem;
                           --bs-btn-padding-x: 0.8rem;
                           --bs-btn-font-size: 1.15rem;
                         "
                       >
-                      {{ $t('Add Release') }}
+                      {{ $t('addRelease') }}
                       </button>
                     </div>
                     <div class="col-6 text-start">
@@ -253,14 +287,14 @@
                 ㅤ
 
                 ㅤ
-    <!-- <StarRating v-model="repo.totalRating" @update:rating="updateRating" />   -->
-    <star-rating
-  :max-stars="5"
-  :value="currentRating"
-  @update:rating="currentRating = $event"
-></star-rating>
+                    <!-- <StarRating v-model="repo.totalRating" @update:rating="updateRating" />   -->
+                    <star-rating
+                  :max-stars="5"
+                  :value="currentRating"
+                  @update:rating="currentRating = $event"
+                ></star-rating>
 
-<p>Selected rating: {{ currentRating }}</p>
+                <p>{{ $t('selectedRating') }}: {{ currentRating }}</p>
                 
                 ㅤ
               </div>
@@ -293,6 +327,7 @@
                         data-bs-dismiss="modal"
                         @click="addRating(currentRating)"
                         style="
+                        background-color: #6251b7c3;
                           font-weight: bold;
                           --bs-btn-padding-y: 0.45rem;
                           --bs-btn-padding-x: 0.8rem;
@@ -318,7 +353,7 @@
     
  
 </div>
-
+</div>
 
   </template>
   
@@ -338,6 +373,8 @@ import StarRating from '@/components/StarRating.vue';
         currentRating: 3,
      
         repo: {},
+        latestVerName: '',
+        latestVerDate: '',
         newCommentText:'',
         allComments: [],
         allReleases:[],
@@ -368,7 +405,7 @@ import StarRating from '@/components/StarRating.vue';
             const url = `http://localhost:9000/api/repoV2/${this.repositoryID}/ratings`;
             const response = await this.axios.post(url, {
               rating: rating,
-              userId: localStorage.getItem('userID') // assuming this.id is the user's id
+              userId: localStorage.getItem('userID') 
             });
             if (response.data.success) {
               this.repo.totalRating = response.data.totalRating;
@@ -387,11 +424,11 @@ import StarRating from '@/components/StarRating.vue';
            const url = `http://localhost:9000/api/repoV2/${this.repositoryID}/ratings`;
             const response = await this.axios.delete(url, {
               data: {
-                userID: localStorage.getItem('userID') // Assuming the user ID is stored in local storage
+                userID: localStorage.getItem('userID') 
               }
             });
             if (response.status === 200) {
-              this.fetchData(); // Refresh the repo data after deleting the rating
+              this.fetchData(); 
             }
           } catch (err) {
             console.log('Error deleting rating:', err);
@@ -432,16 +469,24 @@ import StarRating from '@/components/StarRating.vue';
           console.log('Error fetching data:', err);
         }
       },
+      
+      async latestVerifiedRelease() {
+        try {
+         
+          const url = `http://localhost:9000/api/release/latest/${this.repositoryID}`;
+          const response = await this.axios.get(url);
+          this.latestVerName = response.data.name;
+          this.latestVerDate = response.data.created_at;
+        } catch (err) {
+          console.log('Error fetching data:', err);
+        }
+      },
+      
 
      
-      // Aquí puedes agregar el código para guardar el comentario en tu base de datos o API.
-      // Por ahora, solo agregaremos el comentario al array de comentarios localmente.
 
       async addComment() {
-        //const username =localStorage.getItem('user');
-        //this.comment.username=JSON.parse(username).name
-        //const id =localStorage.getItem('userID');
-        //this.comment.authorID=JSON.parse(id).name
+
 
         this.comment.repositoryID=this.repo._id
         this.comment.repoName=this.repo.title
@@ -484,7 +529,8 @@ import StarRating from '@/components/StarRating.vue';
     mounted() {
       this.fetchData();
       this.fetchAllComments();
-      this.fetchReleases();
+      this.fetchReleases()
+      this.latestVerifiedRelease();
       
     },
   };
@@ -494,8 +540,8 @@ import StarRating from '@/components/StarRating.vue';
   <style>
 
 .col-md-6 img {
-    width: 600px;    /* Set the width to your desired value */
-    height: 400px;   /* Set the height to your desired value */
+    width: 600px;   
+    height: 400px;   
     object-fit: cover; /* This will ensure the aspect ratio of the image is maintained */
 }
   /* Color de fondo de la vista */
@@ -530,4 +576,10 @@ import StarRating from '@/components/StarRating.vue';
       display: block;
       margin-bottom: 1rem;
     }
+
+    .custom-row {
+     background-color: #b9a3de5e; /* Change this to your preferred color */
+     border: 2px solid #313131a5;
+     
+   }
   </style>
