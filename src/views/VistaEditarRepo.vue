@@ -1,4 +1,6 @@
 <template>
+
+<div v-if="repo.contributorID===currentUserID">
   <div class="container-fluid">
     <!-- PRIMERA FILA: TÍTULO VISTA Y BOTONES SUPERIORES -->
     <div class="row">
@@ -8,7 +10,7 @@
       <div class="col-3">
         <a
           type="button"
-          class="btn btn-primary text-white"
+          class="btn btn-secondary text-white"
           @click="goToRepo(repositoryID)"
           style="
             margin-left: 15%;
@@ -20,7 +22,8 @@
           >{{ $t('repoBackSingle') }}
         </a>
       </div>
-    
+
+
 
     </div>
     <!-- Este segundo contenedor es el que tiene habilitado para que su contenido vertical sea scrolleable-->
@@ -160,11 +163,13 @@
 
 
           ㅤ
+
           <div class="col-2">
         <button
           type="submit"
           class="btn btn-primary text-white"
           style="
+          background-color: #6251b7c3;
             font-weight: bold;
             --bs-btn-padding-y: 0.4rem;
             --bs-btn-padding-x: 0.8rem;
@@ -175,7 +180,7 @@
           
         </button>
       </div>
-
+    
 
   
         </form>
@@ -183,6 +188,16 @@
     </div>
 
   </div>
+</div>
+
+<div v-else>
+    
+    <h2>{{ $t('accessDenied') }}</h2>
+  
+    <p style="font-size: 18px; margin-top: 2%">{{ $t('accessDeniedMessage') }}</p>
+  
+</div>
+
 </template>
 
 <script>
@@ -193,20 +208,8 @@ import axios from 'axios';
 
 axios.defaults.timeout = 5000;
 
-const registerRepository = async (repositoryData) => {
-      try {
-        const response = await axios.post(`http://localhost:9000/api/repoV2`, repositoryData);
-        console.log('Server response:', response);
-        return response.data;
-      } catch (error) {
-        //console.error(error);
-        console.log('Error:', error);
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
-      console.error('Error from server:', error.response);
-        throw error;
-      }
-    };
+
+
 
 export default {
   name: 'VistaRegistrarRepo',
@@ -216,58 +219,25 @@ export default {
     return {
 
       repo:{},
-      repository: {
+      currentUserID: localStorage.getItem('userID')
 
-        
-        //repositoryID: 20,
-
-
-
-        //contributorID: '',
-        contributorID: '',
-
-
-
-
-        //ownerID: 20,
-
-
-        //author: '',
-        author: '',
-        title: '',
-        type: 'public',
-        imageURL:'',
-        tags:[],
-
-        
-        repositoryName: '',
-        repositoryDesc: '',
-        repositoryDoc: '',
-        license: '',
-        //releases: [],
-        repositoryUrl: ''
-        
-
-
-        
-      },
     };
   },
   methods: {
 
     async register() {
-      //const author = localStorage.getItem('user');
-      //this.repository.author = JSON.parse(username).name;
-      //this.repository.author = author;
-      //const id = localStorage.getItem('userID');
-      //this.repository.contributorID = JSON.parse(id).name;
-      //this.repository.contributorID = id;
 
 
-
+      if (
+        this.repo.repositoryName === '' || 
+        this.repo.title === '' || 
+        this.repo.repositoryDesc === '') {
+        alert('Some required fields are empty.');
+        return;
+     } 
   
 
-        this.repo.tags = this.repo.tags.split(' ');
+        this.repo.tags = this.repo.tags.split(',');
       try {
         //const response = await registerRepository(this.repository);
         //console.log('Repository registered:', response);
