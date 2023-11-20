@@ -1,9 +1,11 @@
 <template>
+
+<div v-if="repo.contributorID === userID">
   <div class="container-fluid">
     <!-- PRIMERA FILA: TÍTULO VISTA Y BOTONES SUPERIORES -->
     <div class="row">
       <div class="col-7">
-        <h1>Registrar Versión del Repositorio</h1>
+        <h1>{{ $t('registerReleaseTitle') }}</h1>
       </div>
       <div class="col-3">
         <a
@@ -17,7 +19,10 @@
             --bs-btn-padding-x: 0.8rem;
             --bs-btn-font-size: 1.15rem;
           "
-          >Regresar al repositorio
+
+
+
+          >{{ $t('repoBack') }}
         </a>
       </div>
       <div class="col-2">
@@ -26,13 +31,14 @@
           class="btn btn-primary text-white"
           v-on:click="addRelease"
           style="
+          background-color: #6251b7c3;
             font-weight: bold;
             --bs-btn-padding-y: 0.4rem;
             --bs-btn-padding-x: 0.8rem;
             --bs-btn-font-size: 1.15rem;
           "
         >
-          Registrar Release
+        {{ $t('registerRelease') }}
         </button>
       </div>
     </div>
@@ -55,12 +61,13 @@
  
  
           <div class="row m-3">
-            <h3>Datos nueva release:</h3>
+            <h3>{{ $t('releaseData') }}:</h3>
           </div>
+          ㅤ
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Nombre Release:</p>
-              <p style="font-size: 15px; color: red; margin-top: 2%">Campo Obligatorio</p>
+              <p style="font-size: 18px; margin-top: 2%">{{ $t('registerRelease') }}:</p>
+              <p style="font-size: 15px; color: red; margin-top: 2%">{{ $t('requiredField') }}</p>
             </div>
             <div class="col-10">
               <input
@@ -74,7 +81,7 @@
           </div>
           <div class="row m-3">
             <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">Descripción Release:</p>
+              <p style="font-size: 18px; margin-top: 2%">{{ $t('releaseDescription') }}</p>
               <p style="font-size: 15px; color: whitesmoke; margin-top: 2%">.</p>
             </div>
             <div class="col-10">
@@ -89,7 +96,7 @@
           <div class="row m-3">
             <div class="col-2">
               <p style="font-size: 18px; margin-top: 2%">CodeSandbox URL:</p>
-              <p style="font-size: 15px; color: red; margin-top: 2%">Campo Obligatorio</p>
+              <p style="font-size: 15px; color: red; margin-top: 2%">{{ $t('requiredField') }}</p>
             </div>
             <div class="col-10">
               <input
@@ -100,14 +107,29 @@
               />
             </div>
           </div>
-
+<!--
+          <ul>
+            <p style="font-size: 18px; margin-top: 2%">Elements:</p>
+          <li v-for="(element, index) in fetchedUsers" :key="index">{{ element }}</li>
+        </ul>
+-->
+     
  
-
-  
         </form>
       </div>
     </div>
   </div>
+</div>
+
+  <div v-else>
+    
+    <h2>{{ $t('accessDenied') }}</h2>
+  
+    <p style="font-size: 18px; margin-top: 2%">{{ $t('accessDeniedMessage') }}</p>
+
+  
+    </div>
+
 </template>
 
 <script>
@@ -122,23 +144,31 @@ export default {
       name: '',
       description: '',
       codesandbox_URL: '',
+      fetchedUsers: [],
+      fetchedEmails:[],
+      userID: localStorage.getItem('userID'),
+      repo:{}
     };
   },
-  methods: {
-   // async addRelease() {
-   //   try {
-   //     const response = await registerUser(this.user);
-   //     console.log('User registered:', response);
-   //     //this.$router.push({name: 'contribuidores'})
-   //     this.$router.push({ path: `/repos/${repositoryID}` })
-   //     // Redirect to login or dashboard page
-   //   } catch (error) {
-   //     console.error('Error registering user:', error);
-   //   }
-   // },
 
+
+
+  methods: {
+ 
 
     async addRelease() {
+
+
+
+      if (
+    this.name === '' || 
+    this.codesandbox_URL === '') {
+
+    alert('Some required fields are empty.');
+    return;
+
+     } 
+
       try {
         const response = await axios.post('http://localhost:9000/api/release', {
           repositoryID:this.repositoryID,
@@ -148,20 +178,61 @@ export default {
 
        
         });
-        console.log(response.data); // Handle the response as needed
-        this.requestValidation()
+        console.log(response.data); 
+        //this.requestValidation()
+
+        const newReleaseID = response.data._id; 
+
+
+        this.postSelectedUsers(newReleaseID);
+        
+
+        this.requestValidation(newReleaseID);
+
+
         this.$router.push({ path: `/repos/${this.repositoryID}` })
       } catch (error) {
         console.error(error);
       }
     },
 
-    async requestValidation() {
+
+    async fetchRandomUsers(n) {
+    try {
+      const url = `http://localhost:9000/api/usersV2/random/${this.userID}/${n}`;
+      const response = await this.axios.get(url);
+      this.fetchedUsers = response.data;
+      this.fetchedEmails = this.fetchedUsers.map(user => user.email);
+    } catch (err) {
+      console.log('Error fetching random users:', err);
+    }
+  },
+
+
+  async postSelectedUsers(releaseId) {
+  try {
+    for (let user of this.fetchedUsers) {
+      const response = await this.axios.post(`http://localhost:9000/api/release/${releaseId}/status`, {
+        releaseID: releaseId,
+        reviewerID: user._id, 
+        isReviewed: false,
+        isSafe: false,
+        additionalComments: '',
+      });
+      console.log(response.data); 
+    }
+  } catch (error) {
+    console.error(error);
+  }
+},
+
+    async requestValidation(releaseId) {
       try {
         const url = 'http://localhost:9000/api/send-emails';
         const data = {
-          emails: ["mitchell.vera@usach.cl"],
-          repositoryLink: "https://github.com/example/repo",
+          emails: this.fetchedEmails,
+          repositoryLink: `http://localhost:5173/verificacion/${releaseId}`,
+          
         };
 
         const response = await axios.post(url, data);
@@ -170,7 +241,24 @@ export default {
         console.error('Error:', error);
       }
     },
-  }
+
+    async fetchData() {
+        try {
+          //const url = `http://localhost:9000/api/repositories/${this.repositoryID}`;
+          const url = `http://localhost:9000/api/repoV2/${this.repositoryID}`;
+          const response = await this.axios.get(url);
+          this.repo = response.data;
+        } catch (err) {
+          console.log('Error fetching data:', err);
+        }
+      }
+  },
+
+  mounted() {
+      this.fetchData();
+      this.fetchRandomUsers(2);
+      
+    }
 };
 </script>
 

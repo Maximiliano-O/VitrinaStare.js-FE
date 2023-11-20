@@ -1,4 +1,5 @@
 <template>
+  <div class="overflow-auto" style="max-height: 96vh">
      <div class="overflow-auto" style="max-height: 100vh">
       <div class="row">
       <div class="col-7">
@@ -7,7 +8,7 @@
       <div class="col-3">
         <a
           type="button"
-          class="btn btn-primary text-white"
+          class="btn btn-secondary text-white"
           href="/"
           style="
             margin-left: 15%;
@@ -16,21 +17,24 @@
             --bs-btn-padding-x: 0.8rem;
             --bs-btn-font-size: 1.15rem;
           "
-          >Volver a repositorios
+          >{{ $t('repoBack') }}
         </a>
         ㅤ
       </div>
 
       ㅤ
     </div>
+    
     <div style="width: 100%;">
+      ㅤ
        
-      <GitHubCodeSandbox owner="StArE-js" repo="stare.js-client" subdir="examples/client-only/public"  :url="release.codesandbox_URL" />
+      <GitHubCodeSandbox   :url="release.codesandbox_URL" />
     </div>
     ㅤ
   
 
 
+</div>
 </div>
 
   </template>
