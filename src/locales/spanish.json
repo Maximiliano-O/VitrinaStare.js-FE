@@ -1,21 +1,23 @@
 {
-   "update":"Actualizar",
+  "changeLanguage": "Cambiar Idioma", 
+  "update":"Actualizar",
     "email": "Correo",
     "password": "Contraseña",
     "return": "Volver",
     "login": "Iniciar Sesión",
+    "loginGitHub": "Iniciar Sesión con Github",
     "logOff": "Cerrar Sesión",
     "repositories": "Repositorios",
     "repository": "Repositorio",
     "guest": "Invitado",
     "comments": "Comentarios",
     "myProfile": "Mi Perfil",
-    "editProfile": "Edit Profile",
+    "editProfile": "Editar Perfil",
     "repoBackSingle": "Volver a Repositorio",
     "repoBack": "Volver a Repositorios",
     "userBack": "Volver a usuario",
 
-    "writeComment": "Escribe un comentario:",
+    "writeComment": "Escribe un comentario",
     "postComment": "Publicar Comentario",
     "rateRepo": "Calificar Publicación",
     "addRelease": "Añadir Versión",
@@ -25,7 +27,7 @@
     "verify": "Verificar",
     "run":"Ejecutar",
     "date":"Fecha",
-    "Confirm Rating": "Confirmar Rating",
+    "confirmRating": "Confirmar Rating",
 
 
     "registerRepo": "Registrar un Repositorio",
@@ -51,9 +53,9 @@
 
     "author": "Autor",
     "tags": "Etiquetas",
-    "newTags": "Etiquetas separadas por espacios ('etiqueta1 etiqueta2 etiqueta3')",
+    "newTags": "Etiquetas separadas por comas ('tag1,tag2,tag3')",
     "verified": "Verificado",
-    "select": "Select",
+    "select": "Seleccionar",
 
     "edit": "Editar",
 
@@ -65,11 +67,11 @@
     "sidebarLogOff": "My Profile",
     "sidebarLoginTitle": "Log In",
 
-    "repositoriesView": "Vista Repositorios",
+    "repositoriesView": "Repositorios StArE.js",
     "searchRepositories": "Buscar Repositorios...",
     
     "typeAndSelectTags": "Escribe y selecciona etiquetas",
-    "registerRepository": "Register a Repository",
+    "registerRepository": "Registrar un Repositorio",
 
     "defaultOrder": "Orden Original",
     "ascendingRating": "Puntaje Ascendiente",
@@ -88,6 +90,37 @@
     "stareLine1": "La visualización correcta hace que la información sea más fácil de entender. A veces, una imagen habla más que mil palabras, por eso queremos brindar herramientas que faciliten el proceso de visualización de los resultados de los motores de búsqueda.",
     "stareLine2": "StArE.js es un proyecto de código abierto destinado a facilitar a los desarrolladores la creación de visualizaciones alternativas de la página de resultados del motor de búsqueda (SERP). Stare.js proporciona una canalización de procesamiento modular y extensible capaz de (1) transformar SERP, (2) extraer funciones de resultados de búsqueda individuales y (3) visualizar SERP de múltiples maneras.",
     "stareWebsite":"Sitio Web de StarE.js ",
-    "stareGithub":"Github de StarE.js"
+    "stareGithub":"Github de StarE.js",
+
+    
+    "verifyRelease": "Verificación de Versión",
+    "approveRelease":"Aprobar Release",
+    "rejectRelease":"Rechazar Release",
+    "verifyApprove": "¿Está seguro de aprobar este release?",
+    "verifyReject": "¿Está seguro de rechazar este release?",
+    "confirmApprove": "Confirmar Apruebo",
+    "confirmReject": "Confirmar Rechazo",
+    "observations": "Observaciones",
+
+    "publications": "Publicaciones",
+    
+    "none": "Ninguna",
+
+    "registerReleaseTitle": "Registrar Versión del Repositorio",
+    "registerRelease": "Registrar Release",
+    "releaseName": "Nombre Release",
+    "releaseDescription": "Descripción Release",
+    "releaseData": "Datos Nueva Release",
+
+    "accessDenied": "Acceso denegado",
+   "accessDeniedMessage": "No posee el permiso para ver esta página.",
+
+   "selectedRating": "Rating Seleccionado",
+
+   "alreadyVerified": "Gracias por enviar su verificación del release"
+
+   
+    
+
   
   }
