@@ -1,6 +1,9 @@
 <template>
+
+
+<div v-if="isGuest==='true'">
   <div class="container-fluid">
-    <!-- PRIMERA FILA: TÍTULO VISTA Y BOTONES SUPERIORES -->
+    
     <div class="row">
       <div class="col-7">
         <h1> {{ $t('signUp') }}</h1>
@@ -8,7 +11,7 @@
       <div class="col-3">
         <a
           type="button"
-          class="btn btn-primary text-white"
+          class="btn btn-secondary text-white"
           href="/contribuidores"
           style="
             margin-left: 15%;
@@ -26,6 +29,7 @@
           class="btn btn-primary text-white"
           v-on:click="register"
           style="
+          background-color: #6251b7c3;
             font-weight: bold;
             --bs-btn-padding-y: 0.4rem;
             --bs-btn-padding-x: 0.8rem;
@@ -38,17 +42,16 @@
     </div>
 
 
-    <!-- Este segundo contenedor es el que tiene habilitado para que su contenido vertical sea scrolleable-->
+    
     <div class="overflow-auto" style="max-height: 100vh">
       <div style="padding-bottom: 10%">
 
 
    
         <form @submit="enviarCliente" method="post" id="form_crearCliente">
-          <!-- Las filas del formulario estan separados por el div row m-3 -->
+        
           <div class="row m-3">
-            <!-- El uso del col es para mantener el título con la selección alineados -->
-            <!-- Usar v-model para conectar campo del formulario con parámetro en el JSON a enviar-->
+       
      
 
           </div>
@@ -147,6 +150,18 @@
       </div>
     </div>
   </div>
+</div>
+
+<div v-else>
+    
+    <h2>{{ $t('accessDenied') }}</h2>
+  
+    <p style="font-size: 18px; margin-top: 2%">{{ $t('accessDeniedMessage') }}</p>
+  
+   
+  
+    </div>
+
 </template>
 
 <script>
@@ -166,14 +181,15 @@ const registerUser = async (userData) => {
 export default {
   data() {
     return {
+      isGuest: localStorage.getItem('guest'),
       user: {
-        //userID: '',
+      
         email: '',
         password: '',
-        //contrInfo: {
+        
           username: '',
           imageURL: '',
-          //profileURL: ''
+          
           urlGithubProfile: ''
         //}
       }
@@ -181,15 +197,50 @@ export default {
   },
   methods: {
     async register() {
+
+
+      if (
+    this.user.email === '' || 
+    this.user.password === '' || 
+    this.user.username === '' || 
+    this.user.urlGithubProfile === '') {
+    alert('Some required fields are empty.');
+    return;
+     } 
+
+    let checkUser = await this.checkGitHubUserExists();
+    if(checkUser.exists) {
+     
+
       try {
         const response = await registerUser(this.user);
         console.log('User registered:', response);
         this.$router.push({name: 'contribuidores'})
-        // Redirect to login or dashboard page
+      
       } catch (error) {
         console.error('Error registering user:', error);
       }
-    }
+
+
+    } else {
+      alert('Github Account does not exist.');
+      }
+
+
+    },
+
+
+    async checkGitHubUserExists() {
+        try {
+          const encodedUrl = encodeURIComponent(this.user.urlGithubProfile);
+          const url = `http://localhost:9000/api/checkUserExists/${encodedUrl}`;
+          const response = await this.axios.get(url);
+          return response.data; 
+          
+        } catch (err) {
+          console.log('Error fetching data:', err);
+        }
+      },
   }
 };
 </script>

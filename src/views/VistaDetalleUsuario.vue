@@ -1,26 +1,29 @@
 <template>
-    <div class="container-fluid">
+  <div class="overflow-auto" style="max-height: 95vh">
+
+  <div class="container-fluid">
+   
       <div class="row">
         <div class="col-7">
           <h1 v-if="userID === current_id">{{ $t('myProfile') }}</h1>
           <h1 v-else> {{ $t('userDetails') }}</h1>
         </div>
-        <div class="col-3" style="display: flex; justify-content: space-between;">
+        <div class="col-5" style="display: flex; justify-content: space-between;">
   <a
     type="button"
-    class="btn btn-primary text-white"
+    class="btn btn-secondary text-white"
     href="/contribuidores"
     style="margin-left: 15%; font-weight: bold; --bs-btn-padding-y: 0.45rem; --bs-btn-padding-x: 0.8rem; --bs-btn-font-size: 1.15rem;"
     >{{ $t('returnUserList') }}
   </a>
 
-  <div v-if="userID === current_id" style="margin-left: auto;">
+  <div class="col-5" v-if="userID === current_id" style="margin-left: auto;">
     <a
       type="button"
       class="btn btn-primary text-white"
       @click="goToEdit(userID)"
-      style="margin-left: 15%; font-weight: bold; --bs-btn-padding-y: 0.45rem; --bs-btn-padding-x: 0.8rem; --bs-btn-font-size: 1.15rem;"
-      >{{ $t('Edit Profile') }}
+      style="background-color: #6251b7c3; margin-left: 15%; font-weight: bold; --bs-btn-padding-y: 0.45rem; --bs-btn-padding-x: 0.8rem; --bs-btn-font-size: 1.15rem;"
+      >{{ $t('editProfile') }}
     </a>
   </div>
 </div>
@@ -57,12 +60,12 @@
   </div>
 
   ㅤ
-  <h4>Publicaciones</h4>
+  <h4>{{ $t('publications') }}</h4>
   ㅤ
   <div class="overflow-auto" style="max-height: 100vh">
 
 <div class="grid-container" style="display: grid;">
-  <div class="item" v-for="repo in repositories" :key="repo.repositoryID">
+  <div class="item" v-for="repo in repositories" :key="repo.repositoryID" @click="goToRepo(repo._id)">
 
     <div class="flex-container">
     <div style="font-weight: bold; font-size: 18px">{{ repo.title }}</div>
@@ -75,7 +78,7 @@
  
   <div>{{ $t('verified') }}: {{ repo.verified }}</div>         
     
-  
+  <!--
   <button
             class="btn btn-primary text-white"
             style="font-weight: bold"
@@ -84,29 +87,16 @@
           {{ $t('select') }}
           </button>
 
- 
+ -->
+
 </div>
 </div>
 </div>
 </div>
-
-
-    
- 
-    
-
-
-
-
-      
     </div>
-
-
   </div>
-
     ㅤ
-
-
+  </div>
 
   </template>
   
@@ -132,9 +122,9 @@
         }
       },
 
-    async fetchAllRepositories() {
+    async fetchUserRepositories() {
       try {
-        const response = await this.axios.get("http://localhost:9000/api/repoV2");
+        const response = await this.axios.get(`http://localhost:9000/api/repoV2/contributor/${this.userID}`);
         this.repositories = response.data;
       } catch (error) {
         console.log(error);
@@ -154,7 +144,7 @@
 
     mounted() {
       this.fetchData();
-      this.fetchAllRepositories();
+      this.fetchUserRepositories();
       
     },
   };

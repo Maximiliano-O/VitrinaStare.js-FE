@@ -1,19 +1,22 @@
 <template>
+
+<div class="overflow-auto" style="max-height: 96vh">
   <div class="container-fluid">
-    <!-- PRIMERA FILA: TÍTULO VISTA Y BOTONES SUPERIORES -->
+   
     <div class="row">
       <div class="col-8">
         <h1>{{ $t('repositoriesView') }}</h1>
   
       </div>
 
-      <div v-if="isguest==='false'" class="col-2">
+      <div v-if="isguest=='false'" class="col-2">
         <a
           
           type="button"
           class="btn btn-primary text-white"
           href="/repos/registrarRepositorio"
           style="
+          background-color: #6251b7c3;
             font-weight: bold;
             --bs-btn-padding-y: 0.4rem;
             --bs-btn-padding-x: 0.8rem;
@@ -36,12 +39,12 @@
     ㅤ
 
 
-    <!-- Este segundo contenedor es el que tiene habilitado para que su contenido vertical sea scrolleable-->
+  
     <div class="overflow-auto" style="max-height: 100vh">
 
   <div class="container-fluid">
     <div class="input-group">
-    <input type="text" v-model="searchString" :placeholder="$t('searchRepositories')" />
+    <input type="text" v-model="searchString" :placeholder=" $t('searchRepositories')" />
     ㅤ
     <Multiselect
       
@@ -63,7 +66,7 @@
   ㅤ
   
     <div class="grid-container" style="display: grid;">
-      <div class="item" v-for="repo in filteredRepositories" :key="repo.repositoryID">
+      <div class="item" v-for="repo in filteredRepositories" :key="repo.repositoryID" @click="goToDetails(repo._id)">
 
         <div class="flex-container">
         <div style="font-weight: bold; font-size: 18px">{{ repo.title }}</div>
@@ -76,7 +79,7 @@
      
       <div>{{ $t('verified') }}: {{ repo.verified }}</div>         
         
-      
+      <!--
       <button
                 class="btn btn-primary text-white"
                 style="font-weight: bold"
@@ -84,14 +87,15 @@
               >
               {{ $t('select') }}
               </button>
-
+-->
      
     </div>
-      <!-- Add more grid items here -->
+>
     </div>
   </div>
 </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -169,7 +173,7 @@ export default {
     async fetchAllRepositories() {
       try {
         
-        //const response = await this.axios.get("http://localhost:9000/api/repositories");
+        
         const response = await this.axios.get("http://localhost:9000/api/repoV2");
         this.repositories = response.data;
       } catch (error) {
@@ -246,8 +250,10 @@ input[type='number'] {
 
     .item {
       padding: 1rem;
-      border: 1px solid #ccc;
+      border: 1px solid #8e8989;
       border-radius: 6px;
+      background-color: #d9c8ec2c;
+      
     }
 
     .item img {

@@ -1,4 +1,6 @@
 <template>
+
+<div v-if="user._id===currentUserID">
   <div class="container-fluid">
     <!-- PRIMERA FILA: TÍTULO VISTA Y BOTONES SUPERIORES -->
     <div class="row">
@@ -8,7 +10,7 @@
       <div class="col-3">
         <a
           type="button"
-          class="btn btn-primary text-white"
+          class="btn btn-secondary text-white"
           @click="goToUser(userID)"
           style="
             margin-left: 15%;
@@ -26,6 +28,7 @@
           class="btn btn-primary text-white"
           v-on:click="register"
           style="
+          background-color: #6251b7c3;
             font-weight: bold;
             --bs-btn-padding-y: 0.4rem;
             --bs-btn-padding-x: 0.8rem;
@@ -138,6 +141,17 @@
       </div>
     </div>
   </div>
+</div>
+
+<div v-else>
+    
+    <h2>{{ $t('accessDenied') }}</h2>
+  
+    <p style="font-size: 18px; margin-top: 2%">{{ $t('accessDeniedMessage') }}</p>
+
+  
+    </div>
+
 </template>
 
 <script>
@@ -159,26 +173,24 @@ export default {
   data() {
     return {
       user:{},
-      user2: {
-        //userID: '',
-        email: '',
-        password: '',
-        //contrInfo: {
-          username: '',
-          imageURL: '',
-          //profileURL: ''
-          urlGithubProfile: ''
-        //}
-      }
+      currentUserID: localStorage.getItem('userID')
+
     };
   },
   methods: {
     async register() {
+
+      if (
+    this.user.email === '') {
+    alert('Some required fields are empty.');
+    return;
+
+
+     } 
       try {
         const response = await registerUser(this.user, this.userID);
         console.log('User registered:', response);
-        //this.$router.push({name: 'contribuidores'})
-        // Redirect to login or dashboard page
+  
         this.goToUser(this.userID);
       } catch (error) {
         console.error('Error registering user:', error);
