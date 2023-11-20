@@ -1,17 +1,19 @@
 <template>
+  <div class="overflow-auto" style="max-height: 96vh">
   <div class="container-fluid">
-    <!-- PRIMERA FILA: TÍTULO VISTA Y BOTONES SUPERIORES -->
+   
     <div class="row">
       <div class="col-8">
         <h1>{{ $t('userList') }}</h1>
       </div>
 
-      <div class="col-2">
+      <div class="col-2"  v-if="isguest=='true'" >
         <a
           type="button"
           class="btn btn-primary text-white"
           href="/registrarse"
           style="
+          background-color: #6251b7c3;
             font-weight: bold;
             --bs-btn-padding-y: 0.4rem;
             --bs-btn-padding-x: 0.8rem;
@@ -25,35 +27,26 @@
     </div>
 
 
-
-
-
-    <!-- Este segundo contenedor es el que tiene habilitado para que su contenido vertical sea scrolleable-->
     <div class="overflow-auto" style="max-height: 100vh">
       <div class="container-fluid">
-        <!-- SEGUNDA FILA: REVISAR OPERACIÓN POR CÓDIGO -->
-
-        <!-- TERCERA FILA: CAMPO DE BÚSQUEDA DE OPERACIÓN Y BOTÓN BUSCAR -->
         ㅤ
-        <!-- CUARTA FILA: SUBTÍTULO IMPORTACIONES Y BOTÓN DE EXPORTACIÓN -->
-        ㅤ
-        <!-- QUINTA FILA: TABLA DE IMPORTACIONES -->
+        
         <div class="row">
           <table class="table">
             <thead>
-              <tr class="table-primary text-white">
+              <tr class="custom-row" >
                 
                 <th scope="col">{{ $t('image') }}</th>
                 <th scope="col"> {{ $t('username') }}</th>
                 <th scope="col"> {{ $t('email') }}</th>
-                <th scope="col">Detalles</th>
-                <th scope="col">Swtich</th>
+                <th scope="col">Switch</th>
+                
                 
                  
               </tr>
             </thead>
             <tbody>
-          <tr v-for="item in users" v-bind:key="item.userID">
+          <tr class="custom-row2" v-for="item in users" v-bind:key="item.userID" @click="this.goToDetails(item._id)">
             
             <img
           class="navbar-icon"
@@ -65,10 +58,12 @@
             <td>{{ item.username }}</td>
             <td>{{ item.email }}</td>
             <td>
+
               <button @click="switchUser(item)">
                 Switch to {{ item.username }}
               </button>
             </td>
+               <!--
             <td>
               <a
                 class="btn btn-primary text-white"
@@ -77,8 +72,9 @@
               >
               {{ $t('userDetails') }}
               </a>
+              
             </td>
-
+-->
           </tr>
         </tbody>
           </table>
@@ -86,18 +82,18 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
 
 import axios from 'axios';
-import state from '@/store/globalState';
 export default {
   name: "Users",
   data() {
     return {
       users: [],
-      state
+      isguest: localStorage.getItem("guest")
 
     };
   },
@@ -115,21 +111,21 @@ export default {
      switchUser(user) {
       const userInfo = { name: user.username };
       const userid = { name: user._id };
-      state.user = userInfo;
-      state.guest = false;
-      //localStorage.setItem("user",user.contrInfo.username);
-      //localStorage.setItem("user", JSON.stringify(userInfo));
+   
       localStorage.setItem("user", userInfo.name);
       localStorage.setItem("userID", user._id);
       localStorage.setItem("guest", 'false');
-      window.location.href = '/contribuidores'
+      //this.$router.push({ path: `/contribuidores/${user._id}` })
+      window.location.href = '/contribuidores/';
      },
+
+     goToDetails(userID) {
+      this.$router.push({ path: `/contribuidores/${userID}` })
+    },
    },
 
        
-   goToDetails(userID) {
-      this.$router.push({ path: `/contribuidores/${userID}` })
-    },
+
 };
 </script>
 
@@ -139,8 +135,7 @@ body {
   background-color: #ebeef3;
 }
 
-/* Ajustes a la barra de búsqueda por id op */
-/* Con estos ajustes se crea el input para número sin tener las flechas del costado */
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -164,5 +159,15 @@ input[type='number'] {
       display: block;
       margin-bottom: 1rem;
     }
+
+    .custom-row {
+     background-color: #b199db7f; /* Change this to your preferred color */
+     border: 3px solid #313131;
+   }
+    .custom-row2 {
+     background-color: #deceed1a; /* Change this to your preferred color 
+    /* border: 1px solid #8e8989;*/
+   }
+
 
 </style>

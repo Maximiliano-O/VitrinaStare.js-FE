@@ -1,16 +1,20 @@
 <template>
+
+<div v-if="isGuest==='false'">
   <div class="container-fluid">
     <!-- PRIMERA FILA: TÍTULO VISTA Y BOTONES SUPERIORES -->
     <div class="row">
       <div class="col-7">
         <h1>{{ $t('registerRepo') }}</h1>
       </div>
-      <div class="col-3">
+      <div class="col-2">
         <a
           type="button"
-          class="btn btn-primary text-white"
+          class="btn btn-secondary text-white"
+
           href="/"
           style="
+          
             margin-left: 15%;
             font-weight: bold;
             --bs-btn-padding-y: 0.45rem;
@@ -20,6 +24,8 @@
           >{{ $t('repoBack') }}
         </a>
       </div>
+
+
 
 
     </div>
@@ -35,7 +41,7 @@
 
           </div>
  
- 
+         
           <div class="row m-3">
             <h3>{{ $t('repositoryDetails') }}</h3>
           </div>
@@ -167,11 +173,14 @@
 
 
           ㅤ
-          <div class="col-2">
+
+
+          <div class="col-3">
         <button
           type="submit"
           class="btn btn-primary text-white"
           style="
+          background-color: #6251b7c3;
             font-weight: bold;
             --bs-btn-padding-y: 0.4rem;
             --bs-btn-padding-x: 0.8rem;
@@ -182,14 +191,24 @@
           
         </button>
       </div>
-
-
-  
         </form>
       </div>
     </div>
 
   </div>
+
+</div>
+
+<div v-else>
+    
+  <h2>{{ $t('accessDenied') }}</h2>
+
+  <p style="font-size: 18px; margin-top: 2%">{{ $t('accessDeniedMessage') }}</p>
+
+ 
+
+  </div>
+
 </template>
 
 <script>
@@ -200,60 +219,29 @@ import axios from 'axios';
 
 axios.defaults.timeout = 5000;
 
-const registerRepository = async (repositoryData) => {
-      try {
-        const response = await axios.post(`http://localhost:9000/api/repoV2`, repositoryData);
-        console.log('Server response:', response);
-        return response.data;
-      } catch (error) {
-        //console.error(error);
-        console.log('Error:', error);
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
-      console.error('Error from server:', error.response);
-        throw error;
-      }
-    };
+
 
 export default {
   name: 'VistaRegistrarRepo',
   data() {
     return {
+       isGuest: localStorage.getItem('guest'),
 
-      
+      currentUserGithub:'',
       repository: {
 
-        
-        //repositoryID: 20,
-
-
-
-        //contributorID: '',
         contributorID: localStorage.getItem('userID'),
 
-
-
-
-        //ownerID: 20,
-
-
-        //author: '',
         author: localStorage.getItem('user'),
         title: '',
         type: 'public',
         imageURL:'',
         tags:[],
-
-        
         repositoryName: '',
         repositoryDesc: '',
         repositoryDoc: '',
         license: '',
-        //releases: [],
-        repositoryUrl: ''
-        
-
-
+        repositoryUrl: '',
         
       },
     };
@@ -261,17 +249,26 @@ export default {
   methods: {
 
     async register() {
-      //const author = localStorage.getItem('user');
-      //this.repository.author = JSON.parse(username).name;
-      //this.repository.author = author;
-      //const id = localStorage.getItem('userID');
-      //this.repository.contributorID = JSON.parse(id).name;
-      //this.repository.contributorID = id;
-      this.repository.tags = this.repository.tags.split(' ');
+
+
+      if (
+    this.repository.repositoryName === '' || 
+    this.repository.repositoryUrl === '' || 
+    this.repository.title === '' || 
+    this.repository.repositoryDesc === '') {
+    alert('Some required fields are empty.');
+    return;
+     } 
+
+
+     let checkRepo = await this.checkGitHub();
+
+     if(checkRepo.exists) {
+      
+      this.repository.tags = this.repository.tags.split(',');
       try {
-        //const response = await registerRepository(this.repository);
-        //console.log('Repository registered:', response);
-        // Redirect to the dashboard or another page
+   
+        
                const response = await fetch(`http://localhost:9000/api/repoV2`, {
          method: 'POST',
          body: JSON.stringify(this.repository),
@@ -280,21 +277,59 @@ export default {
          },
          
        });
-       //this.$router.push('/');
-       //alert('Faltan campos obligatorios')
+       this.$router.push('/');
+       
 
        if (!response.ok) {
-        alert('Faltan campos obligatorios3');
+        
       throw new Error(`HTTP error! status: ${response.status}`);
       
     }
        
       } catch (error) {
         console.error('Error registering repository:', error);
-        alert('Faltan campos obligatorios2');
+        
       }
+    }
+
+    else {
+      alert('Github Repo Link not detected in your Github account.');
+      }
+  },
+    
+    async fetchData() {
+        try {
+          const url = `http://localhost:9000/api/usersV2/urlGithubProfile/${this.repository.contributorID}`;
+          const response = await this.axios.get(url);
+          this.currentUserGithub = response.data.urlGithubProfile;
+        } catch (err) {
+          console.log('Error fetching data:', err);
+        }
+      },
+
+
+    async checkGitHub() {
+        try {
+          const encodedRepoUrl = encodeURIComponent(this.repository.repositoryUrl);
+      
+          const encodedUserUrl = encodeURIComponent(this.currentUserGithub);
+
+          const url = `http://localhost:9000/api/checkRepoExistsAndMatchesUser/${encodedUserUrl}/${encodedRepoUrl}`;
+
+          const response = await this.axios.get(url);
+          return response.data; 
+          
+        } catch (err) {
+          console.log('Error fetching data:', err);
+        }
+      },
+  },
+
+  mounted() {
+      this.fetchData();
+      
+      
     },
-  }
   
 };
 </script>
