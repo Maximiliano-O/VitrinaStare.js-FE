@@ -19,22 +19,19 @@ import { RouterLink, RouterView } from 'vue-router'
           width="75"
           height="65"
         />
-        <!-- <li>Es un guest?: {{state.guest}} </li>
-        <li>Es un user?: {{state.user}} </li> 
-        Acá se ingresa el nombre del usuario que inició sesión -->
 
+
+  
         
-      
         
-        
-        <p class="navbar-username">{{ userData }}</p>
+        <p class="navbar-username">{{ user }}</p>
         <li>
           <RouterLink to="/">
             <p>{{ $t('sidebarRepositories') }}</p>
           </RouterLink>
         </li>
         <li>
-          <RouterLink v-if="!isGuest" :to="getUserLink()">
+          <RouterLink v-if="isguest==='false'" :to="getUserLink()">
             <p>{{ $t('sidebarUserProfile') }}</p>
           </RouterLink>
         </li>
@@ -65,7 +62,7 @@ import { RouterLink, RouterView } from 'vue-router'
             />
             <!-- Hasta que se defina la metodología para cerrar sesión, se regresa a la raiz -->
 
-            <a v-if="isGuest">
+            <a v-if="isguest==='true'">
             <p
      
 
@@ -76,10 +73,13 @@ import { RouterLink, RouterView } from 'vue-router'
     {{ $t('login') }}
     </p>
   </a>
-
-
-      
-            <a href="/" v-if="!isGuest">
+<!--
+{{ 'userdata:' }}
+{{  user }}
+{{ 'isguest:' }}
+{{  isguest }}
+      -->
+            <a v-if="isguest==='false'">
             <p @click="logOff">{{ $t('logOff') }}</p>
             </a>
           </div>
@@ -107,7 +107,7 @@ import { RouterLink, RouterView } from 'vue-router'
           <div class="modal-body">
             <div class="container-fluid">
               <div class="col-12 text-center">
-                <h1>Iniciar Sesión</h1>
+                <h1>{{ $t('login') }}</h1>
                 ㅤ
 
                 
@@ -117,7 +117,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
               <div class="row m-3 justify-content-center">
   <div class="col-10 text-center">
-    <p style="font-size: 18px; margin-top: 2%"><strong>Correo:</strong></p>
+    <p style="font-size: 18px; margin-top: 2%"><strong>{{ $t('email') }}:</strong></p>
     <input
     
       type="text"
@@ -132,7 +132,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <div class="row m-3 justify-content-center">
   <div class="col-10 text-center">
-    <p style="font-size: 18px; margin-top: 2%"><strong>Contraseña:</strong></p>
+    <p style="font-size: 18px; margin-top: 2%"><strong>{{ $t('password') }}:</strong></p>
     <input
     type="password"
       name="input_password"
@@ -145,65 +145,62 @@ import { RouterLink, RouterView } from 'vue-router'
   
 </div>
 ㅤ
-              <div class="row">
-                <div class="col-12 text-center">
-                  <div class="row">
-                    <div class="col-6 text-end">
-                      <button
-                        type="button"
-                        class="btn btn-secondary text-white"
-                        data-bs-dismiss="modal"
-                        style="
-                          font-weight: bold;
-                          --bs-btn-padding-y: 0.45rem;
-                          --bs-btn-padding-x: 0.8rem;
-                          --bs-btn-font-size: 1.15rem;
-                        "
-                      >
-                        Regresar
-                      </button>
-                    </div>
-                    <div class="col-6 text-end">
-                      <button
-                        type="button"
-                        class="btn btn-primary text-white"
-                        
-                        @click="logIn"
-                        style="
-                          font-weight: bold;
-                          --bs-btn-padding-y: 0.45rem;
-                          --bs-btn-padding-x: 0.8rem;
-                          --bs-btn-font-size: 1.15rem;
-                        "
-                      >
-                          Log-in
-                      </button>
-                      
-                      <button
-  type="button"
-  class="btn btn-primary text-white"
-  @click="logInWithGithub"
-  :disabled="loginButtonDisabled"
-  style="
-    font-weight: bold;
-    --bs-btn-padding-y: 0.45rem;
-    --bs-btn-padding-x: 0.8rem;
-    --bs-btn-font-size: 1.15rem;
-  "
->
-  Log-in with GitHub
-</button>
-                
+<div class="row">
+  <div class="col-6 text-center">
+    <button
+      type="button"
+      class="btn btn-secondary text-white"
+      data-bs-dismiss="modal"
+      style="
+        font-weight: bold;
+        --bs-btn-padding-y: 0.45rem;
+        --bs-btn-padding-x: 0.8rem;
+        --bs-btn-font-size: 1.15rem;
+      "
+    >
+      {{ $t('return') }}
+    </button>
+  </div>
+  <div class="col-6 text-end">
+    <button
+      type="button"
+      class="btn btn-primary text-white"
+      @click="logIn"
+      style="
+        background-color: #6251b7c3;
+        font-weight: bold;
+        --bs-btn-padding-y: 0.45rem;
+        --bs-btn-padding-x: 0.8rem;
+        --bs-btn-font-size: 1.15rem;
+      "
+    >
+      {{ $t('login') }}
+    </button>
+  </div>
+</div>
+ㅤ
+<div class="row">
+  <div class="col-12 text-center">
+    <button
+      type="button"
+      class="btn btn-primary text-white"
+      @click="logInWithGithub"
+      :disabled="loginButtonDisabled"
+      style="
+        background-color: #6251b7c3;
+        font-weight: bold;
+        --bs-btn-padding-y: 0.45rem;
+        --bs-btn-padding-x: 0.8rem;
+        --bs-btn-font-size: 1.15rem;
+      "
+    >
+      {{ $t('loginGitHub') }}
+    </button>
+  </div>
+</div>
                  
-                    </div>
-                    Test name: {{ test_name }}
-                  </div>
-                  {{ input_password }}
-                </div>
-
-
                 
-              </div>
+              
             </div>
             <div v-if="showError" class="error-message text-danger" style="font-weight: bold;">
                   {{ message }}
@@ -220,18 +217,19 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <script>
 
-import state from '@/store/globalState';
+
 import axios from 'axios';
 import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase/firebaseConfig";
 
 
-var userData = localStorage.getItem('user')
+
 
 export default {
   data() {
     return {
-     
+        isguest: localStorage.getItem("guest"),
+        user: localStorage.getItem("user"),
         input_email: '',
         input_password: '',
         test_name:'',
@@ -243,31 +241,23 @@ export default {
   },
 
   
-  computed: {
-    username() {
-      return state.user && state.user.name ? state.user.name : 'Invitado';
-    },
-
-    isGuest() {
-    return state.guest;
-  },
-  },
 
 
   methods: {
      logOff() {
-       //state.user = null;
-       //state.guest = true;
+
+      
        localStorage.setItem("user", 'Invitado');;
        localStorage.setItem("guest", 'true');
-       //localStorage.removeItem("user");
+  
        localStorage.removeItem("userID");
-       this.$router.push('/');
+
+       window.location.href = '/';
      },
 
      logIn() {
-  const email = this.input_email; // Replace with the actual email
-  const password = this.input_password; // Replace with the actual password
+  const email = this.input_email; 
+  const password = this.input_password; 
 
   axios.post(`http://localhost:9000/api/login`, { email, password })
     .then(response => {
@@ -279,18 +269,14 @@ export default {
         
         const user = response.data.user
 
-        const userInfo = { name: user.contrInfo.username };
+        //const userInfo = { name: user.contrInfo.username };
         //const userid = { name: user._id };
 
         
-        //this.test_name=username;
-        // Update the state or perform any other necessary actions
-        // For example:
-        state.user =  userInfo.name ;
-        state.guest = false;
+
 
         //localStorage.setItem("user", name);
-        localStorage.setItem("user", userInfo.name);
+        localStorage.setItem("user", user.username);
         localStorage.setItem("guest", 'false');
         localStorage.setItem("userID", user._id);
         //this.$router.push('/');
@@ -310,29 +296,40 @@ export default {
     },
 
     logInWithGithub() {
+  this.loginButtonDisabled = true;
+  const provider = new GithubAuthProvider();
 
-      this.loginButtonDisabled = true;
-       const provider = new GithubAuthProvider();
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+      const credential = GithubAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
 
-       signInWithPopup(auth, provider)
-         .then((result) => {
-           // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-           const credential = GithubAuthProvider.credentialFromResult(result);
-           const token = credential.accessToken;
-           // The signed-in user info.
-           const user = result.user;
+      // Se revisa si el email del la cuenta de github existe entre los usuarios
+      fetch(`http://localhost:9000/api/usersV2/email/${user.email}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data === null) {
 
-           // You can update the state or perform any other necessary actions
-           // For example:
-           state.user = user.displayName;
-           state.guest = false;
+            console.log('This email does not exist in the database');
+            alert('This email does not exist in the database');
+          } else {
 
-           localStorage.setItem("user", user.displayName);
-           localStorage.setItem("guest", 'false');
-           localStorage.setItem("userID", user.uid);
-           window.location.href = '/';
-         })
-         .catch((error) => {
+            localStorage.setItem("user", data.username);
+            localStorage.setItem("userID", data._id);
+            localStorage.setItem("guest", 'false');
+            window.location.href = '/';
+   
+            console.log('This email exists in the database');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+
+
+    })
+    .catch((error) => {
       // Check if the popup was closed by the user
       if (error.code === 'auth/popup-closed-by-user') {
         // Show a message to the user
@@ -343,7 +340,7 @@ export default {
       // Enable the login button again
       this.loginButtonDisabled = false;
     });
-     },
+},
 
 
       getUserByEmail(email) {

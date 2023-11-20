@@ -5,14 +5,7 @@ const router = createRouter({
   routes: [
  
   
-    {
-      path: '/clientes',
-      name: 'clientes',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/VistaRepos.vue')
-    },
+
 
     {
       path: '/repos/registrarRepositorio',
@@ -71,18 +64,12 @@ const router = createRouter({
     },
 
     
-    {
-      path: '/contribuciones',
-      name: 'contribuciones',
-      component: () => import('../views/VistaContribuciones.vue'),
-      
-      
-    },
+  
 
     {
-      path: '/ejemplo/:releaseID',
-      name: 'ejemplo',
-      component: () => import('../views/Ejemplo.vue'),
+      path: '/sandbox/:releaseID',
+      name: 'sandbox',
+      component: () => import('../views/VistaSandbox.vue'),
       props: true
       
       
@@ -91,19 +78,13 @@ const router = createRouter({
     {
       path: '/verificacion/:releaseID',
       name: 'verificacion',
-      component: () => import('../views/EjemploVerificacion.vue'),
+      component: () => import('../views/VistaVerificacion.vue'),
       props: true
       
       
     },
 
-    {
-      path: '/solicitarverificacion',
-      name: 'solicitarverificacion',
-      component: () => import('../views/VistaVerificarRepo.vue'),
-      
-      
-    },
+
     {
       path: '/registrarse',
       name: 'registrarse',
@@ -115,7 +96,7 @@ const router = createRouter({
     {
       path: '/aboutStare',
       name: 'aboutStare',
-      component: () => import('../views/AboutStare.vue'),
+      component: () => import('../views/VistaAboutStare.vue'),
       
       
     }
