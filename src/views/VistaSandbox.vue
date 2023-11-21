@@ -62,7 +62,7 @@
     async fetchData() {
       try {
         
-        const url = `http://localhost:9000/api/release/${this.releaseID}`;
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/release/${this.releaseID}`;
         const response = await this.axios.get(url);
         this.release = response.data;
       } catch (err) {

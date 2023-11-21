@@ -400,9 +400,9 @@ import StarRating from '@/components/StarRating.vue';
 
       async addRating(rating) {
           try {
-            //const url = `http://localhost:9000/api/repoV2/addRating/${this.repositoryID}`;
+            
 
-            const url = `http://localhost:9000/api/repoV2/${this.repositoryID}/ratings`;
+            const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/${this.repositoryID}/ratings`;
             const response = await this.axios.post(url, {
               rating: rating,
               userId: localStorage.getItem('userID') 
@@ -419,9 +419,9 @@ import StarRating from '@/components/StarRating.vue';
 
       async deleteRating() {
           try {
-           //const url = `http://localhost:9000/api/rating`;
+           
 
-           const url = `http://localhost:9000/api/repoV2/${this.repositoryID}/ratings`;
+           const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/${this.repositoryID}/ratings`;
             const response = await this.axios.delete(url, {
               data: {
                 userID: localStorage.getItem('userID') 
@@ -438,8 +438,8 @@ import StarRating from '@/components/StarRating.vue';
 
       async fetchData() {
         try {
-          //const url = `http://localhost:9000/api/repositories/${this.repositoryID}`;
-          const url = `http://localhost:9000/api/repoV2/${this.repositoryID}`;
+          
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/${this.repositoryID}`;
           const response = await this.axios.get(url);
           this.repo = response.data;
         } catch (err) {
@@ -450,8 +450,8 @@ import StarRating from '@/components/StarRating.vue';
       async fetchAllComments() {
         try {
          
-          //const url = `http://localhost:9000/api/comments/repository/${this.repositoryID}`;
-          const url = `http://localhost:9000/api/comments/repository/${this.repositoryID}`;
+         
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/comments/repository/${this.repositoryID}`;
           const response = await this.axios.get(url);
           this.allComments = response.data;
         } catch (err) {
@@ -462,7 +462,7 @@ import StarRating from '@/components/StarRating.vue';
       async fetchReleases() {
         try {
          
-          const url = `http://localhost:9000/api/release/repository/${this.repositoryID}`;
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/release/repository/${this.repositoryID}`;
           const response = await this.axios.get(url);
           this.allReleases = response.data;
         } catch (err) {
@@ -473,7 +473,7 @@ import StarRating from '@/components/StarRating.vue';
       async latestVerifiedRelease() {
         try {
          
-          const url = `http://localhost:9000/api/release/latest/${this.repositoryID}`;
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/release/latest/${this.repositoryID}`;
           const response = await this.axios.get(url);
           this.latestVerName = response.data.name;
           this.latestVerDate = response.data.created_at;
@@ -495,7 +495,7 @@ import StarRating from '@/components/StarRating.vue';
 
         
       try {
-        const response = await this.axios.post(`http://localhost:9000/api/comments`, this.comment);
+        const response = await this.axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/comments`, this.comment);
         this.newCommentText = '';
         this.fetchAllComments();
         return response.data;

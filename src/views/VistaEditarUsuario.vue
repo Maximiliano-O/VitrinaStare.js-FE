@@ -159,8 +159,8 @@ import axios from 'axios';
 
 const registerUser = async (userData, userID) => {
   try {
-    //const response = await axios.post(`http://localhost:9000/api/users`, userData);
-    const response = await axios.put(`http://localhost:9000/api/usersV2/${userID}`, userData);
+    
+    const response = await axios.put(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2/${userID}`, userData);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -200,7 +200,7 @@ export default {
 
     async fetchData() {
         try {
-          const url = `http://localhost:9000/api/usersV2/${this.userID}`;
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2/${this.userID}`;
           const response = await this.axios.get(url);
           this.user = response.data;
         } catch (err) {

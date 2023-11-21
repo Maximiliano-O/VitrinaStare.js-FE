@@ -259,7 +259,7 @@ export default {
   const email = this.input_email; 
   const password = this.input_password; 
 
-  axios.post(`http://localhost:9000/api/login`, { email, password })
+  axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/login`, { email, password })
     .then(response => {
       console.log(response.data);
       const { loggedIn } = response.data;
@@ -308,7 +308,7 @@ export default {
       const user = result.user;
 
       // Se revisa si el email del la cuenta de github existe entre los usuarios
-      fetch(`http://localhost:9000/api/usersV2/email/${user.email}`)
+      fetch(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2/email/${user.email}`)
         .then(response => response.json())
         .then(data => {
           if (data === null) {
@@ -345,7 +345,7 @@ export default {
 
       getUserByEmail(email) {
     axios
-      .get(`http://localhost:9000/users/email/${email}`)
+      .get(`${import.meta.env.VITE_APP_EXPRESS_URL}/users/email/${email}`)
       .then(response => {
         console.log(response.data);
         // Handle the response data as needed

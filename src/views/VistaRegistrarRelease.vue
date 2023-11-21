@@ -170,7 +170,7 @@ export default {
      } 
 
       try {
-        const response = await axios.post('http://localhost:9000/api/release', {
+        const response = await axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/release`, {
           repositoryID:this.repositoryID,
           name: this.name,
           description: this.description,
@@ -199,7 +199,7 @@ export default {
 
     async fetchRandomUsers(n) {
     try {
-      const url = `http://localhost:9000/api/usersV2/random/${this.userID}/${n}`;
+      const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2/random/${this.userID}/${n}`;
       const response = await this.axios.get(url);
       this.fetchedUsers = response.data;
       this.fetchedEmails = this.fetchedUsers.map(user => user.email);
@@ -212,7 +212,7 @@ export default {
   async postSelectedUsers(releaseId) {
   try {
     for (let user of this.fetchedUsers) {
-      const response = await this.axios.post(`http://localhost:9000/api/release/${releaseId}/status`, {
+      const response = await this.axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/release/${releaseId}/status`, {
         releaseID: releaseId,
         reviewerID: user._id, 
         isReviewed: false,
@@ -228,7 +228,7 @@ export default {
 
     async requestValidation(releaseId) {
       try {
-        const url = 'http://localhost:9000/api/send-emails';
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/send-emails`;
         const data = {
           emails: this.fetchedEmails,
           repositoryLink: `http://localhost:5173/verificacion/${releaseId}`,
@@ -244,8 +244,7 @@ export default {
 
     async fetchData() {
         try {
-          //const url = `http://localhost:9000/api/repositories/${this.repositoryID}`;
-          const url = `http://localhost:9000/api/repoV2/${this.repositoryID}`;
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/${this.repositoryID}`;
           const response = await this.axios.get(url);
           this.repo = response.data;
         } catch (err) {

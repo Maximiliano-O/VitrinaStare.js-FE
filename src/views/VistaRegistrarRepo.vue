@@ -269,7 +269,7 @@ export default {
       try {
    
         
-               const response = await fetch(`http://localhost:9000/api/repoV2`, {
+               const response = await fetch(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2`, {
          method: 'POST',
          body: JSON.stringify(this.repository),
          headers: {
@@ -299,7 +299,7 @@ export default {
     
     async fetchData() {
         try {
-          const url = `http://localhost:9000/api/usersV2/urlGithubProfile/${this.repository.contributorID}`;
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2/urlGithubProfile/${this.repository.contributorID}`;
           const response = await this.axios.get(url);
           this.currentUserGithub = response.data.urlGithubProfile;
         } catch (err) {
@@ -314,7 +314,7 @@ export default {
       
           const encodedUserUrl = encodeURIComponent(this.currentUserGithub);
 
-          const url = `http://localhost:9000/api/checkRepoExistsAndMatchesUser/${encodedUserUrl}/${encodedRepoUrl}`;
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/checkRepoExistsAndMatchesUser/${encodedUserUrl}/${encodedRepoUrl}`;
 
           const response = await this.axios.get(url);
           return response.data; 

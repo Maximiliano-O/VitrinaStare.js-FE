@@ -169,8 +169,7 @@ import axios from 'axios';
 
 const registerUser = async (userData) => {
   try {
-    //const response = await axios.post(`http://localhost:9000/api/users`, userData);
-    const response = await axios.post(`http://localhost:9000/api/usersV2`, userData);
+    const response = await axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2`, userData);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -233,7 +232,7 @@ export default {
     async checkGitHubUserExists() {
         try {
           const encodedUrl = encodeURIComponent(this.user.urlGithubProfile);
-          const url = `http://localhost:9000/api/checkUserExists/${encodedUrl}`;
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/checkUserExists/${encodedUrl}`;
           const response = await this.axios.get(url);
           return response.data; 
           
