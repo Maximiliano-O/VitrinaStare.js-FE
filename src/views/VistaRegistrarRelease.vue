@@ -255,7 +255,7 @@ export default {
 
   mounted() {
       this.fetchData();
-      this.fetchRandomUsers(2);
+      this.fetchRandomUsers(Number(import.meta.env.VITE_USERS_THAT_VERIFY_AMMOUNT));
       
     }
 };
