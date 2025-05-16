@@ -7,7 +7,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <!-- Setup barra de navegación --->
     <nav id="sidebar" v-if="!$route.meta.hideNavbar">
       <div class="sidebar-header">
-        <img src="./assets/Stare.js-Full-Logo.png" width="200" height="200" />
+        <img src="./assets/logo_empresa.png" width="200" height="200" />
       </div>
       <ul class="list-unstyled components">
         <!-- La clase navbar-icon setea los filtros para cambiar el ícono .svg a blanco -->
