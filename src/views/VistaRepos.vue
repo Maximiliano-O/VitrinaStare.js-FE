@@ -1,106 +1,68 @@
+<script setup>
+import RepositoryCard from '../components/RepositoryCard.vue';
+import CustomSelect from '../components/CustomSelect.vue';
+import CustomInput from '../components/CustomInput.vue';
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+const myOptions = [
+  { label: t('defaultOrder'), value: '' },
+  { label: t('ascendingRating'), value: 'asc' },
+  { label: t('descendingRating'), value: 'desc' }
+]
+</script>
+
 <template>
-
-<div class="overflow-auto" style="max-height: 96vh">
-  <div class="container-fluid">
-   
-    <div class="row">
-      <div class="col-8">
-        <h1>{{ $t('repositoriesView') }}</h1>
-  
+  <div class="overflow-auto" style="max-height: 100%">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="title">
+          <h1>{{ $t('repositoriesView') }}</h1>
+        </div>
+        <div  class="col-2">
+        </div>
       </div>
-
-      <div v-if="isguest=='false'" class="col-2">
-        <a
-          
-          type="button"
-          class="btn btn-primary text-white"
-          href="/repos/registrarRepositorio"
-          style="
-          background-color: #6251b7c3;
-            font-weight: bold;
-            --bs-btn-padding-y: 0.4rem;
-            --bs-btn-padding-x: 0.8rem;
-            --bs-btn-font-size: 1.15rem;
-          "
-        >
-        {{ $t('registerRepository') }}
-        </a>
-        
+      <div class="overflow-auto" style="max-height: 100%">
+        <div class="container-fluid">
+          <div style="display: flex; justify-content: center;">
+            <div class="input-group">
+              <div>
+                <CustomSelect 
+                  v-model="sortByRating" 
+                  :options="myOptions" 
+                  default-text="t('defaultOrder')"
+                />
+              </div>
+              <CustomInput
+                type="text" 
+                v-model="searchString" 
+                :placeholder=" $t('searchRepositories')" 
+              />
+              <Multiselect class="multi-size"
+                v-model="currentTags"
+                mode="tags"
+                :placeholder="$t('typeAndSelectTags')"
+                :options="tags"
+                :searchable="true"
+              />
+            </div>
+          </div>
+          <div class="repo-container">
+            <RepositoryCard 
+              v-for="repo in filteredRepositories" 
+              :key="repo.repositoryID"
+              :repository="repo"
+              @click="goToDetails(repo._id)"
+            />
+          </div>
+        </div>
       </div>
-
-      
-      <div  class="col-2">
-
-        
-      </div>
-      
-    </div>
-    
-    ㅤ
-
-
-  
-    <div class="overflow-auto" style="max-height: 100vh">
-
-  <div class="container-fluid">
-    <div class="input-group">
-    <input type="text" v-model="searchString" :placeholder=" $t('searchRepositories')" />
-    ㅤ
-    <Multiselect
-      
-      v-model="currentTags"
-      mode="tags"
-      :placeholder="$t('typeAndSelectTags')"
-      :options="tags"
-      :searchable="true"
-    />
-  </div>
-  ㅤ
-    <div class="select-container">
-    <select v-model="sortByRating">
-    <option value="">{{ $t('defaultOrder') }}</option>
-    <option value="asc">{{ $t('ascendingRating') }}</option>
-    <option value="desc">{{ $t('descendingRating') }}</option>
-    </select>
-  </div>
-  ㅤ
-  
-    <div class="grid-container" style="display: grid;">
-      <div class="item" v-for="repo in filteredRepositories" :key="repo.repositoryID" @click="goToDetails(repo._id)">
-
-        <div class="flex-container">
-        <div style="font-weight: bold; font-size: 18px">{{ repo.title }}</div>
-        <p style="font-size: 24px; margin-top: 2%; text-align: right;"> <strong> {{repo.totalRating}} ★ </strong></p>
-      </div>
-        ㅤ
-      <img :src="repo.imageURL" :alt="`Image ${index + 1}`">
-      <div>{{ $t('author') }}: {{ repo.author }}</div>
-      <div>{{ $t('tags') }}: {{ repo.tags }}</div>    
-     
-      <div>{{ $t('verified') }}: {{ repo.verified }}</div>         
-        
-      <!--
-      <button
-                class="btn btn-primary text-white"
-                style="font-weight: bold"
-                @click="goToDetails(repo._id)"
-              >
-              {{ $t('select') }}
-              </button>
--->
-     
-    </div>
->
     </div>
   </div>
-</div>
-  </div>
-</div>
 </template>
 
 <script>
 import Multiselect from '@vueform/multiselect'
-import '@vueform/multiselect/themes/default.css';
+import '../assets/multiselect.css';
 
 export default {
   components: { Multiselect },
@@ -145,20 +107,6 @@ export default {
     return repos;
   },
 
-
-
- /* filteredRepositories() {
-    if (this.currentTags.length === 0) {
-      return this.repositories;
-    }
-
-    return this.repositories.filter(repository => {
-      return this.currentTags.every(tag => repository.tags.includes(tag));
-    });
-  },
-
-*/
-
   sortedRepositories() {
     let repos = this.filteredRepositories.slice() // create a copy
     if (this.sortByRating === 'asc') { // sort ascending
@@ -202,7 +150,25 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+@font-face {
+  font-family: 'Poppins-Bold';
+  src: url('@/assets/fonts/Poppins/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('@/assets/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+.title {
+  font-family: 'Poppins-Bold', sans-serif;
+  font-size: 32px;
+}
 
 .flex-container {
   display: flex;
@@ -211,57 +177,51 @@ export default {
 .container-fluid {
     position: relative;
 }
-.select-container {
-  width: 45%;
+
+.input-group  {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  padding: 10px 20px;
+  width: auto;
 }
 
-.input-group input,
-.input-group .multiselect {
-    width: 45%; /* adjust as needed */
+.search {
+  width: 500px;
 }
+
 /* Color de fondo de la vista */
 body {
   background-color: #ebeef3;
 }
 
-/* Ajustes a la barra de búsqueda por id op */
-/* Con estos ajustes se crea el input para número sin tener las flechas del costado */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type='number'] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-  /* ajustes de tamaño */
-  margin-top: 1%;
-  margin-bottom: 3.5%;
-  padding-left: 0.8%;
+input{
+  font-family: 'Poppins', sans-serif;
   font-size: 20px;
-  width: 40%;
+  color: #000;
+  background-color: #ffffff;
+  border: 1px solid #818181;
+  border-radius: 6px;
+  padding: 0px 12px;
+  transition: border-color 0.3s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1rem;
-    }
+input::placeholder {
+  color: #898985;
+}
 
-    .item {
-      padding: 1rem;
-      border: 1px solid #8e8989;
-      border-radius: 6px;
-      background-color: #d9c8ec2c;
-      
-    }
-
-    .item img {
-      width: 100%;
-      height: auto;
-      display: block;
-      margin-bottom: 1rem;
-    }
+.repo-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  justify-items: center;
+  column-gap: auto;
+  row-gap: 30px;
+  margin: 20px 0px;
+}
 
 </style>

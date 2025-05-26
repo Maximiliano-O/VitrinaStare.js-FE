@@ -1,108 +1,113 @@
+<script setup>
+import ColoredButton from '../components/buttons/ColoredButton.vue';
+</script>
+
 <template>
-  <div class="overflow-auto" style="max-height: 96vh">
-     <div class="overflow-auto" style="max-height: 100vh">
-      <div class="row">
-      <div class="col-7">
-        <h1>Sandbox</h1>
+  <div class="overflow-hidden">
+    <div class="row">
+      <div class="header">
+        <div class="title">
+          Demostración: {{ releaseName }}
+        </div>
+        <div class="button-container">
+          <ColoredButton variant="black" to="/">Volver a lista de Repositorios</ColoredButton>
+          <ColoredButton variant="black" 
+            v-if="repositoryIDValue"
+            :to="{ name: 'detalleRepo', params: { repositoryID: repositoryIDValue } }">
+            Volver a {{ repositoryName }}
+          </ColoredButton>
+        </div>
       </div>
-      <div class="col-3">
-        <a
-          type="button"
-          class="btn btn-secondary text-white"
-          href="/"
-          style="
-            margin-left: 15%;
-            font-weight: bold;
-            --bs-btn-padding-y: 0.45rem;
-            --bs-btn-padding-x: 0.8rem;
-            --bs-btn-font-size: 1.15rem;
-          "
-          >{{ $t('repoBack') }}
-        </a>
-        ㅤ
+      <div class="sb-container">
+        <GitHubCodeSandbox   :url="release.codesandbox_URL" />
       </div>
-
-      ㅤ
     </div>
-    
-    <div style="width: 100%;">
-      ㅤ
-       
-      <GitHubCodeSandbox   :url="release.codesandbox_URL" />
-    </div>
-    ㅤ
+  </div>
+
+</template>
   
+<script>
+import GitHubCodeSandbox from "@/components/GitSB.vue";
 
+export default {
 
-</div>
-</div>
+  props: ['releaseID'],
+  components: {
+    GitHubCodeSandbox,
+  },
 
-  </template>
-  
-  <script>
-  import GitHubCodeSandbox from "@/components/GitSB.vue";
-  
-  export default {
+  data() {
+    return {
+      release: {},
+      releaseName: '',
+      repositoryIDValue: '',
+      repositoryName: '',
+    };
+  },
 
-    props: ['releaseID'],
-    components: {
-      GitHubCodeSandbox,
-    },
-
-    data() {
-      return {
-     
-        release: {},
-
-      };
-    },
-
-    methods: {
-
+  methods: {
     async fetchData() {
       try {
-        
         const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/release/${this.releaseID}`;
         const response = await this.axios.get(url);
         this.release = response.data;
+
+        this.releaseName = this.release.name;
+        this.repositoryIDValue = this.release.repositoryID;
+
+        const url2 = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/${this.release.repositoryID}`;
+        const response2 = await this.axios.get(url2);
+
+        this.repositoryName = response2.data.title;
       } catch (err) {
         console.log('Error fetching data:', err);
       }
-    }
-
+   }
   },
-
-
-    mounted() {
-      this.fetchData();
-      
-    }
-  };
-  </script>
+  mounted() {
+    this.fetchData();
+  }
+};
+</script>
 
 <style>
+@font-face {
+  font-family: 'Poppins-Bold';
+  src: url('@/assets/fonts/Poppins/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
 
-.comments-section {
-    font-family: Arial, sans-serif;
-  }
-  
-  .comment {
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .comment-author {
-    font-weight: bold;
-  }
-  
-  .comment-body {
-    margin-top: 0.5rem;
-  }
-  
-  .comment-replies {
-    margin-left: 2rem;
-    margin-top: 1rem;
-  }
+.sb-container {
+  padding: 0px 20px;
+}
+
+.header {
+  padding-left: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 100%;
+  max-height: 75px;
+  color: #000;
+}
+
+.title {
+  align-items: center;
+  /* background: #9bb2eb; */
+  font-family: 'Poppins-Bold', sans-serif;
+  font-size: 32px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  gap: 20px;
+  /* background: #772eab; */
+  font-family: 'Poppins-Bold', sans-serif;
+  font-size: 20px;
+}
+
 </style>

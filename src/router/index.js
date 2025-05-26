@@ -3,9 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
- 
-  
-
 
     {
       path: '/repos/registrarRepositorio',
@@ -36,9 +33,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'repos',
-      component: () => import('../views/VistaRepos.vue'),
-      
-      
+      component: () => import('../views/VistaRepos.vue'), 
     },
 
     {
@@ -63,16 +58,11 @@ const router = createRouter({
       props: true
     },
 
-    
-  
-
     {
       path: '/sandbox/:releaseID',
       name: 'sandbox',
       component: () => import('../views/VistaSandbox.vue'),
       props: true
-      
-      
     },
 
     {
@@ -80,8 +70,6 @@ const router = createRouter({
       name: 'verificacion',
       component: () => import('../views/VistaVerificacion.vue'),
       props: true
-      
-      
     },
 
 
@@ -89,15 +77,12 @@ const router = createRouter({
       path: '/registrarse',
       name: 'registrarse',
       component: () => import('../views/VistaRegistrarUsuario.vue'),
-      
-      
     },
 
     {
       path: '/aboutStare',
       name: 'aboutStare',
       component: () => import('../views/VistaAboutStare.vue'),
-      
       
     }
   ]
