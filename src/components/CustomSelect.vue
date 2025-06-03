@@ -17,7 +17,7 @@
     </div>
     <ul v-if="isOpen" class="options">
       <li
-        v-for="option in options"
+        v-for="option in normalizedOptions"
         :key="option.value"
         @click="select(option.value)"
         :class="{ selected: option.value === modelValue }"
@@ -58,6 +58,15 @@ const props = defineProps({
   },
 })
 
+const normalizedOptions = computed(() =>
+  props.options.map(opt => {
+    if (typeof opt === 'string' || typeof opt === 'number') {
+      return { label: opt, value: opt }
+    }
+    return opt
+  })
+)
+
 const emit = defineEmits(['update:modelValue'])
 
 const isOpen = ref(false)
@@ -72,7 +81,7 @@ const select = (value) => {
 }
 
 const selectedLabel = computed(() => {
-  const selected = props.options.find(opt => opt.value === props.modelValue)
+  const selected = normalizedOptions.value.find(opt => opt.value === props.modelValue)
   return selected ? selected.label : props.defaultText
 })
 

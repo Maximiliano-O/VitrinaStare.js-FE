@@ -1,7 +1,7 @@
 <script setup>
 import RepositoryCard from '../components/RepositoryCard.vue';
 import CustomSelect from '../components/CustomSelect.vue';
-import CustomInput from '../components/CustomInput.vue';
+import CustomSearch from '../components/CustomSearch.vue';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const myOptions = [
@@ -32,10 +32,10 @@ const myOptions = [
                   default-text="t('defaultOrder')"
                 />
               </div>
-              <CustomInput
+              <CustomSearch
                 type="text" 
                 v-model="searchString" 
-                :placeholder=" $t('searchRepositories')" 
+                :placeholder="$t('searchRepositories')" 
               />
               <Multiselect class="multi-size"
                 v-model="currentTags"

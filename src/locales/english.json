@@ -29,7 +29,8 @@
     "date":"Date",
     "confirmRating": "Confirm Rating",
 
-    
+    "englishLabel":"English",
+    "spanishLabel":"Spanish",
 
     "registerRepo": "Register a Repository",
     "updateRepo": "Update a Repository",
@@ -63,13 +64,11 @@
     
 
 
-    "sidebarRepositories": "Repositories",
-    "sidebarUserProfile": "My Profile",
-    "sidebarUsers": "Users",
-    "sidebarStare": "What is StArE?",
-    "sidebarLogin": "My Profile",
-    "sidebarLogOff": "My Profile",
-    "sidebarLoginTitle": "Log In",
+    "navbarRepositories": "Repositories",
+    "navbarUserProfile": "My Profile",
+    "navbarStare": "What is StArE?",
+    "navbarLogin": "Log in",
+    "navbarSignup": "Sign up",
 
 
     "repositoriesView": "StArE.js Repositories",
@@ -94,13 +93,17 @@
 
 
    "stareQuestion":"What is StArE.js?",
-   "stareLine1": "Correct visualization makes information easier to understand. Sometimes a picture speaks a thousand words, so we want to provide tools that make the process of viewing search engine results easier.",
-   "stareLine2": "StArE.js is an open source project intended to make it easier for developers to create alternative search engine results page (SERP) displays. Stare.js provides a modular and extensible processing pipeline capable of (1) transform SERP, (2) extract features from individual search results and (3) display SERP in multiple ways.",
+   "stareP1": "Correct visualization makes information easier to understand. Sometimes a picture speaks a thousand words, so we want to provide tools that make the process of viewing search engine results easier.",
+   "stareP2": "StArE.js is an open source project intended to make it easier for developers to create alternative search engine results page (SERP) displays. Stare.js provides a modular and extensible processing pipeline capable of: ",
+   "stareL1":"Transform SERP",
+    "stareL2":"Extract features from individual search results",
+    "stareL3":"Display SERP in multiple ways",
+   
    "stareWebsite":"StarE.js Website",
    "stareGithub":"StarE.js Github",
 
 
-    "verifyRelease": "Release Verification",
+   "verifyRelease": "Release Verification",
    "approveRelease":"Approve Release",
    "rejectRelease":"Reject Release",
    "verifyApprove": "Are you sure you approve this release?",

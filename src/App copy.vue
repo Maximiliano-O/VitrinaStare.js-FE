@@ -235,23 +235,14 @@ export default {
         test_name:'',
         showError: false,
         message:'Las credenciales no coinciden'
-
-      
     };
   },
 
-  
-
-
   methods: {
      logOff() {
-
-      
        localStorage.setItem("user", 'Invitado');;
        localStorage.setItem("guest", 'true');
-  
        localStorage.removeItem("userID");
-
        window.location.href = '/';
      },
 

@@ -24,14 +24,21 @@
 @font-face {
   font-family: 'Poppins-SemiBold';
   src: url('@/assets/fonts/Poppins/Poppins-SemiBold.ttf') format('truetype');
-  font-weight: 700;
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins-Medium';
+  src: url('@/assets/fonts/Poppins/Poppins-Medium.ttf') format('truetype');
+  font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Poppins';
   src: url('@/assets/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
-  font-weight: 700;
+  font-weight: 400;
   font-style: normal;
 }
 

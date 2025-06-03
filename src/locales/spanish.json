@@ -29,6 +29,8 @@
     "date":"Fecha",
     "confirmRating": "Confirmar Rating",
 
+    "englishLabel":"Inglés",
+    "spanishLabel":"Español",
 
     "registerRepo": "Registrar un Repositorio",
     "updateRepo": "Actualizar un Repositorio",
@@ -59,13 +61,10 @@
 
     "edit": "Editar",
 
-    "sidebarRepositories": "Repositorios",
-    "sidebarUserProfile": "Mi Perfil",
-    "sidebarUsers": "Usuarios",
-    "sidebarStare": "¿Qué es StArE?",
-    "sidebarLogin": "My Profile",
-    "sidebarLogOff": "My Profile",
-    "sidebarLoginTitle": "Log In",
+    "navbarRepositories": "Repositorios",
+    "navbarStare": "¿Qué es StArE?",
+    "navbarLogin": "Iniciar Sesión",
+    "navbarSignup": "Registrarse",
 
     "repositoriesView": "Repositorios StArE.js",
     "searchRepositories": "Buscar Repositorios...",
@@ -87,8 +86,12 @@
     "signUp": "Registrarse",
 
     "stareQuestion":"¿Qué es StArE.js?",
-    "stareLine1": "La visualización correcta hace que la información sea más fácil de entender. A veces, una imagen habla más que mil palabras, por eso queremos brindar herramientas que faciliten el proceso de visualización de los resultados de los motores de búsqueda.",
-    "stareLine2": "StArE.js es un proyecto de código abierto destinado a facilitar a los desarrolladores la creación de visualizaciones alternativas de la página de resultados del motor de búsqueda (SERP). Stare.js proporciona una canalización de procesamiento modular y extensible capaz de (1) transformar SERP, (2) extraer funciones de resultados de búsqueda individuales y (3) visualizar SERP de múltiples maneras.",
+    "stareP1": "La visualización correcta hace que la información sea más fácil de entender. A veces, una imagen habla más que mil palabras, por eso queremos brindar herramientas que faciliten el proceso de visualización de los resultados de los motores de búsqueda.",
+    "stareP2": "StArE.js es un proyecto de código abierto destinado a facilitar a los desarrolladores la creación de visualizaciones alternativas de la página de resultados del motor de búsqueda (SERP). Stare.js proporciona una canalización de procesamiento modular y extensible capaz de: ",
+    "stareL1":"Transformar SERP",
+    "stareL2":"Extraer funciones de resultados de búsqueda individuales",
+    "stareL3":"Visualizar SERP de múltiples maneras",
+    
     "stareWebsite":"Sitio Web de StarE.js ",
     "stareGithub":"Github de StarE.js",
 

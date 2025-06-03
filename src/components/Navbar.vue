@@ -1,7 +1,21 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
 import ColoredButton from './buttons/ColoredButton.vue';
 import CustomSelect from './CustomSelect.vue';
+import LoginModal from './LoginModal.vue';
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+const showLoginModal = ref(false)
+
+function openLogin() {
+  showLoginModal.value = true
+}
+
+function closeLogin() {
+  showLoginModal.value = false
+}
 </script>
 
 <template>
@@ -13,15 +27,24 @@ import CustomSelect from './CustomSelect.vue';
     </div>
     <div class='button-container'>
       <CustomSelect 
-        v-model="chosen" 
-        :options="myOptions" 
+        v-model="selectedLocale" 
+        :options="locales" 
         start-icon="md-translate" 
         default-text="Español"
       />
-      <ColoredButton variant="transparent" :to="{ name: 'repos' }">Repositorios</ColoredButton>
-      <ColoredButton variant="transparent">¿Qué es StArE.js?</ColoredButton>
-      <ColoredButton variant="wine">Iniciar Sesión</ColoredButton>
-      <ColoredButton variant="night">Regístrate</ColoredButton>
+      <div class='button-container' v-if="isGuest">
+        <ColoredButton variant="transparent" :to="{ name: 'repos' }">{{ $t('navbarRepositories') }}</ColoredButton>
+        <ColoredButton variant="transparent" :to="{ name: 'aboutStare' }">{{ $t('navbarStare') }}</ColoredButton>
+        <ColoredButton variant="wine" @click="openLogin">{{ $t('navbarLogin') }}</ColoredButton>
+        <LoginModal v-if="showLoginModal" @close="closeLogin" />
+        <ColoredButton variant="night">{{ $t('navbarSignup') }}</ColoredButton>
+      </div>
+      <div class='button-container' v-else>
+        <ColoredButton variant="transparent" :to="{ name: 'repos' }">{{ $t('navbarRepositories') }}</ColoredButton>
+        <ColoredButton variant="transparent" :to="{ name: 'aboutStare' }">{{ $t('navbarStare') }}</ColoredButton>
+        <ColoredButton variant="transparent" :to="getUserLink()">User 1</ColoredButton>
+        <ColoredButton variant="white" :onClick="logOff">{{ $t('logOff') }}</ColoredButton>
+      </div>
     </div>
   </nav>
 </template>
@@ -29,16 +52,48 @@ import CustomSelect from './CustomSelect.vue';
 <script>
 export default {
   name: "Navbar",
+  data() {
+      return { 
+        locales: null,
+        selectedLocale: this.$i18n.locale, 
+        isGuest: localStorage.getItem("guest") === "true",
+      };
+    },
+
+    created() {
+      
+      this.selectedLocale = this.$i18n.locale;
+    },
+
+    computed: {
+      locales() {
+        return [
+          { label: this.$t('englishLabel'), value: "english" },
+          { label: this.$t('spanishLabel'), value: "spanish" }
+        ]
+      }
+    },
+
+    watch: {
+      selectedLocale(newLocale) {
+        this.$i18n.locale = newLocale; 
+        localStorage.setItem('locale', newLocale); 
+      }
+    },
+
+    methods: {
+      logOff() {
+        localStorage.setItem("user", 'Invitado');;
+        localStorage.setItem("guest", 'true');
+        localStorage.removeItem("userID");
+        window.location.href = '/';
+      },
+      getUserLink() {
+        const id=localStorage.getItem('userID')
+        return `/contribuidores/${id}`;
+      },
+    }
 };
-
-import { ref } from 'vue'
-
-const chosen = ref(null)
-
-const myOptions = [
-  { label: 'Español', value: 'Español' },
-  { label: 'Inglés', value: 'Inglés' }
-]
 </script>
 
 <style scoped>

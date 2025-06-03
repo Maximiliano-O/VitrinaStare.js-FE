@@ -6,6 +6,7 @@
     :type="componentTag === 'button' ? type : undefined"
     :href="componentTag === 'a' ? to : undefined"
     :to="componentTag === 'router-link' ? to : undefined"
+    :active-class="componentTag === 'router-link' ? 'active' : undefined"
     @click="handleClick"
   >
     <slot />
@@ -15,6 +16,7 @@
 <script setup>
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'  // <-- Import RouterLink component
+import { useRoute } from 'vue-router'
 
 const props = defineProps({
   type: {
@@ -46,6 +48,19 @@ const isRouterLink = computed(() =>
 const componentTag = computed(() => {
   if (!props.to) return 'button'
   return isRouterLink.value ? 'router-link' : 'a'
+})
+
+const route = useRoute()
+
+const isActive = computed(() => {
+  if (!isRouterLink.value) return false
+  // Handle if `to` is a string or object
+  if (typeof props.to === 'string') {
+    return route.path === props.to
+  } else if (typeof props.to === 'object' && props.to.name) {
+    return route.name === props.to.name
+  }
+  return false
 })
 
 function handleClick(event) {
@@ -135,6 +150,10 @@ function handleClick(event) {
 }
 
 .transparent:active {
+  box-shadow: inset 0 -5px 0 0 #ffffff;
+}
+
+.base-button.transparent.active {
   box-shadow: inset 0 -5px 0 0 #ffffff;
 }
 </style>
