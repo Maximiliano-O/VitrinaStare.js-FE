@@ -37,12 +37,20 @@ function closeLogin() {
         <ColoredButton variant="transparent" :to="{ name: 'aboutStare' }">{{ $t('navbarStare') }}</ColoredButton>
         <ColoredButton variant="wine" @click="openLogin">{{ $t('navbarLogin') }}</ColoredButton>
         <LoginModal v-if="showLoginModal" @close="closeLogin" />
-        <ColoredButton variant="night">{{ $t('navbarSignup') }}</ColoredButton>
+        <ColoredButton variant="night" :to="{ name: 'registrarse' }">{{ $t('navbarSignup') }}</ColoredButton>
       </div>
       <div class='button-container' v-else>
+        <ColoredButton variant="transparent" :to="{ name: 'staticObservable' }">Observable</ColoredButton>
         <ColoredButton variant="transparent" :to="{ name: 'repos' }">{{ $t('navbarRepositories') }}</ColoredButton>
         <ColoredButton variant="transparent" :to="{ name: 'aboutStare' }">{{ $t('navbarStare') }}</ColoredButton>
-        <ColoredButton variant="transparent" :to="getUserLink()">User 1</ColoredButton>
+        <ColoredButton 
+          variant="transparent" 
+          :to="getUserLink()" 
+          iconName="fa-regular-user-circle"
+          :imageUrl="userImg"
+        >
+          {{ userName }}
+        </ColoredButton>
         <ColoredButton variant="white" :onClick="logOff">{{ $t('logOff') }}</ColoredButton>
       </div>
     </div>
@@ -57,6 +65,8 @@ export default {
         locales: null,
         selectedLocale: this.$i18n.locale, 
         isGuest: localStorage.getItem("guest") === "true",
+        userName: localStorage.getItem("user") || '',
+        userImg: localStorage.getItem("userIcon") || '',
       };
     },
 
@@ -112,11 +122,11 @@ export default {
   background: #40702F;
   color: #fff;
   transition: all 0.3s;
+  margin-bottom: 10px;
 }
 
 #navbar .navbar-header {
   align-items: center;
-  /* background: #9bb2eb; */
   font-family: 'Poppins-SemiBold', sans-serif;
   font-size: 32px;
 }
@@ -127,7 +137,6 @@ export default {
   align-items: center;
   padding: 10px;
   gap: 20px;
-  /* background: #772eab; */
   font-family: 'Poppins-Bold', sans-serif;
   font-size: 20px;
 }

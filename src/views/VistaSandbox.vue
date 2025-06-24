@@ -23,7 +23,6 @@ import ColoredButton from '../components/buttons/ColoredButton.vue';
       </div>
     </div>
   </div>
-
 </template>
   
 <script>
@@ -70,14 +69,7 @@ export default {
 };
 </script>
 
-<style>
-@font-face {
-  font-family: 'Poppins-Bold';
-  src: url('@/assets/fonts/Poppins/Poppins-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-}
-
+<style scoped>
 .sb-container {
   padding: 0px 20px;
 }

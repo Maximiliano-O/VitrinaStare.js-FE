@@ -1,10 +1,33 @@
 <script setup>
 import ColoredButton from '../components/buttons/ColoredButton.vue';
+import ReleaseModal from '../components/ReleaseModal.vue';
+import CommentModal from '../components/CommentModal.vue';
 import Tag from '../components/Tag.vue';
 import { BiTagsFill } from "oh-vue-icons/icons";
 import { addIcons } from "oh-vue-icons";
 import { OhVueIcon } from "oh-vue-icons";
 addIcons(BiTagsFill);
+
+const showReleaseModal = ref(false)
+
+function openReleaseModal() {
+  showReleaseModal.value = true
+}
+
+function closeReleaseModal() {
+  showReleaseModal.value = false
+}
+
+const showCommentModal = ref(false)
+
+function openCommentModal() {
+  showCommentModal.value = true
+}
+
+function closeCommentModal() {
+  showCommentModal.value = false
+}
+
 </script>
 
 <template>
@@ -12,6 +35,12 @@ addIcons(BiTagsFill);
     <div class="header">
       <div class="title">
         {{repo.title}}
+        <ColoredButton 
+          is="button"
+          variant="icon-button" 
+          iconName="bi-github"
+          :to="repo.repositoryUrl"
+        />
       </div>
       <div class="col-1">
         <!-- <div v-if="repo.contributorID === comment.authorID">
@@ -30,9 +59,24 @@ addIcons(BiTagsFill);
             </button>
         </div> -->
       </div>
-      <ColoredButton :to="{ name: 'repos' }">{{ $t('repoBack') }}</ColoredButton>
+      <div class="header-buttons">
+        <ColoredButton 
+          v-if="checkAuthor()"
+          variant="night" :to="`/repos/${repositoryID}/edit`"
+        >
+          Editar Repositorio
+        </ColoredButton>
+        <ColoredButton :to="{ name: 'repos' }">{{ $t('repoBack') }}</ColoredButton>
+      </div>
     </div>
     <div class="info">
+      <ColoredButton 
+        is="button"
+        variant="icon-button" 
+        iconName="fa-regular-user-circle"
+        :imageUrl="imageUrl"
+        :to="getUserLink()"
+      />
       <div class="info-bold">
         {{repo.author}}
       </div>
@@ -49,16 +93,16 @@ addIcons(BiTagsFill);
       <span class="icon">
         <OhVueIcon name="bi-tags-fill" />
       </span>
-      <span v-for="(tag, index) in repo.tags" :key="index">
+      <span v-for="(tag, index) in repo.tags">
         <Tag>{{ tag }}</Tag>
       </span>
     </div>
-    <div class="link-github">
+    <!-- <div class="link-github">
       <div class="bold">
         Link del Respositorio en Github: 
       </div>
       {{ repo.repositoryUrl }}
-    </div>
+    </div> -->
     <div style="display: flex; justify-content: center;">
       <div class="repo-container">
       <!-- <div class="col-md-6">
@@ -80,10 +124,27 @@ addIcons(BiTagsFill);
             {{ $t('rateRepo') }}
           </button>
         </div> -->
+        <div class="release-container">
+          <div class="comment-header">
+            Descripción
+          </div>
+          <div class="text-body">
+            {{ repo.repositoryDesc }}
+          </div>
+        </div>
         <div class="image-container">  
-          <img class="repo-image" :src="repo.imageURL" :alt="`Image ${index + 1}`">
+          <img class="repo-image" :src="repo.imageURL">
         </div>
         <div class="release-container">
+          <div class="release-button" v-if="checkAuthor()">
+            <ColoredButton 
+              class="wide-button"
+              variant="night" @click="openReleaseModal()"
+            >
+              Agregar Versión
+            </ColoredButton>
+            <ReleaseModal v-if="showReleaseModal" @close="closeReleaseModal()" />
+          </div>
           <div class="release-header">
             Versiones
           </div>
@@ -108,6 +169,15 @@ addIcons(BiTagsFill);
         
   </div>
   <div class="comment-container">
+    <div class="release-button" v-if="checkAuthor()">
+      <ColoredButton 
+        class="wide-button"
+        variant="wine" @click="openCommentModal()"
+      >
+        Comentar
+      </ColoredButton>
+      <CommentModal v-if="showCommentModal" @close="closeCommentModal()" />
+    </div>
     <div class="comment-header">
       {{ $t('comments') }}
     </div>
@@ -320,6 +390,8 @@ addIcons(BiTagsFill);
 </template>
   
 <script>
+import { ref, computed, watch } from 'vue';
+import axios from 'axios';
 import StarRating from '@/components/StarRating.vue';
 
 export default {
@@ -345,6 +417,7 @@ export default {
       username: '',
       usernameImageURL: '',
       body: '',
+      imageUrl: '',
     },
 
     };
@@ -352,10 +425,30 @@ export default {
 
   created() {
   this.userData = localStorage.getItem('user');
-  this.comment.username=this.userData
+  this.comment.username=this.userData;
   this.id =localStorage.getItem('userID');
-  this.comment.authorID=this.id
+  this.comment.authorID=this.id;
 },
+computed: {
+    imageUrl() {
+      if (!this.repo.contributorID) return '';
+      // Return a URL or empty string if contributorID not present
+      return this.imageUrl || ''; // fallback while loading
+    }
+  },
+
+  watch: {
+    'repo.contributorID': {
+      immediate: true,
+      handler(newVal) {
+        if (!newVal) {
+          this.imageUrl = '';
+          return;
+        }
+        this.fetchImageUrl(newVal);
+      }
+    }
+  },
   methods: {
 
     async addRating(rating) {
@@ -467,7 +560,31 @@ export default {
     this.newCommentText=''
 
   },
-    
+
+  getUserLink() {
+    return `/contribuidores/${this.repo.contributorID}` ;
+  },
+
+  async fetchImageUrl(contributorID) {
+      try {
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2/${contributorID}`;
+        const response = await this.axios.get(url);
+        this.imageUrl = response.data.imageURL;
+        console.log('URL: ', response.data.imageURL)
+      } catch (err) {
+        console.error('Error fetching image URL:', err);
+        this._imageUrl = '';
+      }
+    },
+
+  checkAuthor() {
+    const currentUser = localStorage.getItem('userID');
+    if (currentUser == this.repo.contributorID) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 
   goToEdit(repositoryID) {
     this.$router.push({ path: `/repos/${repositoryID}/edit` })
@@ -508,10 +625,17 @@ export default {
 }
 
 .title {
+  display: flex;
   align-items: center;
+  gap: 10px;
   /* background: #9bb2eb; */
   font-family: 'Poppins-Bold', sans-serif;
   font-size: 32px;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 10px;
 }
 
 .divider {
@@ -574,6 +698,15 @@ body {
   background-color: #ebeef3;
 }
 
+.text-body {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  color: #000;
+  font-family: 'Poppins-Medium';
+  font-size: 18px;
+}
+
 .item img {
     width: 100%;
     max-width: 50%;
@@ -620,6 +753,10 @@ body {
   border: 1px solid #000;
 }
 
+.release-button {
+  padding: 10px;
+}
+
 .release-header {
   width: 100%;
   background-color: #382F70;
@@ -638,6 +775,10 @@ body {
   font-family: 'Poppins-Bold';
   font-size: 20px;
   align-items: center;
+}
+
+.wide-button {
+  width: 100%;
 }
 
 .comment-container {

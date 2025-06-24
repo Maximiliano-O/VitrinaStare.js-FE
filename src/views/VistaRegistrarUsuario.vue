@@ -1,172 +1,11 @@
-<template>
-
-
-<div v-if="isGuest==='true'">
-  <div class="container-fluid">
-    
-    <div class="row">
-      <div class="col-7">
-        <h1> {{ $t('signUp') }}</h1>
-      </div>
-      <div class="col-3">
-        <a
-          type="button"
-          class="btn btn-secondary text-white"
-          href="/contribuidores"
-          style="
-            margin-left: 15%;
-            font-weight: bold;
-            --bs-btn-padding-y: 0.45rem;
-            --bs-btn-padding-x: 0.8rem;
-            --bs-btn-font-size: 1.15rem;
-          "
-          >{{ $t('returnUserList') }}
-        </a>
-      </div>
-      <div class="col-2">
-        <button
-          type="submit"
-          class="btn btn-primary text-white"
-          v-on:click="register"
-          style="
-          background-color: #6251b7c3;
-            font-weight: bold;
-            --bs-btn-padding-y: 0.4rem;
-            --bs-btn-padding-x: 0.8rem;
-            --bs-btn-font-size: 1.15rem;
-          "
-        >
-        {{ $t('signUp') }}
-        </button>
-      </div>
-    </div>
-
-
-    
-    <div class="overflow-auto" style="max-height: 100vh">
-      <div style="padding-bottom: 10%">
-
-
-   
-        <form @submit="enviarCliente" method="post" id="form_crearCliente">
-        
-          <div class="row m-3">
-       
-     
-
-          </div>
- 
- 
-          <div class="row m-3">
-            <h3>{{ $t('userInfo') }}</h3>
-          </div>
-
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">{{ $t('username') }}:</p>
-              <p style="font-size: 15px; color: red; margin-top: 2%">{{ $t('requiredField') }}</p>
-            </div>
-            <div class="col-10">
-              <input
-                data-testid="username"
-                type="text"
-                name="user.contrInfo.username"
-                v-model="user.username"
-                style="width: 100%; margin-left: 0%%; font-size: 18px"
-              />
-            </div>
-          </div>
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">{{ $t('email') }}:</p>
-              <p style="font-size: 15px; color: red; margin-top: 2%">{{ $t('requiredField') }}</p>
-            </div>
-            <div class="col-10">
-              <input
-              data-testid="email"
-              type="email"
-                name="user.email"
-                v-model="user.email"
-                style="width: 100%; margin-left: 0%%; font-size: 18px"
-              />
-            </div>
-          </div>
-
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">{{ $t('password') }}:</p>
-              <p style="font-size: 15px; color: red; margin-top: 2%">{{ $t('requiredField') }}</p>
-            </div>
-            <div class="col-10">
-              <input
-              data-testid="password"
-               type="password"
-                name="user.password"
-                v-model="user.password"
-                style="width: 100%; margin-left: 0%%; font-size: 18px"
-              />
-            </div>
-          </div>
-
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">{{ $t('urlImage') }}:</p>
-              <p style="font-size: 15px; color: whitesmoke; margin-top: 2%">.</p>
-            </div>
-            <div class="col-10">
-              <input
-              data-testid="imageURL"
-                type="text"
-                name="user.contrInfo.imageURL"
-                v-model="user.imageURL"
-                style="width: 100%; margin-left: 0%; font-size: 18px"
-              />
-            </div>
-          </div>
-
-          <div class="row m-3">
-            <div class="col-2">
-              <p style="font-size: 18px; margin-top: 2%">{{ $t('urlGitHub') }}:</p>
-              <p style="font-size: 15px; color: red; margin-top: 2%">{{ $t('requiredField') }}</p>
-            </div>
-            
-            <div class="col-10">
-              <input
-               data-testid="profileURL"
-                type="text"
-                name="user.contrInfo.profileURL"
-                v-model="user.urlGithubProfile"
-                style="width: 100%; margin-left: 0%; font-size: 18px"
-              />
-            </div>
-          </div>
-
-
-
- 
-
-  
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div v-else>
-    
-    <h2>{{ $t('accessDenied') }}</h2>
-  
-    <p style="font-size: 18px; margin-top: 2%">{{ $t('accessDeniedMessage') }}</p>
-  
-   
-  
-    </div>
-
-</template>
-
-<script>
+<script setup>
+import ColoredButton from '../components/buttons/ColoredButton.vue';
+import FormInput from '../components/FormInput.vue';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 
+// Helper function remains the same
 const registerUser = async (userData) => {
   try {
     const response = await axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2`, userData);
@@ -177,96 +16,187 @@ const registerUser = async (userData) => {
   }
 };
 
-export default {
-  data() {
-    return {
-      isGuest: localStorage.getItem('guest'),
-      user: {
-      
-        email: '',
-        password: '',
-        
-          username: '',
-          imageURL: '',
-          
-          urlGithubProfile: ''
-        //}
-      }
-    };
-  },
-  methods: {
-    async register() {
+// Local state
+const isGuest = ref(localStorage.getItem('guest'));
+const user = ref({
+  email: '',
+  password: '',
+  username: '',
+  imageURL: '',
+  urlGithubProfile: ''
+});
 
+// Router instance
+const router = useRouter();
 
-      if (
-    this.user.email === '' || 
-    this.user.password === '' || 
-    this.user.username === '' || 
-    this.user.urlGithubProfile === '') {
+// Main register function
+const register = async () => {
+  if (
+    user.value.email === '' ||
+    user.value.password === '' ||
+    user.value.username === '' ||
+    user.value.urlGithubProfile === ''
+  ) {
     alert('Some required fields are empty.');
     return;
-     } 
+  }
 
-    let checkUser = await this.checkGitHubUserExists();
-    if(checkUser.exists) {
-     
+  const checkUser = await checkGitHubUserExists();
 
-      try {
-        const response = await registerUser(this.user);
-        console.log('User registered:', response);
-        this.$router.push({name: 'contribuidores'})
-      
-      } catch (error) {
-        console.error('Error registering user:', error);
-      }
+  if (checkUser?.exists) {
+    try {
+      const response = await registerUser(user.value);
+      console.log('User registered:', response);
+      router.push({ name: 'contribuidores' });
+    } catch (error) {
+      console.error('Error registering user:', error);
+    }
+  } else {
+    alert('Github Account does not exist.');
+  }
+};
 
-
-    } else {
-      alert('Github Account does not exist.');
-      }
-
-
-    },
-
-
-    async checkGitHubUserExists() {
-        try {
-          const encodedUrl = encodeURIComponent(this.user.urlGithubProfile);
-          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/checkUserExists/${encodedUrl}`;
-          const response = await this.axios.get(url);
-          return response.data; 
-          
-        } catch (err) {
-          console.log('Error fetching data:', err);
-        }
-      },
+// GitHub existence checker
+const checkGitHubUserExists = async () => {
+  try {
+    const encodedUrl = encodeURIComponent(user.value.urlGithubProfile);
+    const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/checkUserExists/${encodedUrl}`;
+    const response = await axios.get(url); // Notice: Using `axios` directly, not `this.axios`
+    return response.data;
+  } catch (err) {
+    console.log('Error fetching data:', err);
   }
 };
 </script>
 
-<style>
-/* Color de fondo de la vista */
-body {
-  background-color: #ebeef3;
-}
+<template>
+  <div class="view-content">
+    <div class="color-side">
+      <div class="title">
+        <img src="\src\assets\Stare.js-Only-Eye-Logo.png">
+        <span>
+          StArE.js
+        </span>
+      </div>
+    </div>
+    <div class="form-side">
+      <div class="button-container">
+        <ColoredButton class="button" :to="{ name: 'repos' }">Volver</ColoredButton>
+      </div>
+      <div class="form-title">
+        Regístrate
+      </div>
+      <div class="form-body">
+        <FormInput
+          type="text" 
+          placeholder="Nombre de Usuario"
+          v-model="user.username"
+          error-message="Campo requerido, no puede estar vacío"
+        >
+          Nombre de Usuario*
+        </FormInput>
+        <FormInput
+          type="email" 
+          placeholder="Correo"
+          v-model="user.email"
+          error-message="Campo requerido, no puede estar vacío"
+          name="email"
+          autocomplete="email"
+        >
+          Correo*
+        </FormInput>
+        <FormInput
+          type="password" 
+          placeholder="Contraseña"
+          v-model="user.password"
+          error-message="Campo requerido, no puede estar vacío"
+        >
+          Contraseña*
+        </FormInput>
+        <FormInput
+          type="text" 
+          placeholder="URL de Imagen de Perfil"
+          v-model="user.imageURL"
+        >
+          URL de Imagen de Perfil
+        </FormInput>
+        <FormInput
+          type="text" 
+          placeholder="URL de Usuario de Github"
+          v-model="user.urlGithubProfile"
+          error-message="Campo requerido, no puede estar vacío"
+        >
+          URL de Usuario de Github*
+        </FormInput>
+        <ColoredButton class="wide-button" variant="night" @click="register()">Registrarse</ColoredButton>
+      </div>
+    </div>
+  </div>
+</template>
 
-/* Personalización del select */
-select {
-  background-color: #ffffff;
+<style scoped>
+.view-content {
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  font-size: 18px;
-  border-radius: 4px;
+  height: 100vh;
 }
 
-/* Con estos ajustes se crea el input para número sin tener las flechas del costado */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.color-side {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background: #40702F;
+  color: #ffffff;
+  width: 50%;
+  height: 100%;
 }
 
-input[type='number'] {
-  -moz-appearance: textfield;
-  appearance: textfield;
+.title {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  font-family: 'Poppins-Bold';
+  font-size: 96px;
 }
+
+.form-side {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 150px;
+  gap: 10px;
+  background: #fff;
+  color: #000;
+  width: 50%;
+  height: 100%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+}
+
+.button {
+  width: 200px;
+}
+
+.form-title {
+  font-family: 'Poppins-Bold';
+  font-size: 36px;
+}
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wide-button {
+  width: 100%;
+}
+
 </style>

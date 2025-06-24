@@ -15,6 +15,14 @@ const props = defineProps({
   },
   modelValue: String,
   placeholder: String,
+  name: {
+    type: String,
+    defaul: ''
+  },
+  autocomplete: {
+    type: String,
+    defaul: ''
+  },
   errorMessage: {
     type: String,
     default: ''
@@ -32,8 +40,15 @@ const currentType = computed(() => {
 
 const touched = ref(false)
 
+const isFocused = ref(false);
+
+function onFocus() {
+  isFocused.value = true;
+}
+
 function onBlur() {
-  touched.value = true
+  isFocused.value = false;
+  touched.value = true;
 }
 </script>
 
@@ -47,10 +62,11 @@ function onBlur() {
         :type="currentType"
         :value="modelValue"
         :placeholder="placeholder"
-        name="email"
-        autocomplete="email"
+        :name="name"
+        :autocomplete="autocomplete"
         @input="$emit('update:modelValue', $event.target.value)"
         @blur="onBlur"
+        @focus="onFocus"
         class="input"
       />
       <span v-if="isPassword" class="eye-icon" @click="showPassword = !showPassword">
@@ -122,7 +138,7 @@ function onBlur() {
 .error-message {
   margin-top: 5px;
   color: #ff0800;
-  font-size: 14px;
-  font-family: 'Poppins-Regular', sans-serif;
+  font-size: 16px;
+  font-family: 'Poppins-SemiBold', sans-serif;
 }
 </style>

@@ -1,18 +1,12 @@
 <template>
-  <component
+  <div
     class="base-button"
   >
     <slot />
-  </component>
+  </div>
 </template>
 
 <script setup>
-const props = defineProps({
-  type: {
-    type: String,
-    default: 'button',
-  },
-})
 </script>
 
 <style scoped>

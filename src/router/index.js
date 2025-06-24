@@ -7,7 +7,8 @@ const router = createRouter({
     {
       path: '/repos/registrarRepositorio',
       name: 'registrarRepositorio',
-      component: () => import('../views/VistaRegistrarRepo.vue')
+      component: () => import('../views/VistaRegistrarRepo.vue'),
+      meta: { hideNavbar: true },
     },
     {
       path: '/contribuidores',
@@ -27,7 +28,8 @@ const router = createRouter({
       path: '/contribuidores/:userID/edit',
       name: 'editarContribuidor',
       component: () => import('../views/VistaEditarUsuario.vue'),
-      props: true
+      props: true,
+      meta: { hideNavbar: true },
     },
 
     {
@@ -48,7 +50,8 @@ const router = createRouter({
       path: '/repos/:repositoryID/edit',
       name: 'editarRepo',
       component: () => import('../views/VistaEditarRepo.vue'),
-      props: true
+      props: true,
+      meta: { hideNavbar: true },
     },
 
     {
@@ -77,12 +80,27 @@ const router = createRouter({
       path: '/registrarse',
       name: 'registrarse',
       component: () => import('../views/VistaRegistrarUsuario.vue'),
+      meta: { hideNavbar: true },
     },
 
     {
       path: '/aboutStare',
       name: 'aboutStare',
       component: () => import('../views/VistaAboutStare.vue'),
+      
+    },
+
+    {
+      path: '/staticObservable',
+      name: 'staticObservable',
+      component: () => import('../views/demoObservableStatic.vue'),
+      
+    },
+
+    {
+      path: '/dynamicObservable',
+      name: 'dynamicObservable',
+      component: () => import('../views/demoObservableDynamic.vue'),
       
     }
   ]

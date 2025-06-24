@@ -5,18 +5,25 @@
     :class="variant"
     :type="componentTag === 'button' ? type : undefined"
     :href="componentTag === 'a' ? to : undefined"
+    :target="componentTag === 'a' ? '_blank' : undefined"
+    :rel="componentTag === 'a' ? 'noopener noreferrer' : undefined"
     :to="componentTag === 'router-link' ? to : undefined"
     :active-class="componentTag === 'router-link' ? 'active' : undefined"
     @click="handleClick"
   >
+    <UserIcon
+      :imageUrl="imageUrl"
+      :iconName="iconName"
+    />
     <slot />
   </component>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { RouterLink } from 'vue-router'  // <-- Import RouterLink component
-import { useRoute } from 'vue-router'
+import { computed } from 'vue';
+import { RouterLink } from 'vue-router';  // <-- Import RouterLink component
+import { useRoute } from 'vue-router';
+import UserIcon from '../UserIcon.vue';
 
 const props = defineProps({
   type: {
@@ -26,6 +33,14 @@ const props = defineProps({
   onClick: {
     type: Function,
     default: () => {},
+  },
+  iconName: {
+    type: String,
+    default: '',
+  },
+  imageUrl: {
+    type: String,
+    default: '',
   },
   variant: {
     type: String,
@@ -47,7 +62,14 @@ const isRouterLink = computed(() =>
 )
 const componentTag = computed(() => {
   if (!props.to) return 'button'
-  return isRouterLink.value ? 'router-link' : 'a'
+
+  // If it's a full URL (starts with http or https), use <a>
+  if (typeof props.to === 'string' && /^https?:\/\//.test(props.to)) {
+    return 'a'
+  }
+
+  // Otherwise, assume it's an internal route
+  return props.useRouterLink ? 'router-link' : 'a'
 })
 
 const route = useRoute()
@@ -72,7 +94,8 @@ function handleClick(event) {
 
 <style scoped>
 .base-button {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
   padding: 10px;
   color: white;
   border: none;
@@ -81,6 +104,9 @@ function handleClick(event) {
   font-size: 20px;
   text-decoration: none;
   transition: background-color 0.2s;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
 }
 
 /* Variant Styles by color*/
@@ -155,5 +181,29 @@ function handleClick(event) {
 
 .base-button.transparent.active {
   box-shadow: inset 0 -5px 0 0 #ffffff;
+}
+
+.icon-button {
+  background-color: #fff;
+  color: #000;
+  border-radius: 20px;
+  width: 40px;
+  height: 40px;
+}
+
+.icon-button:hover {
+  background-color: #B2B2B2;
+  color: #000;
+  border-radius: 20px;
+  width: 40px;
+  height: 40px;
+}
+
+.icon-button:active {
+  background-color: #3C3C3C;
+  color: #fff;
+  border-radius: 20px;
+  width: 40px;
+  height: 40px;
 }
 </style>

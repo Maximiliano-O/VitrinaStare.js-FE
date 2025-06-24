@@ -2,6 +2,7 @@
 import RepositoryCard from '../components/RepositoryCard.vue';
 import CustomSelect from '../components/CustomSelect.vue';
 import CustomSearch from '../components/CustomSearch.vue';
+import ColoredButton from '../components/buttons/ColoredButton.vue';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const myOptions = [
@@ -17,8 +18,13 @@ const myOptions = [
       <div class="row">
         <div class="title">
           <h1>{{ $t('repositoriesView') }}</h1>
-        </div>
-        <div  class="col-2">
+          <ColoredButton 
+            v-if="!isGuest" 
+            variant="night"
+            :to="{ name: 'registrarRepositorio' }"
+          >
+            Crear Repositorio
+          </ColoredButton>
         </div>
       </div>
       <div class="overflow-auto" style="max-height: 100%">
@@ -63,6 +69,7 @@ const myOptions = [
 <script>
 import Multiselect from '@vueform/multiselect'
 import '../assets/multiselect.css';
+import ColoredButton from '../components/buttons/ColoredButton.vue';
 
 export default {
   components: { Multiselect },
@@ -70,7 +77,7 @@ export default {
   data() {
     return {
       sortByRating: '',
-      isguest: localStorage.getItem("guest"),
+      isGuest: localStorage.getItem("guest") === "true",
       repositories: [],
       tags: [],
       currentTags: [],
@@ -166,6 +173,11 @@ export default {
 }
 
 .title {
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   font-family: 'Poppins-Bold', sans-serif;
   font-size: 32px;
 }

@@ -1,5 +1,6 @@
 <script setup>
 import RepositoryCard from '../components/RepositoryCard.vue';
+import UserIcon from '../components/UserIcon.vue';
 import ColoredButton from '../components/buttons/ColoredButton.vue';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
@@ -9,6 +10,10 @@ const { t } = useI18n()
   <div class="overflow-auto" style="max-height: 100%">
     <div class="header">
       <div class="title">
+        <UserIcon 
+          iconName="fa-regular-user-circle"
+          :imageUrl="user.imageURL"
+        />
         {{ user.username }}
       </div>
       <div class="button-container">

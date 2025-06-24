@@ -1,5 +1,8 @@
+<script setup>
+</script>
+
 <template>
-  <div class="overflow-hidden" style="max-height: 100%">
+  <div class="view-content">
     <div class="content-header">
       <div class="title">
         {{ $t('stareQuestion') }}
@@ -35,17 +38,7 @@
   </div>
 </template>
 
-<script>
-  export default {
-    name: "AboutStare",
-  };
-</script>
-
 <style scoped>
-ol {
-  margin-left: 80px;
-}
-
 .content-header {
   padding: 10px 20px;
   display: flex;
@@ -69,4 +62,9 @@ ol {
   font-family: 'Poppins-Medium';
   font-size: 28px;
 }
+
+ol {
+  margin-left: 80px;
+}
+
 </style>

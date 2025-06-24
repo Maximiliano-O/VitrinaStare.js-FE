@@ -27,6 +27,7 @@ function logIn() {
         localStorage.setItem("user", user.username)
         localStorage.setItem("guest", 'false')
         localStorage.setItem("userID", user._id)
+        localStorage.setItem("userIcon", user.imageURL)
         window.location.href = '/'
       } else {
         showError.value = true
@@ -86,6 +87,8 @@ function logInWithGithub() {
         v-model="input_email" 
         placeholder="Correo"
         error-message="No puede estar vacío"
+        name="email"
+        autocomplete="email"
       >
         Correo*
       </FormInput>
