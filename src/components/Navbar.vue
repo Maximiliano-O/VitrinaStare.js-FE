@@ -40,7 +40,7 @@ function closeLogin() {
         <ColoredButton variant="night" :to="{ name: 'registrarse' }">{{ $t('navbarSignup') }}</ColoredButton>
       </div>
       <div class='button-container' v-else>
-        <ColoredButton variant="transparent" :to="{ name: 'staticObservable' }">Observable</ColoredButton>
+        <ColoredButton variant="transparent" :to="{ name: 'staticObservable' }">Testing pipeline</ColoredButton>
         <ColoredButton variant="transparent" :to="{ name: 'repos' }">{{ $t('navbarRepositories') }}</ColoredButton>
         <ColoredButton variant="transparent" :to="{ name: 'aboutStare' }">{{ $t('navbarStare') }}</ColoredButton>
         <ColoredButton 
