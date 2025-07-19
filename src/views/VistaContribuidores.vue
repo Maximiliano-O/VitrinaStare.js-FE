@@ -99,7 +99,7 @@ export default {
   },
   async mounted() {
     try {
-      const response_cli = await axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2`)
+      const response_cli = await axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/usersV2`)
       this.users = response_cli.data
     } catch (error) {
       console.log(error)

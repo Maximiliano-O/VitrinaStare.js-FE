@@ -47,14 +47,14 @@ export default {
   methods: {
     async fetchData() {
       try {
-        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/release/${this.releaseID}`;
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/release/${this.releaseID}`;
         const response = await this.axios.get(url);
         this.release = response.data;
 
         this.releaseName = this.release.name;
         this.repositoryIDValue = this.release.repositoryID;
 
-        const url2 = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/${this.release.repositoryID}`;
+        const url2 = `${import.meta.env.VITE_APP_EXPRESS_URL}/repoV2/${this.release.repositoryID}`;
         const response2 = await this.axios.get(url2);
 
         this.repositoryName = response2.data.title;

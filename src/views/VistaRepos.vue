@@ -130,7 +130,7 @@ export default {
         
        
 
-        const response = await this.axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2`);
+        const response = await this.axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/repoV2`);
         this.repositories = response.data;
       } catch (error) {
         console.log(error);
@@ -138,7 +138,7 @@ export default {
     },
     async fetchAllTags() {
       try {
-        const responsetag = await this.axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/unique-tags`);
+        const responsetag = await this.axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/unique-tags`);
         this.tags = responsetag.data;
       } catch (error) {
         console.log(error);

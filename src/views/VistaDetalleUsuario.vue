@@ -62,7 +62,7 @@ export default {
   methods: {
     async fetchData() {
       try {
-        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2/${this.userID}`;
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/usersV2/${this.userID}`;
         const response = await this.axios.get(url);
         this.user = response.data;
       } catch (err) {
@@ -72,7 +72,7 @@ export default {
 
     async fetchUserRepositories() {
       try {
-        const response = await this.axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/contributor/${this.userID}`);
+        const response = await this.axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/repoV2/contributor/${this.userID}`);
         this.repositories = response.data;
       } catch (error) {
         console.log(error);

@@ -280,7 +280,7 @@
     async fetchRelease() {
       try {
         
-        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/release/${this.releaseID}`;
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/release/${this.releaseID}`;
         const response = await this.axios.get(url);
         this.release = response.data;
         this.reviewerIDs = this.release.statuses.map(status => status.reviewerID);
@@ -292,7 +292,7 @@
     async fetchStatus() {
       try {
         
-        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/release/${this.releaseID}/${this.userID}/status`;
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/release/${this.releaseID}/${this.userID}/status`;
         const response = await this.axios.get(url);
         this.statusID = response.data.statusId;
       } catch (err) {
@@ -303,7 +303,7 @@
     async apruebo() {
       try {
         
-          const response = await this.axios.put(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/release/${this.releaseID}/status/${this.statusID}`, {
+          const response = await this.axios.put(`${import.meta.env.VITE_APP_EXPRESS_URL}/release/${this.releaseID}/status/${this.statusID}`, {
 
           isReviewed: true,
           isSafe: true,
@@ -321,7 +321,7 @@
     async rechazo() {
       try {
      
-          const response = await this.axios.put(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/release/${this.releaseID}/status/${this.statusID}`, {
+          const response = await this.axios.put(`${import.meta.env.VITE_APP_EXPRESS_URL}/release/${this.releaseID}/status/${this.statusID}`, {
 
           isReviewed: true,
           isSafe: false,
@@ -339,7 +339,7 @@
     async checkRepoVerified(){
       try {
         
-        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/verify`;
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/repoV2/verify`;
         const response = await this.axios.post(url);
         
       } catch (err) {

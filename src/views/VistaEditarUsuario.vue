@@ -74,7 +74,7 @@ import axios from 'axios';
 const registerUser = async (userData, userID) => {
   try {
     
-    const response = await axios.put(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2/${userID}`, userData);
+    const response = await axios.put(`${import.meta.env.VITE_APP_EXPRESS_URL}/usersV2/${userID}`, userData);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -114,7 +114,7 @@ export default {
 
     async fetchData() {
         try {
-          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2/${this.userID}`;
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/usersV2/${this.userID}`;
           const response = await this.axios.get(url);
           this.user = response.data;
         } catch (err) {

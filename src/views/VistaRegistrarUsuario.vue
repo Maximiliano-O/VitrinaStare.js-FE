@@ -8,7 +8,7 @@ import axios from 'axios';
 // Helper function remains the same
 const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2`, userData);
+    const response = await axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/usersV2`, userData);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -60,7 +60,7 @@ const register = async () => {
 const checkGitHubUserExists = async () => {
   try {
     const encodedUrl = encodeURIComponent(user.value.urlGithubProfile);
-    const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/checkUserExists/${encodedUrl}`;
+    const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/checkUserExists/${encodedUrl}`;
     const response = await axios.get(url); // Notice: Using `axios` directly, not `this.axios`
     return response.data;
   } catch (err) {

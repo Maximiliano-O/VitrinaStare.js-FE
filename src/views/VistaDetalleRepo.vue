@@ -455,7 +455,7 @@ computed: {
         try {
           
 
-          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/${this.repositoryID}/ratings`;
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/repoV2/${this.repositoryID}/ratings`;
           const response = await this.axios.post(url, {
             rating: rating,
             userId: localStorage.getItem('userID') 
@@ -474,7 +474,7 @@ computed: {
         try {
           
 
-          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/${this.repositoryID}/ratings`;
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/repoV2/${this.repositoryID}/ratings`;
           const response = await this.axios.delete(url, {
             data: {
               userID: localStorage.getItem('userID') 
@@ -492,7 +492,7 @@ computed: {
     async fetchData() {
       try {
         
-        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/${this.repositoryID}`;
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/repoV2/${this.repositoryID}`;
         const response = await this.axios.get(url);
         this.repo = response.data;
       } catch (err) {
@@ -504,7 +504,7 @@ computed: {
       try {
         
         
-        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/comments/repository/${this.repositoryID}`;
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/comments/repository/${this.repositoryID}`;
         const response = await this.axios.get(url);
         this.allComments = response.data;
       } catch (err) {
@@ -515,7 +515,7 @@ computed: {
     async fetchReleases() {
       try {
         
-        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/release/repository/${this.repositoryID}`;
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/release/repository/${this.repositoryID}`;
         const response = await this.axios.get(url);
         this.allReleases = response.data;
       } catch (err) {
@@ -526,7 +526,7 @@ computed: {
     async latestVerifiedRelease() {
       try {
         
-        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/release/latest/${this.repositoryID}`;
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/release/latest/${this.repositoryID}`;
         const response = await this.axios.get(url);
         this.latestVerName = response.data.name;
         this.latestVerDate = response.data.created_at;
@@ -548,7 +548,7 @@ computed: {
 
       
     try {
-      const response = await this.axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/comments`, this.comment);
+      const response = await this.axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/comments`, this.comment);
       this.newCommentText = '';
       this.fetchAllComments();
       return response.data;
@@ -567,7 +567,7 @@ computed: {
 
   async fetchImageUrl(contributorID) {
       try {
-        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2/${contributorID}`;
+        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/usersV2/${contributorID}`;
         const response = await this.axios.get(url);
         this.imageUrl = response.data.imageURL;
         console.log('URL: ', response.data.imageURL)

@@ -121,7 +121,7 @@ export default {
         //const response = await registerRepository(this.repository);
         //console.log('Repository registered:', response);
         // Redirect to the dashboard or another page
-               const response = await fetch(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/${this.repositoryID}`, {
+               const response = await fetch(`${import.meta.env.VITE_APP_EXPRESS_URL}/repoV2/${this.repositoryID}`, {
          method: 'PUT',
          body: JSON.stringify(this.repo),
          headers: {
@@ -149,7 +149,7 @@ export default {
 
     async fetchData() {
         try {
-          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/api/repoV2/${this.repositoryID}`;
+          const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/repoV2/${this.repositoryID}`;
           const response = await axios.get(url);
           this.repo = response.data;
         } catch (err) {
