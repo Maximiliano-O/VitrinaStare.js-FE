@@ -20,7 +20,7 @@ function logIn() {
   const email = input_email.value
   const password = input_password.value
 
-  axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/login`, { email, password })
+  axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/login`, { email, password })
     .then(response => {
       const { loggedIn, user } = response.data
       if (loggedIn) {
@@ -49,7 +49,7 @@ function logInWithGithub() {
     .then((result) => {
       const user = result.user
 
-      fetch(`${import.meta.env.VITE_APP_EXPRESS_URL}/api/usersV2/email/${user.email}`)
+      fetch(`${import.meta.env.VITE_APP_EXPRESS_URL}/usersV2/email/${user.email}`)
         .then(response => response.json())
         .then(data => {
           if (data === null) {
