@@ -16,5 +16,14 @@ export default defineConfig({
   },
   preview: {
     allowedHosts: ['hoth.diinf.usach.cl']
-  }
-})
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:9000',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, ''),
+      },
+    },
+  },
+});
