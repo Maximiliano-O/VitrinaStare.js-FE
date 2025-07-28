@@ -21,6 +21,9 @@ const { t } = useI18n()
 const user = ref({})
 const repositories = ref([])
 
+const currentUserID = localStorage.getItem('userID');
+const profileUserID = props.userID;
+
 // Fetch user data
 async function fetchData() {
   try {
@@ -78,7 +81,7 @@ onMounted(() => {
       </div>
       <div class="button-container">
         <ColoredButton variant="black" :to="{ name: 'repositories' }">Volver a Repositorios</ColoredButton>
-        <ColoredButton variant="night" @click="goToEdit(userID)">{{ $t('editProfile') }}</ColoredButton>
+        <ColoredButton variant="night" v-if="currentUserID === profileUserID" @click="goToEdit(userID)">{{ $t('editProfile') }}</ColoredButton>
       </div>
     </div>
     <div>

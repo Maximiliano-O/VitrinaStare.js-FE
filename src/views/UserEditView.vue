@@ -56,7 +56,13 @@ const updateUser = async () => {
   }
 }
 
-onMounted(fetchUserData)
+onMounted(() => {
+  if (currentUserID !== userID) {
+    router.back();
+  } else {
+    fetchUserData()
+  }
+})
 </script>
 
 <template>
