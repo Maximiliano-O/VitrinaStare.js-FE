@@ -4,12 +4,13 @@ import FormInput from '../components/FormInput.vue';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import logo from '/src/assets/Stare.js-Only-Eye-Logo.png';
 
 // Helper function remains the same
 const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/usersV2`, userData);
-    return response.data;
+    const response = await axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/users`, userData);
+    return response.data.result;
   } catch (error) {
     console.error(error);
     throw error;
@@ -47,7 +48,7 @@ const register = async () => {
     try {
       const response = await registerUser(user.value);
       console.log('User registered:', response);
-      router.push({ name: 'contribuidores' });
+      router.push({ name: 'repositories' });
     } catch (error) {
       console.error('Error registering user:', error);
     }
@@ -62,7 +63,7 @@ const checkGitHubUserExists = async () => {
     const encodedUrl = encodeURIComponent(user.value.urlGithubProfile);
     const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/checkUserExists/${encodedUrl}`;
     const response = await axios.get(url); // Notice: Using `axios` directly, not `this.axios`
-    return response.data;
+    return response.data.result;
   } catch (err) {
     console.log('Error fetching data:', err);
   }
@@ -73,7 +74,7 @@ const checkGitHubUserExists = async () => {
   <div class="view-content">
     <div class="color-side">
       <div class="title">
-        <img src="\src\assets\Stare.js-Only-Eye-Logo.png">
+        <img :src="logo" alt="StArE.js logo">
         <span>
           StArE.js
         </span>
@@ -81,7 +82,7 @@ const checkGitHubUserExists = async () => {
     </div>
     <div class="form-side">
       <div class="button-container">
-        <ColoredButton class="button" :to="{ name: 'repos' }">Volver</ColoredButton>
+        <ColoredButton class="button" :to="{ name: 'repositories' }">Volver</ColoredButton>
       </div>
       <div class="form-title">
         Regístrate
@@ -136,10 +137,11 @@ const checkGitHubUserExists = async () => {
 
 <style scoped>
 .view-content {
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 100vh;
+  align-items: stretch;
 }
 
 .color-side {
@@ -150,7 +152,6 @@ const checkGitHubUserExists = async () => {
   background: #40702F;
   color: #ffffff;
   width: 50%;
-  height: 100%;
 }
 
 .title {

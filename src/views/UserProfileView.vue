@@ -1,10 +1,70 @@
 <script setup>
-import RepositoryCard from '../components/RepositoryCard.vue';
-import UserIcon from '../components/UserIcon.vue';
-import ColoredButton from '../components/buttons/ColoredButton.vue';
+import { ref, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
 import { useI18n } from 'vue-i18n'
+
+import RepositoryCard from '../components/RepositoryCard.vue'
+import UserIcon from '../components/UserIcon.vue'
+import ColoredButton from '../components/buttons/ColoredButton.vue'
+
+// Props
+const props = defineProps({
+  userID: String
+})
+
+// Composables
+const router = useRouter()
 const { t } = useI18n()
+
+// Reactive state
+const user = ref({})
+const repositories = ref([])
+
+// Fetch user data
+async function fetchData() {
+  try {
+    const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/users/${props.userID}`
+    const response = await axios.get(url)
+    user.value = response.data.result;
+  } catch (err) {
+    console.error('Error fetching user data:', err)
+  }
+}
+
+// Fetch user's repositories
+async function fetchUserRepositories() {
+  try {
+    const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/repository/user/${props.userID}`
+    const response = await axios.get(url)
+    repositories.value = response.data.result;
+  } catch (err) {
+    console.error('Error fetching repositories:', err)
+  }
+}
+
+// Navigation functions
+function goToRepo(repositoryID) {
+  router.push({ path: `/repository/${repositoryID}` })
+}
+
+function goToEdit(userID) {
+  router.push({ path: `/user/${userID}/edit` })
+}
+
+// Watch for userID changes and refetch data accordingly
+watch(() => props.userID, () => {
+  fetchData()
+  fetchUserRepositories()
+})
+
+// Initial data fetch
+onMounted(() => {
+  fetchData()
+  fetchUserRepositories()
+})
 </script>
+
 
 <template>
   <div class="overflow-auto" style="max-height: 100%">
@@ -17,7 +77,7 @@ const { t } = useI18n()
         {{ user.username }}
       </div>
       <div class="button-container">
-        <ColoredButton variant="black" :to="{ name: 'repos' }">Volver a Repositorios</ColoredButton>
+        <ColoredButton variant="black" :to="{ name: 'repositories' }">Volver a Repositorios</ColoredButton>
         <ColoredButton variant="night" @click="goToEdit(userID)">{{ $t('editProfile') }}</ColoredButton>
       </div>
     </div>
@@ -47,53 +107,7 @@ const { t } = useI18n()
     </div>
   </div>
 </template>
-  
-<script>
-export default {
-  props: ['userID'],
-  data() {
-    return {
-      user: {},
-      repositories: [],
-      current_id: localStorage.getItem('userID'),
-      current_user: localStorage.getItem('user')
-    };
-  },
-  methods: {
-    async fetchData() {
-      try {
-        const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/usersV2/${this.userID}`;
-        const response = await this.axios.get(url);
-        this.user = response.data;
-      } catch (err) {
-        console.log('Error fetching data:', err);
-      }
-    },
 
-    async fetchUserRepositories() {
-      try {
-        const response = await this.axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/repoV2/contributor/${this.userID}`);
-        this.repositories = response.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    goToRepo(repositoryID) {
-      this.$router.push({ path: `/repos/${repositoryID}` })
-    },
-
-    goToEdit(userID) {
-      this.$router.push({ path: `/contribuidores/${userID}/edit` })
-    },
-  },
-
-  mounted() {
-    this.fetchData();
-    this.fetchUserRepositories();
-  },
-};
-</script>
   
 <style scoped>
 .header {

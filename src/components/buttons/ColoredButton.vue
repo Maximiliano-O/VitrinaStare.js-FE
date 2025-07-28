@@ -1,27 +1,5 @@
-<template>
-  <component
-    :is="componentTag"
-    class="base-button"
-    :class="variant"
-    :type="componentTag === 'button' ? type : undefined"
-    :href="componentTag === 'a' ? to : undefined"
-    :target="componentTag === 'a' ? '_blank' : undefined"
-    :rel="componentTag === 'a' ? 'noopener noreferrer' : undefined"
-    :to="componentTag === 'router-link' ? to : undefined"
-    :active-class="componentTag === 'router-link' ? 'active' : undefined"
-    @click="handleClick"
-  >
-    <UserIcon
-      :imageUrl="imageUrl"
-      :iconName="iconName"
-    />
-    <slot />
-  </component>
-</template>
-
 <script setup>
 import { computed } from 'vue';
-import { RouterLink } from 'vue-router';  // <-- Import RouterLink component
 import { useRoute } from 'vue-router';
 import UserIcon from '../UserIcon.vue';
 
@@ -92,6 +70,27 @@ function handleClick(event) {
 }
 </script>
 
+<template>
+  <component
+    :is="componentTag"
+    class="base-button"
+    :class="variant"
+    :type="componentTag === 'button' ? type : undefined"
+    :href="componentTag === 'a' ? to : undefined"
+    :target="componentTag === 'a' ? '_blank' : undefined"
+    :rel="componentTag === 'a' ? 'noopener noreferrer' : undefined"
+    :to="componentTag === 'router-link' ? to : undefined"
+    :active-class="componentTag === 'router-link' ? 'active' : undefined"
+    @click="handleClick"
+  >
+    <UserIcon
+      :imageUrl="imageUrl"
+      :iconName="iconName"
+    />
+    <slot />
+  </component>
+</template>
+
 <style scoped>
 .base-button {
   display: flex;
@@ -107,6 +106,7 @@ function handleClick(event) {
   align-items: center;
   gap: 10px;
   height: 46px;
+  white-space: nowrap;
 }
 
 /* Variant Styles by color*/

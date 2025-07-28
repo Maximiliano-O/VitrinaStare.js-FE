@@ -12,7 +12,7 @@ const imageError = ref(false)
 const props = defineProps({
   iconName: {
     type: String,
-    default: '',
+    default: 'fa-regular-user-circle',
   },
   imageUrl: {
     type: String,
@@ -26,7 +26,9 @@ const props = defineProps({
     <img 
       v-if="imageUrl && !imageError" 
       :src="imageUrl" 
-      @error="imageError = true">
+      @error="imageError = true"
+      alt="User avatar"
+      >
     <OhVueIcon v-else :name="iconName" />
   </span>
 </template>

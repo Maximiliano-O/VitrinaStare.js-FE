@@ -73,8 +73,9 @@
 
     "repositoriesView": "StArE.js Repositories",
     "searchRepositories": "Search Repositories...",
+
     "typeAndSelectTags": "Type and select tags",
-    "registerRepository": "Register a Repository",
+    "createRepository": "Create a Repository",
 
     "defaultOrder": "Default Order",
     "ascendingRating": "Ascending Rating",

@@ -17,11 +17,11 @@ const props = defineProps({
   placeholder: String,
   name: {
     type: String,
-    defaul: ''
+    default: ''
   },
   autocomplete: {
     type: String,
-    defaul: ''
+    default: ''
   },
   errorMessage: {
     type: String,

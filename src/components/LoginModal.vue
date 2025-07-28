@@ -6,70 +6,70 @@ import FormInput from './FormInput.vue'
 import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase/firebaseConfig";
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close']);
 
 function emitClose() {
   emit('close')
-}
+};
 
-const input_email = ref('')
-const input_password = ref('')
-const showError = ref(false)
+const input_email = ref('');
+const input_password = ref('');
+const showError = ref(false);
 
 function logIn() {
-  const email = input_email.value
-  const password = input_password.value
+  const email = input_email.value;
+  const password = input_password.value;
 
   axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/login`, { email, password })
     .then(response => {
-      const { loggedIn, user } = response.data
-      if (loggedIn) {
-        localStorage.setItem("user", user.username)
-        localStorage.setItem("guest", 'false')
-        localStorage.setItem("userID", user._id)
-        localStorage.setItem("userIcon", user.imageURL)
-        window.location.href = '/'
+      const user = response.data.result;
+      if (user) {
+        localStorage.setItem("user", user.username);
+        localStorage.setItem("guest", 'false');
+        localStorage.setItem("userID", user._id);
+        localStorage.setItem("userIcon", user.imageURL);
+        window.location.href = '/';
       } else {
-        showError.value = true
+        showError.value = true;
       }
     })
     .catch(error => {
-      console.error(error)
-      showError.value = true
+      console.error(error);
+      showError.value = true;
     })
-}
+};
 
-const loginButtonDisabled = ref(false)
+const loginButtonDisabled = ref(false);
 
 function logInWithGithub() {
-  loginButtonDisabled.value = true
-  const provider = new GithubAuthProvider()
+  loginButtonDisabled.value = true;
+  const provider = new GithubAuthProvider();
 
   signInWithPopup(auth, provider)
     .then((result) => {
-      const user = result.user
+      const user = result.user;
 
-      fetch(`${import.meta.env.VITE_APP_EXPRESS_URL}/usersV2/email/${user.email}`)
+      fetch(`${import.meta.env.VITE_APP_EXPRESS_URL}/users/email/${user.email}`)
         .then(response => response.json())
         .then(data => {
           if (data === null) {
-            alert('Este correo no existe en la base de datos')
+            alert('Este correo no existe en la base de datos');
           } else {
-            localStorage.setItem("user", data.username)
-            localStorage.setItem("userID", data._id)
-            localStorage.setItem("guest", 'false')
-            window.location.href = '/'
+            localStorage.setItem("user", data.username);
+            localStorage.setItem("userID", data._id);
+            localStorage.setItem("guest", 'false');
+            window.location.href = '/';
           }
         })
         .catch(error => console.error('Error:', error))
     })
     .catch((error) => {
       if (error.code === 'auth/popup-closed-by-user') {
-        console.log('Inicio cancelado. Intenta nuevamente.')
+        console.log('Inicio cancelado. Intenta nuevamente.');
       }
     })
     .finally(() => {
-      loginButtonDisabled.value = false
+      loginButtonDisabled.value = false;
     })
 }
 </script>

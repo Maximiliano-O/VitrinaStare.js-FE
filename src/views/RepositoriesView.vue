@@ -1,15 +1,90 @@
 <script setup>
+import { ref, computed, onMounted } from 'vue';
 import RepositoryCard from '../components/RepositoryCard.vue';
 import CustomSelect from '../components/CustomSelect.vue';
 import CustomSearch from '../components/CustomSearch.vue';
 import ColoredButton from '../components/buttons/ColoredButton.vue';
-import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+import Multiselect from '@vueform/multiselect';
+import '../assets/multiselect.css';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+
+const { t } = useI18n();
+const router = useRouter();
+
+// Reactive state variables
+const sortByRating = ref('');
+const isGuest = ref(localStorage.getItem('guest') === 'true');
+const repositories = ref([]);
+const tags = ref([]);
+const currentTags = ref([]);
+const searchString = ref('');
+
+// Select options with translation
 const myOptions = [
   { label: t('defaultOrder'), value: '' },
   { label: t('ascendingRating'), value: 'asc' },
   { label: t('descendingRating'), value: 'desc' }
-]
+];
+
+// Computed filtered repositories based on tags, search, and sort
+const filteredRepositories = computed(() => {
+  let repos = repositories.value;
+
+  // Filter by tags
+  if (currentTags.value.length > 0) {
+    repos = repos.filter(repo =>
+      currentTags.value.every(tag => repo.tags.includes(tag))
+    );
+  }
+
+  // Filter by search string
+  if (searchString.value) {
+    repos = repos.filter(repo =>
+      repo.title.toLowerCase().includes(searchString.value.toLowerCase())
+    );
+  }
+
+  // Sort repositories
+  if (sortByRating.value === 'asc') {
+    repos = repos.slice().sort((a, b) => a.totalRating - b.totalRating);
+  } else if (sortByRating.value === 'desc') {
+    repos = repos.slice().sort((a, b) => b.totalRating - a.totalRating);
+  }
+
+  return repos;
+})
+
+// Methods for fetching data and navigation
+async function fetchAllRepositories() {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/repository`);
+    repositories.value = response.data.result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function fetchAllTags() {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/unique-tags`)
+    tags.value = response.data.result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function goToDetails(repositoryID) {
+  router.push({ path: `/repository/${repositoryID}` });
+}
+
+// Fetch data on mount
+onMounted(() => {
+  fetchAllRepositories();
+  fetchAllTags();
+});
+
 </script>
 
 <template>
@@ -17,13 +92,13 @@ const myOptions = [
     <div class="container-fluid">
       <div class="row">
         <div class="title">
-          <h1>{{ $t('repositoriesView') }}</h1>
+          <h1>{{ t('repositoriesView') }}</h1>
           <ColoredButton 
             v-if="!isGuest" 
             variant="night"
-            :to="{ name: 'registrarRepositorio' }"
+            :to="{ name: 'repositoryCreate' }"
           >
-            Crear Repositorio
+            {{ t('createRepository') }}
           </ColoredButton>
         </div>
       </div>
@@ -35,20 +110,20 @@ const myOptions = [
                 <CustomSelect 
                   v-model="sortByRating" 
                   :options="myOptions" 
-                  default-text="t('defaultOrder')"
+                  :default-text="t('defaultOrder')"
                 />
               </div>
               <CustomSearch
                 type="text" 
                 v-model="searchString" 
-                :placeholder="$t('searchRepositories')" 
+                :placeholder="t('searchRepositories')" 
               />
               <Multiselect class="multi-size"
                 v-model="currentTags"
                 mode="tags"
-                :placeholder="$t('typeAndSelectTags')"
+                :placeholder="t('typeAndSelectTags')"
                 :options="tags"
-                :searchable="true"
+                searchable
               />
             </div>
           </div>
@@ -65,97 +140,6 @@ const myOptions = [
     </div>
   </div>
 </template>
-
-<script>
-import Multiselect from '@vueform/multiselect'
-import '../assets/multiselect.css';
-import ColoredButton from '../components/buttons/ColoredButton.vue';
-
-export default {
-  components: { Multiselect },
-  name: "Repositories",
-  data() {
-    return {
-      sortByRating: '',
-      isGuest: localStorage.getItem("guest") === "true",
-      repositories: [],
-      tags: [],
-      currentTags: [],
-      searchString: ''
-    };
-  },
-
-  computed: {
-
-    filteredRepositories() {
-    let repos = this.repositories;
-
-    // filter by tags
-    if (this.currentTags.length > 0) {
-      repos = repos.filter(repository => {
-        return this.currentTags.every(tag => repository.tags.includes(tag));
-      });
-    }
-
-    // filter by search string
-    if (this.searchString) {
-      repos = repos.filter(repo => {
-        return repo.title.toLowerCase().includes(this.searchString.toLowerCase());
-      });
-    }
-
-    // sort the repositories
-    if (this.sortByRating === 'asc') { // sort ascending
-      repos.sort((a, b) => a.totalRating - b.totalRating);
-    } else if (this.sortByRating === 'desc') { // sort descending
-      repos.sort((a, b) => b.totalRating - a.totalRating);
-    }
-
-    return repos;
-  },
-
-  sortedRepositories() {
-    let repos = this.filteredRepositories.slice() // create a copy
-    if (this.sortByRating === 'asc') { // sort ascending
-      repos.sort((a,b) => a.totalRating - b.totalRating)
-    } else if (this.sortByRating === 'desc') { // sort descending
-      repos.sort((a, b) => b.totalRating - a.totalRating)
-    }
-    return repos // return (sorted) copy
-  },
-},
-  methods: {
-    async fetchAllRepositories() {
-      try {
-        
-       
-
-        const response = await this.axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/repoV2`);
-        this.repositories = response.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async fetchAllTags() {
-      try {
-        const responsetag = await this.axios.get(`${import.meta.env.VITE_APP_EXPRESS_URL}/unique-tags`);
-        this.tags = responsetag.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    
-    goToDetails(repositoryID) {
-      this.$router.push({ path: `/repos/${repositoryID}` })
-    },
-  },
-  created() {
-    this.fetchAllRepositories();
-    this.fetchAllTags();
-  },
-};
-</script>
 
 <style scoped>
 @font-face {

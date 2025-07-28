@@ -1,16 +1,13 @@
 <template>
   <div
-    class="base-button"
+    class="tag-wrapper"
   >
     <slot />
   </div>
 </template>
 
-<script setup>
-</script>
-
 <style scoped>
-.base-button {
+.tag-wrapper {
   display: inline-block;
   padding: 5px 10px;
   color: white;

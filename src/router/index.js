@@ -5,88 +5,15 @@ const router = createRouter({
   routes: [
 
     {
-      path: '/repos/registrarRepositorio',
-      name: 'registrarRepositorio',
-      component: () => import('../views/VistaRegistrarRepo.vue'),
-      meta: { hideNavbar: true },
-    },
-    {
-      path: '/contribuidores',
-      name: 'contribuidores',
-      component: () => import('../views/VistaContribuidores.vue'),
-    },
-
-    {
-      path: '/contribuidores/:userID',
-      name: 'detalleContribuidor',
-      component: () => import('../views/VistaDetalleUsuario.vue'),
-      props: true
-    },
-
-
-    {
-      path: '/contribuidores/:userID/edit',
-      name: 'editarContribuidor',
-      component: () => import('../views/VistaEditarUsuario.vue'),
-      props: true,
-      meta: { hideNavbar: true },
-    },
-
-    {
       path: '/',
-      name: 'repos',
-      component: () => import('../views/VistaRepos.vue'), 
-    },
-
-    {
-      path: '/repos/:repositoryID',
-      name: 'detalleRepo',
-      component: () => import('../views/VistaDetalleRepo.vue'),
-      props: true
-    },
-
-
-    {
-      path: '/repos/:repositoryID/edit',
-      name: 'editarRepo',
-      component: () => import('../views/VistaEditarRepo.vue'),
-      props: true,
-      meta: { hideNavbar: true },
-    },
-
-    {
-      path: '/repos/:repositoryID/newRelease',
-      name: 'newreleaseRepo',
-      component: () => import('../views/VistaRegistrarRelease.vue'),
-      props: true
-    },
-
-    {
-      path: '/sandbox/:releaseID',
-      name: 'sandbox',
-      component: () => import('../views/VistaSandbox.vue'),
-      props: true
-    },
-
-    {
-      path: '/verificacion/:releaseID',
-      name: 'verificacion',
-      component: () => import('../views/VistaVerificacion.vue'),
-      props: true
-    },
-
-
-    {
-      path: '/registrarse',
-      name: 'registrarse',
-      component: () => import('../views/VistaRegistrarUsuario.vue'),
-      meta: { hideNavbar: true },
+      name: 'repositories',
+      component: () => import('../views/RepositoriesView.vue'), 
     },
 
     {
       path: '/aboutStare',
       name: 'aboutStare',
-      component: () => import('../views/VistaAboutStare.vue'),
+      component: () => import('../views/AboutStareView.vue'),
       
     },
 
@@ -98,11 +25,71 @@ const router = createRouter({
     },
 
     {
-      path: '/dynamicObservable',
-      name: 'dynamicObservable',
-      component: () => import('../views/demoObservableDynamic.vue'),
-      
-    }
+      path: '/singup',
+      name: 'signup',
+      component: () => import('../views/UserSignupView.vue'),
+      meta: { hideNavbar: true },
+    },
+
+    {
+      path: '/user/:userID',
+      name: 'userProfile',
+      component: () => import('../views/UserProfileView.vue'),
+      props: true
+    },
+
+
+    {
+      path: '/user/:userID/edit',
+      name: 'editUser',
+      component: () => import('../views/UserEditView.vue'),
+      props: true,
+      meta: { hideNavbar: true },
+    },
+
+    {
+      path: '/repository/repositoryCreate',
+      name: 'repositoryCreate',
+      component: () => import('../views/RepositoryCreateView.vue'),
+      meta: { hideNavbar: true },
+    },
+
+    {
+      path: '/repository/:repositoryID',
+      name: 'repositoryDetails',
+      component: () => import('../views/RepositoryDetailedView.vue'),
+      props: true
+    },
+
+
+    {
+      path: '/repository/:repositoryID/edit',
+      name: 'editRepository',
+      component: () => import('../views/RepositoryEditView.vue'),
+      props: true,
+      meta: { hideNavbar: true },
+    },
+
+    {
+      path: '/sandbox/:releaseID',
+      name: 'sandbox',
+      component: () => import('../views/ReleaseCodeSandboxView.vue'),
+      props: true
+    },
+
+    {
+      path: '/verification/:releaseID',
+      name: 'verification',
+      component: () => import('../views/ReleaseVerificationView.vue'),
+      props: true
+    },
+
+    {
+      path: '/testDrive',
+      name: 'testDrive',
+      component: () => import('../views/TestDriveView.vue'),
+    },
+
   ]
 })
 

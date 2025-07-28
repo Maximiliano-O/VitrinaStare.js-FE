@@ -1,24 +1,8 @@
-<template>
-  <div class="custom-input" :class="{ focused: isFocused }">
-    <OhVueIcon name="io-search" class="icon" />
-    <input
-      :type="type"
-      :value="modelValue"
-      :placeholder="placeholder"
-      @input="$emit('update:modelValue', $event.target.value)"
-      @focus="isFocused = true"
-      @blur="isFocused = false"
-      :id="inputId"
-    />
-  </div>
-</template>
-
 <script setup>
 import { ref, computed } from 'vue'
 import { IoSearch } from "oh-vue-icons/icons";
 import { addIcons } from "oh-vue-icons";
 import { OhVueIcon } from "oh-vue-icons";
-
 
 addIcons(IoSearch);
 
@@ -41,6 +25,21 @@ const isFocused = ref(false)
 
 const inputId = computed(() => props.id || `input-${Math.random().toString(36).substr(2, 9)}`)
 </script>
+
+<template>
+  <div class="custom-input" :class="{ focused: isFocused }">
+    <OhVueIcon name="io-search" class="icon" />
+    <input
+      :type="type"
+      :value="modelValue"
+      :placeholder="placeholder"
+      @input="$emit('update:modelValue', $event.target.value)"
+      @focus="isFocused = true"
+      @blur="isFocused = false"
+      :id="inputId"
+    />
+  </div>
+</template>
 
 <style scoped>
 .custom-input {

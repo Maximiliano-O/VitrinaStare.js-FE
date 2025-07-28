@@ -39,7 +39,7 @@ function logOff() {
 
 function getUserLink() {
   const id = localStorage.getItem('userID');
-  return `/contribuidores/${id}`;
+  return `/user/${id}`;
 };
 
 watch(selectedLocale, (newLocale) => {
@@ -62,15 +62,15 @@ watch(selectedLocale, (newLocale) => {
         default-text="Español"
       />
       <div class="button-container" v-if="isGuest">
-        <ColoredButton variant="transparent" :to="{ name: 'repos' }">{{ t('navbarRepositories') }}</ColoredButton>
+        <ColoredButton variant="transparent" :to="{ name: 'repositories' }">{{ t('navbarRepositories') }}</ColoredButton>
         <ColoredButton variant="transparent" :to="{ name: 'aboutStare' }">{{ t('navbarStare') }}</ColoredButton>
         <ColoredButton variant="wine" @click="openLogin">{{ t('navbarLogin') }}</ColoredButton>
         <LoginModal v-if="showLoginModal" @close="closeLogin" />
-        <ColoredButton variant="night" :to="{ name: 'registrarse' }">{{ t('navbarSignup') }}</ColoredButton>
+        <ColoredButton variant="night" :to="{ name: 'signup' }">{{ t('navbarSignup') }}</ColoredButton>
       </div>
       <div class="button-container" v-else>
-        <ColoredButton variant="transparent" :to="{ name: 'staticObservable' }">Testing pipeline</ColoredButton>
-        <ColoredButton variant="transparent" :to="{ name: 'repos' }">{{ t('navbarRepositories') }}</ColoredButton>
+        <ColoredButton variant="transparent" :to="{ name: 'testDrive' }">Test Drive</ColoredButton>
+        <ColoredButton variant="transparent" :to="{ name: 'repositories' }">{{ t('navbarRepositories') }}</ColoredButton>
         <ColoredButton variant="transparent" :to="{ name: 'aboutStare' }">{{ t('navbarStare') }}</ColoredButton>
         <ColoredButton
           variant="transparent"
@@ -94,7 +94,7 @@ watch(selectedLocale, (newLocale) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 0px 5px 300px;
+  padding: 5px 0px 5px 150px;
   min-width: 100%;
   max-height: 75px;
   -webkit-box-shadow: 0px 4px 4px 1.5px rgba(0, 0, 0, 0.35);
@@ -105,9 +105,11 @@ watch(selectedLocale, (newLocale) => {
   margin-bottom: 10px;
 }
 
-#navbar .navbar-header {
+.navbar-header {
+  display: flex;
+  gap: 10px;
   align-items: center;
-  font-family: 'Poppins-SemiBold', sans-serif;
+  font-family: 'Poppins-SemiBold';
   font-size: 32px;
 }
 

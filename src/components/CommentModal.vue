@@ -1,38 +1,41 @@
 <script setup>
-import { ref } from 'vue'
-import axios from 'axios'
-import ColoredButton from './buttons/ColoredButton.vue'
 import FormInput from './FormInput.vue'
-const emit = defineEmits(['close'])
+import ColoredButton from './buttons/ColoredButton.vue'
+import { ref } from 'vue'
+const emit = defineEmits(['close', 'submit'])
 
 function emitClose() {
   emit('close')
 }
 
 const commentContent = ref('')
-const showError = ref(false)
+
+function submitComment() {
+  if (commentContent.value.trim() === '') return
+  emit('submit', commentContent.value)
+  commentContent.value = ''
+  emitClose()
+}
 </script>
 
 <template>
   <div class="modal-overlay" @click.self="emitClose">
     <div class="modal-content">
       <button class="close-button" @click="emitClose">×</button>
-      <div class="title">
-        Comenta
-      </div>
+      <div class="title">Comenta</div>
       <FormInput 
         type="text" 
         v-model="commentContent" 
         placeholder="Comentario..."
-      >
-      </FormInput>
+      />
       <div class="button-pair">
         <ColoredButton variant="black" @click="emitClose">Volver</ColoredButton>
-        <ColoredButton variant="wine" @click="logIn">Enviar</ColoredButton>
+        <ColoredButton variant="wine" @click="submitComment">Enviar</ColoredButton>
       </div>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .title {
@@ -85,3 +88,69 @@ const showError = ref(false)
 }
 
 </style>
+
+<!-- <script setup>
+import { ref } from 'vue'
+import axios from 'axios'
+import ColoredButton from './buttons/ColoredButton.vue'
+import FormInput from './FormInput.vue'
+
+const commentContent = ref('')
+const showError = ref(false)
+
+async function submitComment() {
+  if (!commentContent.value.trim()) {
+    showError.value = true
+    return
+  }
+  try {
+    await axios.post('/api/comments', { content: commentContent.value })
+    commentContent.value = ''
+    showError.value = false
+  } catch (err) {
+    console.error(err)
+  }
+}
+</script>
+
+<template>
+  <div class="comment-section">
+    <div class="title">Comenta</div>
+    <FormInput 
+      type="text" 
+      v-model="commentContent" 
+      placeholder="Comentario..."
+    />
+    <div v-if="showError" class="error">El comentario no puede estar vacío.</div>
+    <div class="button-pair">
+      <ColoredButton variant="wine" @click="submitComment">Enviar</ColoredButton>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.comment-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  width: 100%;
+}
+
+.title {
+  font-family: "Poppins-Bold";
+  font-size: 28px;
+}
+
+.button-pair {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.error {
+  color: #ff0800;
+  font-size: 14px;
+  font-family: 'Poppins-SemiBold', sans-serif;
+}
+</style> -->

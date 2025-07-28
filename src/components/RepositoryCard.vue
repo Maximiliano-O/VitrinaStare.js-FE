@@ -1,3 +1,13 @@
+<script setup>
+import { computed } from 'vue';
+
+const props = defineProps({ repository: Object });
+const { repository } = props;
+
+const ratingCount = computed(() => Array.isArray(repository.ratings) ? repository.ratings.length : 0);
+
+</script>
+
 <template>
   <div class="repo-card">
     <div class="repo-title">
@@ -11,22 +21,16 @@
         </div>
         <span class="divider"></span>
         <div>
-          19-05-2025
+          {{ new Date(repository.updatedAt).toLocaleDateString() }}
         </div>
         <span class="divider"></span>
         <div>
-          {{repository.totalRating}} ★
+          {{repository.totalRating}} ★ <small>({{ ratingCount }})</small>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<script setup>
-defineProps({
-  repository: Object,
-})
-</script>
 
 <style scoped>
 .repo-card {

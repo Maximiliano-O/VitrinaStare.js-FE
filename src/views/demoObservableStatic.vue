@@ -10,10 +10,6 @@
   </div>
 </template>
 
-<script>
-
-</script>
-
 <style scoped>
 .frame-container {
   display: flex;

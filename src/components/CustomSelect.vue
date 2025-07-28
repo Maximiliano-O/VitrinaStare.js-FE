@@ -1,33 +1,3 @@
-<template>
-  <div class="custom-select"
-    tabindex="0"
-    @blur="isOpen = false"
-    @keydown="handleKeydown"
-    @focus="isFocused = true"
-    @blur.capture="isFocused = false"
-  >
-    <div class="selected" @click="toggle">
-      <span class="icon" v-if="startIcon">
-        <OhVueIcon :name="startIcon" />
-      </span>
-      <span class="label">{{ selectedLabel }}</span>
-      <span :class="['icon', 'custom-caret', { 'is-open': isOpen }]">
-        <OhVueIcon :name="endIcon" />
-      </span>
-    </div>
-    <ul v-if="isOpen" class="options">
-      <li
-        v-for="option in normalizedOptions"
-        :key="option.value"
-        @click="select(option.value)"
-        :class="{ selected: option.value === modelValue }"
-      >
-        {{ option.label }}
-      </li>
-    </ul>
-  </div>
-</template>
-
 <script setup>
 import { ref, computed, defineProps, defineEmits } from 'vue';
 import { MdTranslate } from 'oh-vue-icons/icons/md';
@@ -95,6 +65,36 @@ const handleKeydown = (e) => {
   }
 }
 </script>
+
+<template>
+  <div class="custom-select"
+    tabindex="0"
+    @blur="isOpen = false"
+    @keydown="handleKeydown"
+    @focus="isFocused = true"
+    @blur.capture="isFocused = false"
+  >
+    <div class="selected" @click="toggle">
+      <span class="icon" v-if="startIcon">
+        <OhVueIcon :name="startIcon" />
+      </span>
+      <span class="label">{{ selectedLabel }}</span>
+      <span :class="['icon', 'custom-caret', { 'is-open': isOpen }]">
+        <OhVueIcon :name="endIcon" />
+      </span>
+    </div>
+    <ul v-if="isOpen" class="options">
+      <li
+        v-for="option in normalizedOptions"
+        :key="option.value"
+        @click="select(option.value)"
+        :class="{ selected: option.value === modelValue }"
+      >
+        {{ option.label }}
+      </li>
+    </ul>
+  </div>
+</template>
 
 <style scoped>
 .custom-select {
