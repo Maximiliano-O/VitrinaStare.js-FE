@@ -71,7 +71,7 @@ function logInWithGithub() {
     .finally(() => {
       loginButtonDisabled.value = false;
     })
-}
+};
 </script>
 
 
@@ -80,31 +80,33 @@ function logInWithGithub() {
     <div class="modal-content">
       <button class="close-button" @click="emitClose">×</button>
       <div class="title">
-        Iniciar Sesión
+        {{ $t('login.title') }}
       </div>
       <FormInput 
         type="text" 
         v-model="input_email" 
-        placeholder="Correo"
-        error-message="No puede estar vacío"
+        :placeholder="$t('common.form.email.placeholder')"
+        :error-message="$t('common.form.errors.emptyRequired')"
         name="email"
         autocomplete="email"
+        required
       >
-        Correo*
+        {{ $t('common.form.email.label') }}
       </FormInput>
       <FormInput 
         type="password" 
         v-model="input_password" 
-        placeholder="Contraseña"
-        error-message="No puede estar vacío" 
+        :placeholder="$t('common.form.password.placeholder')"
+        :error-message="$t('common.form.errors.emptyRequired')"
+        required
       >
-        Contraseña*
+        {{ $t('common.form.password.label') }}
       </FormInput>
       <div class="button-pair">
-        <ColoredButton variant="black" @click="emitClose">Volver</ColoredButton>
-        <ColoredButton variant="wine" @click="logIn">Iniciar Sesión</ColoredButton>
+        <ColoredButton variant="black" @click="emitClose">{{ $t('common.actions.back') }}</ColoredButton>
+        <ColoredButton variant="wine" @click="logIn">{{ $t('login.actions.submit') }}</ColoredButton>
       </div>
-        <ColoredButton variant="night" @click="logInWithGithub">Iniciar Sesión con Github</ColoredButton>
+        <ColoredButton variant="night" @click="logInWithGithub">{{ $t('login.actions.github') }}</ColoredButton>
     </div>
   </div>
 </template>

@@ -65,13 +65,13 @@ onMounted(async () => {
   <div v-if="allowed" class="verify-container">
     <div v-if="!status.isReviewed">
       <div class="header">
-        <h1>{{ t('verifyRelease') }}</h1>
+        <h1>{{ t('verification.title') }}</h1>
         <div class="button-pair">
           <ColoredButton variant="night" @click="showApproveModal = true">
-            {{ t('approveRelease') }}
+            {{ t('verification.actions.approve') }}
           </ColoredButton>
           <ColoredButton variant="wine" @click="showRejectModal = true">
-            {{ t('rejectRelease') }}
+            {{ t('verification.actions.reject') }}
           </ColoredButton>
         </div>
       </div>
@@ -80,14 +80,14 @@ onMounted(async () => {
         <GitHubCodeSandbox :url="release.codesandbox_URL" />
       </div>
       <div v-else>
-        <p>Cargando sandbox...</p>
+        <p>{{ $t('verification.loadingSandbox') }}</p>
       </div>
 
       <!-- Approve Modal -->
       <VerificationModal
         :visible="showApproveModal"
-        :title="t('verifyApprove')"
-        :confirm-label="t('confirmApprove')"
+        :title="$t('approveModal.title')"
+        :confirm-label="$t('approveModal.actions.confirm')"
         confirm-class="btn-primary"
         v-model:modelValue="comentarioApruebo"
         @confirm="apruebo"
@@ -97,8 +97,8 @@ onMounted(async () => {
       <!-- Reject Modal -->
       <VerificationModal
         :visible="showRejectModal"
-        :title="t('verifyReject')"
-        :confirm-label="t('confirmReject')"
+        :title="$t('rejectModal.title')"
+        :confirm-label="$t('rejectModal.actions.confirm')"
         confirm-class="btn-danger"
         v-model:modelValue="comentarioRechazo"
         @confirm="rechazo"
@@ -107,13 +107,13 @@ onMounted(async () => {
     </div>
 
     <div v-else class="info-message">
-      <h2>{{ t('alreadyVerified') }}</h2>
+      <h2>{{ $t('verification.alreadyVerified') }}</h2>
     </div>
   </div>
 
   <div v-else class="info-message">
-    <h2>{{ t('accessDenied') }}</h2>
-    <p>{{ t('accessDeniedMessage') }}</p>
+    <h2>{{ $t('accessDenied.title') }}</h2>
+    <p>{{ $t('accessDenied.message') }}</p>
   </div>
 </template>
 

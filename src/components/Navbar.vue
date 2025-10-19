@@ -14,8 +14,8 @@ const showLoginModal = ref(false);
 const selectedLocale = ref(locale.value);
 
 const locales = computed(() => [
-  { label: t('englishLabel'), value: 'english' },
-  { label: t('spanishLabel'), value: 'spanish' }
+  { label: t('locales.english'), value: 'english' },
+  { label: t('locales.spanish'), value: 'spanish' }
 ]);
 
 const isGuest = ref(localStorage.getItem('guest') === 'true');
@@ -30,7 +30,7 @@ function closeLogin() {
   showLoginModal.value = false;
 };
 
-function logOff() {
+function logOut() {
   localStorage.setItem('user', 'Invitado');
   localStorage.setItem('guest', 'true');
   localStorage.removeItem('userID');
@@ -59,19 +59,19 @@ watch(selectedLocale, (newLocale) => {
         v-model="selectedLocale"
         :options="locales"
         start-icon="md-translate"
-        default-text="Español"
+        :default-text="t('locales.spanish')"
       />
       <div class="button-container" v-if="isGuest">
-        <ColoredButton variant="transparent" :to="{ name: 'repositories' }">{{ t('navbarRepositories') }}</ColoredButton>
-        <ColoredButton variant="transparent" :to="{ name: 'aboutStare' }">{{ t('navbarStare') }}</ColoredButton>
-        <ColoredButton variant="wine" @click="openLogin">{{ t('navbarLogin') }}</ColoredButton>
+        <ColoredButton variant="transparent" :to="{ name: 'repositories' }">{{ $t('navbar.repositories') }}</ColoredButton>
+        <ColoredButton variant="transparent" :to="{ name: 'aboutStare' }">{{ $t('navbar.about') }}</ColoredButton>
+        <ColoredButton variant="wine" @click="openLogin">{{ $t('navbar.login') }}</ColoredButton>
         <LoginModal v-if="showLoginModal" @close="closeLogin" />
-        <ColoredButton variant="night" :to="{ name: 'signup' }">{{ t('navbarSignup') }}</ColoredButton>
+        <ColoredButton variant="night" :to="{ name: 'signup' }">{{ $t('navbar.signup') }}</ColoredButton>
       </div>
       <div class="button-container" v-else>
-        <ColoredButton variant="transparent" :to="{ name: 'testDrive' }">Test Drive</ColoredButton>
-        <ColoredButton variant="transparent" :to="{ name: 'repositories' }">{{ t('navbarRepositories') }}</ColoredButton>
-        <ColoredButton variant="transparent" :to="{ name: 'aboutStare' }">{{ t('navbarStare') }}</ColoredButton>
+        <ColoredButton variant="transparent" :to="{ name: 'testDrive' }">{{ $t('navbar.testDrive') }}</ColoredButton>
+        <ColoredButton variant="transparent" :to="{ name: 'repositories' }">{{ $t('navbar.repositories') }}</ColoredButton>
+        <ColoredButton variant="transparent" :to="{ name: 'aboutStare' }">{{ $t('navbar.about') }}</ColoredButton>
         <ColoredButton
           variant="transparent"
           :to="getUserLink()"
@@ -80,7 +80,7 @@ watch(selectedLocale, (newLocale) => {
         >
           {{ userName }}
         </ColoredButton>
-        <ColoredButton variant="white" :onClick="logOff">{{ t('logOff') }}</ColoredButton>
+        <ColoredButton variant="white" :onClick="logOut">{{ $t('navbar.logOut') }}</ColoredButton>
       </div>
     </div>
   </nav>

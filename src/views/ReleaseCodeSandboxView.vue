@@ -44,22 +44,22 @@ onMounted(() => {
     <div class="row">
       <div class="header">
         <div class="title">
-          Demostración: {{ releaseName }}
+          {{ $t('sandBox.title') }}: {{ releaseName }}
         </div>
         <div class="button-container">
-          <ColoredButton variant="black" to="/">Volver a lista de Repositorios</ColoredButton>
+          <ColoredButton variant="black" to="/">{{ $t('common.actions.backToRepos') }}</ColoredButton>
           <ColoredButton
             variant="black"
             v-if="repositoryIDValue"
             :to="{ name: 'repositoryDetails', params: { repositoryID: repositoryIDValue } }"
           >
-            Volver a {{ repositoryName }}
+            {{ $t('common.actions.backTo') }} {{ repositoryName }}
           </ColoredButton>
         </div>
       </div>
       <div class="sb-container">
         <GitHubCodeSandbox v-if="release.codesandbox_URL" :url="release.codesandbox_URL" />
-        <p v-else>Cargando sandbox...</p>
+        <p v-else>{{ loadingSandbox }}</p>
       </div>
     </div>
   </div>

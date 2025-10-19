@@ -47,7 +47,7 @@ const checkGitHubOwnership = async () => {
 
 const registerRepository = async () => {
   errorMessage.value = ''
-  if (!repoName.value || !title.value || !description.value || !repoUrl.value || !imageUrl.value || !tags.value) {
+  if (!title.value || !description.value || !repoUrl.value || !imageUrl.value || !tags.value) {
     errorMessage.value = 'Todos los campos marcados con * son obligatorios.';
     return;
   }
@@ -64,8 +64,8 @@ const registerRepository = async () => {
     const payload = {
       userID: userID,
       author: username,
-      repositoryName: repoName.value,
       title: title.value,
+      repositoryName: repoName.value,
       repositoryDesc: description.value,
       repositoryDoc: documentation.value,
       license: license.value,
@@ -92,43 +92,78 @@ onMounted(fetchGitHubProfile)
   <div class="view-content">
     <!-- Left color panel -->
     <div class="color-side">
-      <div class="color-title">Crea un nuevo repositorio</div>
+      <div class="color-title">{{ $t('repositoryCreate.title') }}</div>
       <div class="color-body">
-        Recuerda que para crear un nuevo repositorio en la plataforma, 
-        tu proyecto debe seguir la plantilla para visualizaciones de StArE.js.
+        {{ $t('repositoryCreate.description') }}
       </div>
     </div>
 
     <!-- Form panel -->
     <div class="form-side">
       <div class="button-container">
-        <ColoredButton class="button" :to="{ name: 'repositories' }">Volver</ColoredButton>
+        <ColoredButton class="button" :to="{ name: 'repositories' }">{{ $t('common.actions.back') }}</ColoredButton>
       </div>
-      <div class="form-title">Datos del Nuevo Repositorio</div>
+      <div class="form-title">{{ $t('repositoryCreate.form.title') }}</div>
       <div class="form-body">
-        <FormInput type="text" v-model="repoName" placeholder="Nombre del Repositorio" error-message="Campo requerido">
-          Nombre del Repositorio*
+        <FormInput 
+          type="text" 
+          v-model="title" 
+          :placeholder="$t('repositoryForm.fields.title.placeholder')" 
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+        >
+          {{ $t('repositoryForm.fields.title.label') }}
         </FormInput>
-        <FormInput type="text" v-model="title" placeholder="Título" error-message="Campo requerido">
-          Título*
+        <FormInput 
+          type="text" 
+          v-model="description" 
+          :placeholder="$t('repositoryForm.fields.description.placeholder')" 
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+          multiline
+        >
+          {{ $t('repositoryForm.fields.description.label') }}
         </FormInput>
-        <FormInput type="text" v-model="description" placeholder="Descripción..." error-message="Campo requerido">
-          Descripción*
+        <FormInput 
+          type="text" 
+          v-model="documentation" 
+          :placeholder="$t('repositoryForm.fields.documentation.placeholder')"
+        >
+          {{ $t('repositoryForm.fields.documentation.label') }}
         </FormInput>
-        <FormInput type="text" v-model="documentation" placeholder="Documentación del Repositorio">
-          Documentación del Repositorio
+        <FormInput 
+          type="text" 
+          v-model="license" 
+          :placeholder="$t('repositoryForm.fields.license.placeholder')" 
+        >
+          {{ $t('repositoryForm.fields.license.label') }}
         </FormInput>
-        <FormInput type="text" v-model="license" placeholder="Licencia">
-          Licencia
+        <FormInput 
+          type="text" 
+          v-model="repoUrl" 
+          :placeholder="$t('repositoryForm.fields.url.placeholder')" 
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+        >
+          {{ $t('repositoryForm.fields.url.label') }}
         </FormInput>
-        <FormInput type="text" v-model="repoUrl" placeholder="URL del Repositorio" error-message="Campo requerido">
-          URL del Repositorio*
+        <FormInput 
+          type="text" 
+          v-model="imageUrl" 
+          :placeholder="$t('repositoryForm.fields.image.placeholder')"
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+        >
+          {{ $t('repositoryForm.fields.image.label') }}
         </FormInput>
-        <FormInput type="text" v-model="imageUrl" placeholder="URL Imagen" error-message="Campo requerido">
-          URL Imagen*
-        </FormInput>
-        <FormInput type="text" v-model="tags" placeholder="Etiquetas (separadas por coma)" error-message="Campo requerido">
-          Etiquetas*
+        <FormInput 
+          type="text" 
+          v-model="tags" 
+          :placeholder="$t('repositoryForm.fields.tags.placeholder')" 
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+        >
+          {{ $t('repositoryForm.fields.tags.label') }}
         </FormInput>
 
         <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
@@ -139,7 +174,7 @@ onMounted(fetchGitHubProfile)
           :disabled="isSubmitting"
           @click="registerRepository"
         >
-          {{ isSubmitting ? 'Creando...' : 'Crear' }}
+          {{ isSubmitting ? 'Creando...' : $t('repositoryCreate.form.actions.save') }}
         </ColoredButton>
       </div>
     </div>

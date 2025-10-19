@@ -23,9 +23,9 @@ const searchString = ref('');
 
 // Select options with translation
 const myOptions = [
-  { label: t('defaultOrder'), value: '' },
-  { label: t('ascendingRating'), value: 'asc' },
-  { label: t('descendingRating'), value: 'desc' }
+  { label: t('repositories.sortBy.default'), value: '' },
+  { label: t('repositories.sortBy.ascendingRating'), value: 'asc' },
+  { label: t('repositories.sortBy.descendingRating'), value: 'desc' }
 ];
 
 // Computed filtered repositories based on tags, search, and sort
@@ -92,13 +92,13 @@ onMounted(() => {
     <div class="container-fluid">
       <div class="row">
         <div class="title">
-          <h1>{{ t('repositoriesView') }}</h1>
+          <h1>{{ $t('repositories.title') }}</h1>
           <ColoredButton 
             v-if="!isGuest" 
             variant="night"
             :to="{ name: 'repositoryCreate' }"
           >
-            {{ t('createRepository') }}
+            {{ $t('repositories.actions.create') }}
           </ColoredButton>
         </div>
       </div>
@@ -110,18 +110,18 @@ onMounted(() => {
                 <CustomSelect 
                   v-model="sortByRating" 
                   :options="myOptions" 
-                  :default-text="t('defaultOrder')"
+                  :default-text="$t('repositories.sortBy.default')"
                 />
               </div>
               <CustomSearch
                 type="text" 
                 v-model="searchString" 
-                :placeholder="t('searchRepositories')" 
+                :placeholder="$t('repositories.placeholder.search')" 
               />
               <Multiselect class="multi-size"
                 v-model="currentTags"
                 mode="tags"
-                :placeholder="t('typeAndSelectTags')"
+                :placeholder="$t('repositories.placeholder.tags')"
                 :options="tags"
                 searchable
               />

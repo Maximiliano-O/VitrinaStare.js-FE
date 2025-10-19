@@ -1,129 +1,256 @@
 {
-  "changeLanguage": "Cambiar Idioma", 
-  "update":"Actualizar",
-    "email": "Correo",
-    "password": "Contraseña",
-    "return": "Volver",
-    "login": "Iniciar Sesión",
-    "loginGitHub": "Iniciar Sesión con Github",
-    "logOff": "Cerrar Sesión",
-    "repositories": "Repositorios",
+  "common": {
     "repository": "Repositorio",
-    "guest": "Invitado",
-    "comments": "Comentarios",
+    "actions": {
+      "back": "Volver",
+      "backTo": "Volver a",
+      "backToRepos": "Volver a Repositorios"
+    },
+    "form": {
+      "email": {
+        "label": "Correo",
+        "placeholder": "Ingresa tú Correo"
+      },
+      "password": {
+        "label": "Contraseña",
+        "placeholder": "Ingresa tú contraseña"
+      },
+      "errors": {
+        "emptyRequired": "No puede estar vacío"
+      }
+    }
+  },
+  "navbar": {
+    "repositories": "Repositorios",
+    "about": "¿Qué es StArE?",
+    "login": "Iniciar Sesión",
+    "signup": "Registrarse",
     "myProfile": "Mi Perfil",
     "editProfile": "Editar Perfil",
-    "repoBackSingle": "Volver a Repositorio",
-    "repoBack": "Volver a Repositorios",
-    "userBack": "Volver a usuario",
-
-    "writeComment": "Escribe un comentario",
-    "postComment": "Publicar Comentario",
-    "rateRepo": "Calificar Publicación",
-    "addRelease": "Añadir Versión",
-    "releases": "Versiones",
-    "version": "Versión",
-    "verified?": "¿Verificada?",
-    "verify": "Verificar",
-    "run":"Ejecutar",
-    "date":"Fecha",
-    "confirmRating": "Confirmar Rating",
-
-    "englishLabel":"Inglés",
-    "spanishLabel":"Español",
-
-    "registerRepo": "Registrar un Repositorio",
-    "updateRepo": "Actualizar un Repositorio",
-    "repoName": "Nombre Repositorio",
-    "description": "Descripción",
-    "postRepo": "Publicar Repositorio",
-    "license": "Licencia",
-    "urlRepoImage": "URL Imagen",
-    "repoDoc":  "Documentación Repo",
-
-
-    "requiredField": "Campo Obligatorio(*)",
-    "urlGitHub":"URL Usuario Github",
-    "urlImage":"URL de Imagen de Perfil",
-    "urlRepo":"URL de Repositorio",
-    "userInfo":"Datos del Usuario",
-    "returnUserList": "Volver a la lista de usuarios",
-
-    "repositoryDetails": "Detalles del Repositorio",
-    "lastVerifiedVersion": "Última Versión Verificada",
-    "browseRelease": "Ver Releases",
-
-    "author": "Autor",
-    "tags": "Etiquetas",
-    "newTags": "Etiquetas separadas por comas ('tag1,tag2,tag3')",
-    "verified": "Verificado",
-    "select": "Seleccionar",
-
-    "edit": "Editar",
-
-    "navbarRepositories": "Repositorios",
-    "navbarStare": "¿Qué es StArE?",
-    "navbarLogin": "Iniciar Sesión",
-    "navbarSignup": "Registrarse",
-
-    "repositoriesView": "Repositorios StArE.js",
-    "searchRepositories": "Buscar Repositorios...",
-    
-    "typeAndSelectTags": "Escribe y selecciona etiquetas",
-    "createRepository": "Crear Repositorio",
-
-    "defaultOrder": "Orden Original",
-    "ascendingRating": "Puntaje Ascendiente",
-    "descendingRating": "Puntaje Descendiente",
-
-    "title": "Title",
-    "Name of Repository": "Title",
-
-    "userList": "Lista de Usuarios",
-    "username": "Nombre de Usuario",
-    "userDetails": "Detalles Usuario",
-    "image": "Imagen",
-    "signUp": "Registrarse",
-
-    "stareQuestion":"¿Qué es StArE.js?",
-    "stareP1": "La visualización correcta hace que la información sea más fácil de entender. A veces, una imagen habla más que mil palabras, por eso queremos brindar herramientas que faciliten el proceso de visualización de los resultados de los motores de búsqueda.",
-    "stareP2": "StArE.js es un proyecto de código abierto destinado a facilitar a los desarrolladores la creación de visualizaciones alternativas de la página de resultados del motor de búsqueda (SERP). Stare.js proporciona una canalización de procesamiento modular y extensible capaz de: ",
-    "stareL1":"Transformar SERP",
-    "stareL2":"Extraer funciones de resultados de búsqueda individuales",
-    "stareL3":"Visualizar SERP de múltiples maneras",
-    
-    "stareWebsite":"Sitio Web de StarE.js ",
-    "stareGithub":"Github de StarE.js",
-
-    
-    "verifyRelease": "Verificación de Versión",
-    "approveRelease":"Aprobar Release",
-    "rejectRelease":"Rechazar Release",
-    "verifyApprove": "¿Está seguro de aprobar este release?",
-    "verifyReject": "¿Está seguro de rechazar este release?",
-    "confirmApprove": "Confirmar Apruebo",
-    "confirmReject": "Confirmar Rechazo",
-    "observations": "Observaciones",
-
+    "testDrive": "Test Drive",
+    "logOut": "Cerrar Sesión"
+  },
+  "locales": {
+    "spanish": "Español",
+    "english": "Inglés"
+  },
+  "login": {
+		"title": "Iniciar Sesión",
+		"actions": {
+			"submit": "Iniciar Sesión",
+			"github": "Iniciar Sesión con Github"
+		},
+    "errors": {
+      "invalidCredentials": "Email o contraseña incorrecta",
+			"missingFields": "Todos los campos son requeridos"
+		}
+	},
+  "about": {
+    "title": "¿Qué es StArE.js?",
+    "content": {
+      "paragraph1": "La visualización correcta hace que la información sea más fácil de entender. A veces, una imagen habla más que mil palabras, por eso queremos brindar herramientas que faciliten el proceso de visualización de los resultados de los motores de búsqueda.",
+      "paragraph2": "StArE.js es un proyecto de código abierto destinado a facilitar a los desarrolladores la creación de visualizaciones alternativas de la página de resultados del motor de búsqueda (SERP). Stare.js proporciona una canalización de procesamiento modular y extensible capaz de: ",
+      "bullet1": "Transformar SERP",
+      "bullet2": "Extraer funciones de resultados de búsqueda individuales",
+      "bullet3": "Visualizar SERP de múltiples maneras",
+      "site": "Sitio Web de StarE.js ",
+      "github": "Github de StarE.js"
+    }
+  },
+  "repositories": {
+    "title": "Repositorios StArE.js",
+    "actions": {
+      "create": "Crear Repositorio"
+    },
+    "placeholder": {
+      "search": "Buscar Repositorios...",
+      "tags": "Escribe y selecciona etiquetas"
+    },
+    "sortBy": {
+        "default": "Orden Original",
+        "ascendingRating": "Puntaje Ascendiente",
+        "descendingRating": "Puntaje Descendiente"
+    }
+  },
+  "repositoryForm": {
+    "fields": {
+      "title": {
+        "label": "Título del Repositorio",
+        "placeholder": "Título del Repositorio"
+      },
+      "description": {
+        "label": "Descripción",
+        "placeholder": "Descripción..."
+      },
+      "documentation": {
+        "label": "Documentación del Repositorio",
+        "placeholder": "Documentación"
+      },
+      "license": {
+        "label": "Licencia",
+        "placeholder": "Licencia"
+      },
+      "url": {
+        "label": "URL del Repositorio",
+        "placeholder": "URL del Repositorio"
+      },
+      "image": {
+        "label": "URL Imagen",
+        "placeholder": "URL Imagen"
+      },
+      "tags": {
+        "label": "Etiquetas",
+        "placeholder": "Etiquetas",
+        "help": "Tags separated by commas ('tag1,tag2,tag3')"
+      }
+    }
+  },
+  "repositoryCreate": {
+    "title": "Crea un nuevo repositorio",
+    "description": "Recuerda que para crear un nuevo repositorio en la plataforma, tu proyecto debe seguir la plantilla para visualizaciones de StArE.js.",
+    "form": {
+      "title": "Datos del Nuevo Repositorio",
+      "actions": {
+        "save": "Crear"
+      }
+    }
+  },
+  "repositoryEdit": {
+    "title": "Actualizar Repositorio",
+    "description": "No puedes cambiar la URL del repositorio",
+    "form": {
+      "title": "Datos del Nuevo Repositorio",
+      "actions": {
+        "save": "Guardar Cambios"
+      }
+    }
+  },
+  "repositoryDetailed": {
+    "actions": {
+      "rate": "Calificar",
+      "addVersion": "Agregar Versión",
+      "addComment": "Comentar",
+      "toDemo": "Ver Demo"
+    },
+    "header": {
+      "description": "Descripción",
+      "release": "Versiones",
+      "comment": "Comentarios"
+    }
+  },
+  "release": {
+    "form": {
+      "title": "Datos de la Nueva Versión",
+      "fields": {
+        "release": {
+          "label": "Versión",
+          "placeholder": "Versión"
+        },
+        "description": {
+          "label": "Descripción",
+          "placeholder": "Descripción..."
+        },
+        "codeSandboxUrl": {
+          "label": "CodeSandbox URL",
+          "placeholder": "CodeSandbox URL"
+        }
+      }
+    },
+    "actions": {
+      "submit": "Añadir Versión"
+    }
+  },
+  "rate": {
+    "title": "¿Cómo califica el repositorio?",
+    "actions": {
+      "submit": "Enviar",
+      "cancel": "Cancelar"
+    }
+  },
+  "comment":{
+    "title": "Comenta",
+    "placeholder": "Comentario...",
+    "actions": {
+      "submit": "Enviar"
+    }
+  },
+  "sandBox": {
+    "title": "Demostración"
+  },
+  "userProfile": {
+    "email":"Correo",
+    "github": "Github",
     "publications": "Publicaciones",
+    "actions": {
+      "editProfile": "Editar Perfil"
+    }
+  },
+  "userForm": {
+    "fields": {
+      "name": {
+        "label": "Nombre de Usuario",
+        "placeholder": "Nombre de Usuario"
+      },
+      "url": {
+        "label": "URL de Usuario de Github",
+        "placeholder": "URL de Usuario de Github"
+      },
+      "image": {
+        "label": "URL de Imagen de Perfil",
+        "placeholder": "URL de Imagen de Perfil"
+      }
+    }
+  },
+  "userSignup": {
+    "form": {
+      "title": "Regístrate",
+      "actions": {
+        "save": "Registrarse"
+      }
+    }
+  },
+  "userEdit": {
+    "title":"Actualizar Perfil",
+    "description": "No puedes cambiar la URL de tu usuario de Github.",
+    "form": {
+      "title": "Edición de Perfil",
+      "fields": {
+        "newPassword": {
+          "label": "Nueva Contraseña",
+          "placeholder": "Nueva Contraseña (Opcional)"
+        }
+      },
+      "actions": {
+        "update": "Actualizar",
+        "updating": "Actualizando..."
+      }
+    }
+  },
+  "verification": {
+    "title": "Verificación de Versión",
+    "loadingSandbox": "Cargando Sandbox...",
+    "alreadyVerified": "Gracias por enviar su verificación del release",
+    "actions": {
+      "approve": "Aprobar Versión",
+      "reject": "Rechazar Versión"
+    },
+    "observations": "Observaciones"
+  },
+  "approveModal": {
+    "title": "¿Confirma aprobación de esta versión?",
+    "actions": {
+      "confirm": "Confirmar Aprobación"
+    }
     
-    "none": "Ninguna",
-
-    "registerReleaseTitle": "Registrar Versión del Repositorio",
-    "registerRelease": "Registrar Release",
-    "releaseName": "Nombre Release",
-    "releaseDescription": "Descripción Release",
-    "releaseData": "Datos Nueva Release",
-
-    "accessDenied": "Acceso denegado",
-   "accessDeniedMessage": "No posee el permiso para ver esta página.",
-
-   "selectedRating": "Rating Seleccionado",
-
-   "alreadyVerified": "Gracias por enviar su verificación del release"
-
-   
-    
-
-  
+  },
+  "rejectModal": {
+    "title": "¿Confirma el rechazo de esta versión?",
+    "actions": {
+      "confirm": "Confirmar Rechazo"
+    }
+  },
+  "accessDenied": {
+    "title": "Acceso denegado",
+    "message": "No posee el permiso para ver esta página."
   }
+}

@@ -166,7 +166,9 @@ onMounted(() => {
         >
           Editar Repositorio
         </ColoredButton>
-        <ColoredButton :to="{ name: 'repositories' }">{{ $t('repoBack') }}</ColoredButton>
+        <ColoredButton :to="{ name: 'repositories' }">
+          {{ $t('common.actions.backToRepos') }}
+        </ColoredButton>
       </div>
     </div>
 
@@ -189,7 +191,7 @@ onMounted(() => {
         variant="night"
         @click="showRatingModal = true"
       >
-        Calificar
+        {{ $t('repositoryDetailed.actions.rate') }}
       </ColoredButton>
       <RatingModal
         v-model:visible="showRatingModal"
@@ -211,7 +213,9 @@ onMounted(() => {
     <div style="display: flex; justify-content: center;">
       <div class="repo-container">
         <div class="release-container">
-          <div class="comment-header">Descripción</div>
+          <div class="comment-table-header">
+            {{ $t('repositoryDetailed.header.description') }}
+          </div>
           <div class="text-body">{{ repo.repositoryDesc }}</div>
         </div>
 
@@ -226,16 +230,19 @@ onMounted(() => {
               variant="night"
               @click="openReleaseModal"
             >
-              Agregar Versión
+              {{ $t('repositoryDetailed.actions.addVersion') }}
             </ColoredButton>
             <ReleaseModal 
               v-if="showReleaseModal" 
               :repositoryID="props.repositoryID"  
               @close="closeReleaseModal" 
+              @refresh="fetchReleases"
             />
           </div>
 
-          <div class="release-header">Versiones</div>
+          <div class="release-header">
+            {{ $t('repositoryDetailed.header.release') }}
+          </div>
           <div
             class="release-row"
             v-for="item in allReleases"
@@ -246,7 +253,7 @@ onMounted(() => {
             <ColoredButton
               :to="{ name: 'sandbox', params: { repositoryID: props.repositoryID, releaseID: item._id } }"
             >
-              Demo
+              {{ $t('repositoryDetailed.actions.toDemo') }}
             </ColoredButton>
           </div>
         </div>
@@ -261,7 +268,7 @@ onMounted(() => {
         variant="wine"
         @click="openCommentModal"
       >
-        Comentar
+        {{ $t('repositoryDetailed.actions.addComment') }}
       </ColoredButton>
       <CommentModal 
         v-if="showCommentModal" 
@@ -270,7 +277,9 @@ onMounted(() => {
         @submit="handleSubmitComment"
       />
     </div>
-    <div class="comment-table-header">{{ $t('comments') }}</div>
+    <div class="comment-table-header">
+      {{ $t('repositoryDetailed.header.comment') }}
+    </div>
     <div class="comments-list" v-if="allComments.length">
       <div 
         v-for="comment in sortedComments" 

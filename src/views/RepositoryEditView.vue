@@ -31,8 +31,8 @@ const fetchData = async () => {
 }
 
 // Before saving, convert tags string to array
-const register = async () => {
-  if (!repo.value.repositoryName || !repo.value.title || !repo.value.repositoryDesc) {
+const updateRepository = async () => {
+  if (!repo.value.title || !repo.value.repositoryDesc) {
     alert('Algunos campos requeridos están vacíos.');
     return;
   }
@@ -75,41 +75,86 @@ onMounted(fetchData)
 <template>
   <div class="view-content">
     <div class="color-side">
-      <div class="color-title">Actualizar Repositorio</div>
-      <div class="color-body">No puedes cambiar la URL del repositorio</div>
+      <div class="color-title">{{ $t('repositoryEdit.title')}}</div>
+      <div class="color-body">{{ $t('repositoryEdit.description')}}</div>
     </div>
 
     <div class="form-side">
       <div class="button-container">
-        <ColoredButton class="button" :to="{ name: 'repositories' }">Volver</ColoredButton>
+        <ColoredButton class="button" :to="{ name: 'repositories' }">
+          {{ $t('common.actions.back') }}
+        </ColoredButton>
       </div>
-
-      <div class="form-title">Edición de Repositorio</div>
+      <div class="form-title">{{ $t('repositoryEdit.form.title') }}</div>
       <div class="form-body">
-        <FormInput v-model="repo.repositoryName" type="text" placeholder="Nombre del Repositorio" error-message="Campo requerido">
-          Nombre del Repositorio*
+        <FormInput 
+          type="text" 
+          v-model="repo.title" 
+          :placeholder="$t('repositoryForm.fields.title.placeholder')" 
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+        >
+          {{ $t('repositoryForm.fields.title.label') }}
         </FormInput>
-        <FormInput v-model="repo.repositoryDesc" type="text" placeholder="Descripción..." error-message="Campo requerido">
-          Descripción*
+        <FormInput 
+          type="text" 
+          v-model="repo.repositoryDesc"
+          :placeholder="$t('repositoryForm.fields.description.placeholder')" 
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+          multiline
+        >
+          {{ $t('repositoryForm.fields.description.label') }}
         </FormInput>
-        <FormInput v-model="repo.repositoryDoc" type="text" placeholder="Documentación del Repositorio">
-          Documentación del Repositorio
+        <FormInput 
+          type="text" 
+          v-model="repo.repositoryDoc"
+          :placeholder="$t('repositoryForm.fields.documentation.placeholder')"
+        >
+          {{ $t('repositoryForm.fields.documentation.label') }}
         </FormInput>
-        <FormInput v-model="repo.license" type="text" placeholder="Licencia">
-          Licencia
+        <FormInput 
+          type="text" 
+          v-model="repo.license"
+          :placeholder="$t('repositoryForm.fields.license.placeholder')" 
+        >
+          {{ $t('repositoryForm.fields.license.label') }}
         </FormInput>
-        <FormInput v-model="repo.repositoryUrl" type="text" placeholder="URL del Repositorio" disabled>
-          URL del Repositorio*
+        <FormInput 
+          type="text" 
+          v-model="repo.repositoryUrl"
+          :placeholder="$t('repositoryForm.fields.url.placeholder')" 
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+        >
+          {{ $t('repositoryForm.fields.url.label') }}
         </FormInput>
-        <FormInput v-model="repo.imageURL" type="text" placeholder="URL Imagen">
-          URL Imagen
+        <FormInput 
+          type="text" 
+          v-model="repo.imageURL"
+          :placeholder="$t('repositoryForm.fields.image.placeholder')" 
+        >
+          {{ $t('repositoryForm.fields.image.label') }}
         </FormInput>
-        <FormInput v-model="repo.tags" type="text" placeholder="Etiquetas (separadas por coma)" error-message="Campo requerido">
-          Etiquetas*
+        <FormInput 
+          type="text" 
+          v-model="repo.tags"
+          :placeholder="$t('repositoryForm.fields.tags.placeholder')" 
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+        >
+          {{ $t('repositoryForm.fields.tags.label') }}
         </FormInput>
 
-        <ColoredButton class="wide-button" variant="night" @click="register">
-          Guardar Cambios
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+
+        <ColoredButton 
+          class="wide-button" 
+          variant="night" 
+          :disabled="isSubmitting"
+          @click="updateRepository"
+        >
+          {{ isSubmitting ? 'Guardando...' : $t('repositoryEdit.form.actions.save') }}
         </ColoredButton>
       </div>
     </div>

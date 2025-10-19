@@ -80,24 +80,32 @@ onMounted(() => {
         {{ user.username }}
       </div>
       <div class="button-container">
-        <ColoredButton variant="black" :to="{ name: 'repositories' }">Volver a Repositorios</ColoredButton>
-        <ColoredButton variant="night" v-if="currentUserID === profileUserID" @click="goToEdit(userID)">{{ $t('editProfile') }}</ColoredButton>
+        <ColoredButton variant="black" :to="{ name: 'repositories' }">
+          {{ $t('common.actions.backToRepos') }}
+        </ColoredButton>
+        <ColoredButton 
+          variant="night" 
+          v-if="currentUserID === profileUserID" 
+          @click="goToEdit(userID)"
+        >
+          {{ $t('userProfile.actions.editProfile') }}
+        </ColoredButton>
       </div>
     </div>
     <div>
       <div class="info">
         <div class="info-bold">
-          {{ $t('email') }}:
+          {{ $t('userProfile.email') }}:
         </div>
         {{ user.email }}
         <span class="divider"></span>
         <div class="info-bold">
-          {{ $t('urlGitHub') }}: 
+          {{ $t('userProfile.github') }}: 
         </div>
         {{ user.urlGithubProfile }}
       </div>
       <div class="sub-title header">
-        {{ $t('publications') }}
+        {{ $t('userProfile.publications') }}
       </div>
       <div class="repo-container">
         <RepositoryCard 

@@ -28,14 +28,24 @@ const confirm = () => {
       <div class="modal-content">
         <button class="close-button" @click="$emit('update:visible', false)">×</button>
         <div class="modal-header-text">
-          <p>¿Cómo califica el repositorio?</p>
+          <p>{{ $t('rate.title')}}</p>
         </div>
         <div>
           <StarRating v-model="localRating" />
         </div>
         <div class="button-pair">
-          <ColoredButton variant="black" @click="$emit('update:visible', false)">Cancelar</ColoredButton>
-          <ColoredButton variant="night" @click="confirm">Enviar</ColoredButton>
+          <ColoredButton 
+            variant="black" 
+            @click="$emit('update:visible', false)"
+          >
+            {{ $t('rate.actions.cancel')}}
+          </ColoredButton>
+          <ColoredButton 
+            variant="night" 
+            @click="confirm"
+          >
+            {{ $t('rate.actions.submit')}}
+          </ColoredButton>
         </div>
       </div>
     </div>

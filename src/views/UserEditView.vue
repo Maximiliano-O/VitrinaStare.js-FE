@@ -69,31 +69,60 @@ onMounted(() => {
   <div class="view-content">
     <!-- Left panel -->
     <div class="color-side">
-      <div class="color-title">Actualizar Perfil</div>
-      <div class="color-body">No puedes cambiar la URL de tu usuario de Github.</div>
+      <div class="color-title">{{ $t('userEdit.title') }}</div>
+      <div class="color-body">{{ $t('userEdit.description') }}</div>
     </div>
 
     <!-- Form panel -->
     <div class="form-side">
       <div class="button-container">
-        <ColoredButton class="button" :to="{ name: 'repositories' }">Volver</ColoredButton>
+        <ColoredButton class="button" :to="{ name: 'repositories' }">
+          {{ $t('common.actions.back') }}
+        </ColoredButton>
       </div>
-      <div class="form-title">Edición de Perfil</div>
+      <div class="form-title">
+        {{ $t('userEdit.form.title') }}
+      </div>
       <div class="form-body">
-        <FormInput type="text" v-model="username" placeholder="Nombre de Usuario" error-message="Campo requerido">
-          Nombre de Usuario*
+        <FormInput 
+          type="text" 
+          v-model="username" 
+          :placeholder="$t('userForm.fields.name.placeholder')"
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+        >
+          {{ $t('userForm.fields.name.label') }}
         </FormInput>
-        <FormInput type="email" v-model="email" placeholder="Correo" error-message="Campo requerido">
-          Correo*
+        <FormInput 
+          type="email" 
+          v-model="email" 
+          :placeholder="$t('userForm.fields.name.placeholder')"
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+        >
+          {{ $t('userForm.fields.name.label') }}
         </FormInput>
-        <FormInput type="password" v-model="password" placeholder="Nueva Contraseña (opcional)">
-          Nueva Contraseña
+        <FormInput 
+          type="password" 
+          v-model="password" 
+          :placeholder="$t('userEdit.form.fields.newPassword.placeholder')"
+        >
+          {{ $t('userEdit.form.fields.newPassword.label') }}
         </FormInput>
-        <FormInput type="text" v-model="imageUrl" placeholder="URL de Imagen de Perfil">
-          URL de Imagen de Perfil
+        <FormInput 
+          type="text" 
+          v-model="imageUrl" 
+          :placeholder="$t('userForm.fields.image.placeholder')"
+        >
+          {{ $t('userForm.fields.image.label') }}
         </FormInput>
-        <FormInput type="text" v-model="githubUrl" placeholder="URL de Usuario de Github" disabled>
-          URL de Usuario de Github*
+        <FormInput 
+          type="text" 
+          v-model="githubUrl" 
+          :placeholder="$t('userForm.fields.url.placeholder')" 
+          disabled
+        >
+          {{ $t('userForm.fields.url.label') }}
         </FormInput>
 
         <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
@@ -104,7 +133,7 @@ onMounted(() => {
           :disabled="isSubmitting"
           @click="updateUser"
         >
-          {{ isSubmitting ? 'Actualizando...' : 'Actualizar' }}
+          {{ isSubmitting ? $t('userEdit.actions.updating') : $t('userEdit.actions.update') }}
         </ColoredButton>
       </div>
     </div>

@@ -22,7 +22,7 @@ const userID = localStorage.getItem('userID')
 const router = useRouter()
 
 function emitClose() {
-  emit('close')
+  emit('close');
 }
 
 // Fetch repository info to check contributor ownership
@@ -73,7 +73,8 @@ const addRelease = async () => {
 
     const newRelease = data.result;
 
-    emitClose() // Close modal
+    emit('close');
+    emit('refresh');
 
     // Fetch admin user
     await fetchAdminUser();
@@ -134,39 +135,48 @@ onMounted(async () => {
     <div class="modal-content">
       <button class="close-button" @click="emitClose">×</button>
       <div v-if="repo.userID === userID">
-        <div class="title">Datos de la Nueva Versión</div>
-
+        <div class="title">
+          {{ $t('release.form.title') }}
+        </div>
         <FormInput 
           type="text" 
           v-model="version" 
-          placeholder="Versión"
-          error-message="No puede estar vacío"
-        >Versión*</FormInput>
-
+          :placeholder="$t('release.form.fields.release.placeholder')"
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+        >
+          {{ $t('release.form.fields.release.label') }}
+        </FormInput>
         <FormInput 
           type="text" 
           v-model="description" 
-          placeholder="Descripción..."
-        >Descripción</FormInput>
-
+          :placeholder="$t('release.form.fields.description.placeholder')"
+          multiline
+        >
+          {{ $t('release.form.fields.description.label') }}
+        </FormInput>
         <FormInput 
           type="text" 
           v-model="sandboxUrl" 
-          placeholder="CodeSandbox URL"
-          error-message="No puede estar vacío"
-        >CodeSandbox URL*</FormInput>
-
+          :placeholder="$t('release.form.fields.codeSandboxUrl.placeholder')"
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
+        >
+          {{ $t('release.form.fields.codeSandboxUrl.label') }}
+        </FormInput>
         <p v-if="showError" class="error">{{ errorMessage }}</p>
-
         <div class="button-pair">
-          <ColoredButton variant="black" @click="emitClose">Volver</ColoredButton>
-          <ColoredButton variant="night" @click="addRelease">Añadir Versión</ColoredButton>
+          <ColoredButton variant="black" @click="emitClose">
+            {{ $t('common.actions.back') }}
+          </ColoredButton>
+          <ColoredButton variant="night" @click="addRelease">
+            {{ $t('release.actions.submit') }}
+          </ColoredButton>
         </div>
       </div>
-
       <div v-else class="error-message">
-        <h2>Acceso Denegado</h2>
-        <p>No tienes permisos para añadir versiones a este repositorio.</p>
+        <h2>{{ $t('accessDenied.title') }}</h2>
+        <p>{{ $t('accessDenied.message') }}</p>
       </div>
     </div>
   </div>

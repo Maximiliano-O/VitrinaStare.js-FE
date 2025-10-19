@@ -1,6 +1,5 @@
 <script setup>
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 import ColoredButton from '@/components/buttons/ColoredButton.vue';
 
 const props = defineProps({
@@ -12,7 +11,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['confirm', 'update:modelValue', 'update:visible']);
-const { t } = useI18n();
 
 // Proxy for two-way binding
 const proxyValue = computed({
@@ -38,11 +36,11 @@ const confirm = () => {
         <img src="/src/assets/warning.svg" width="50" />
         <p>{{ title }}</p>
       </div>
-      <p class="obs-label">{{ t('observations') }}:</p>
+      <p class="obs-label">{{ $t('verification.observations') }}:</p>
       <textarea rows="3" v-model="proxyValue"></textarea>
       <div class="button-pair">
         <ColoredButton variant="black" @click="close">
-          {{ t('return') }}
+          {{ $t('common.actions.back') }}
         </ColoredButton>
         <ColoredButton variant="night" @click="confirm">
           {{ confirmLabel }}

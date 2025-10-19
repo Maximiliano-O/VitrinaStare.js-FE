@@ -15,7 +15,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100vh; /* or your desired container height */
+  height: 100vh;
 }
 
 .sandbox-frame {

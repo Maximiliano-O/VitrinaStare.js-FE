@@ -15,7 +15,6 @@ if (localStorage.getItem('user') === null) {
   localStorage.setItem('user', 'Invitado' );
 }
 
-
 const i18n = createI18n({
   locale: localStorage.getItem('locale') || 'english', 
   fallbackLocale: 'english', 

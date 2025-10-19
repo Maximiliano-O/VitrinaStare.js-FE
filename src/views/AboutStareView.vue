@@ -2,32 +2,32 @@
   <div class="view-content">
     <div class="content-header">
       <div class="title">
-        {{ $t('stareQuestion') }}
+        {{ $t('about.title') }}
       </div>
     </div>
     <div class="content-body">
-      <p>{{ $t('stareP1') }}</p>
-      <p>{{ $t('stareP2') }}</p>
+      <p>{{ $t('about.content.paragraph1') }}</p>
+      <p>{{ $t('about.content.paragraph2') }}</p>
       <ol>
         <li>
-          {{ $t('stareL1') }}
+          {{ $t('about.content.bullet1') }}
         </li>
         <li>
-          {{ $t('stareL2') }}
+          {{ $t('about.content.bullet2') }}
         </li>
         <li>
-          {{ $t('stareL3') }}
+          {{ $t('about.content.bullet3') }}
         </li>
       </ol>
       <div>
       <h3>
         <a href="https://starejs.informatica.usach.cl" target="_blank">
-          {{ $t('stareWebsite') }}
+          {{ $t('about.content.site') }}
         </a>
       </h3>
       <h3>
         <a href="https://github.com/StArE-js" target="_blank">
-          {{ $t('stareGithub') }}
+          {{ $t('about.content.github') }}
         </a>
       </h3>
     </div>

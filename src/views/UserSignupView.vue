@@ -5,6 +5,9 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import logo from '/src/assets/Stare.js-Only-Eye-Logo.png';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n()
 
 // Helper function remains the same
 const registerUser = async (userData) => {
@@ -82,54 +85,66 @@ const checkGitHubUserExists = async () => {
     </div>
     <div class="form-side">
       <div class="button-container">
-        <ColoredButton class="button" :to="{ name: 'repositories' }">Volver</ColoredButton>
+        <ColoredButton class="button" :to="{ name: 'repositories' }">
+          {{ $t('common.actions.back') }}
+        </ColoredButton>
       </div>
       <div class="form-title">
-        Regístrate
+        {{ $t('userSignup.form.title') }}
       </div>
       <div class="form-body">
         <FormInput
           type="text" 
-          placeholder="Nombre de Usuario"
+          :placeholder="$t('userForm.fields.name.placeholder')"
           v-model="user.username"
-          error-message="Campo requerido, no puede estar vacío"
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
         >
-          Nombre de Usuario*
+          {{ $t('userForm.fields.name.label') }}
         </FormInput>
         <FormInput
           type="email" 
-          placeholder="Correo"
+          :placeholder="$t('common.form.email.placeholder')"
           v-model="user.email"
-          error-message="Campo requerido, no puede estar vacío"
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
           name="email"
           autocomplete="email"
         >
-          Correo*
+          {{ $t('common.form.email.label') }}
         </FormInput>
         <FormInput
           type="password" 
-          placeholder="Contraseña"
+          :placeholder="$t('common.form.password.placeholder')"
           v-model="user.password"
-          error-message="Campo requerido, no puede estar vacío"
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
         >
-          Contraseña*
+          {{ $t('common.form.password.label') }}
         </FormInput>
         <FormInput
           type="text" 
-          placeholder="URL de Imagen de Perfil"
+          :placeholder="$t('userForm.fields.image.placeholder')"
           v-model="user.imageURL"
         >
-          URL de Imagen de Perfil
+          {{ $t('userForm.fields.image.label') }}
         </FormInput>
         <FormInput
           type="text" 
-          placeholder="URL de Usuario de Github"
+          :placeholder="$t('userForm.fields.url.label')"
           v-model="user.urlGithubProfile"
-          error-message="Campo requerido, no puede estar vacío"
+          :error-message="$t('common.form.errors.emptyRequired')"
+          required
         >
-          URL de Usuario de Github*
+          {{ $t('userForm.fields.url.label') }}
         </FormInput>
-        <ColoredButton class="wide-button" variant="night" @click="register()">Registrarse</ColoredButton>
+        <ColoredButton 
+          class="wide-button" 
+          variant="night" 
+          @click="register()"
+        >
+          {{ $t('userSignup.form.actions.save') }}
+        </ColoredButton>
       </div>
     </div>
   </div>

@@ -22,15 +22,22 @@ function submitComment() {
   <div class="modal-overlay" @click.self="emitClose">
     <div class="modal-content">
       <button class="close-button" @click="emitClose">×</button>
-      <div class="title">Comenta</div>
+      <div class="title">
+        {{ $t('comment.title') }}
+      </div>
       <FormInput 
         type="text" 
         v-model="commentContent" 
         placeholder="Comentario..."
+        multiline
       />
       <div class="button-pair">
-        <ColoredButton variant="black" @click="emitClose">Volver</ColoredButton>
-        <ColoredButton variant="wine" @click="submitComment">Enviar</ColoredButton>
+        <ColoredButton variant="black" @click="emitClose">
+          {{ $t('common.actions.back') }}
+        </ColoredButton>
+        <ColoredButton variant="wine" @click="submitComment">
+          {{ $t('comment.actions.submit') }}
+        </ColoredButton>
       </div>
     </div>
   </div>
