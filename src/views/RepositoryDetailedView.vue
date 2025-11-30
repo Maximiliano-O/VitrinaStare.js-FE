@@ -3,8 +3,9 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import ColoredButton from '../components/buttons/ColoredButton.vue'
+import CustomSelect from '../components/CustomSelect.vue'
 import ReleaseModal from '../components/ReleaseModal.vue'
-import CommentModal from '../components/CommentModal.vue'
+import EmbededComment from '../components/EmbededComment.vue'
 import Tag from '../components/Tag.vue'
 import RatingModal from '../components/RatingModal.vue'
 import { BiTagsFill } from "oh-vue-icons/icons"
@@ -17,14 +18,35 @@ const props = defineProps({ repositoryID: { type: String, required: true } })
 const router = useRouter()
 
 const isGuest = ref(localStorage.getItem('guest') === 'true');
-const currentRating = ref('');
+const currentRating = ref(0);
 const repo = ref({});
 const newCommentText = ref('');
 const allComments = ref([]);
 const allReleases = ref([]);
 const imageUrl = ref('');
 const showReleaseModal = ref(false);
-const showCommentModal = ref(false);
+
+
+const selectedRelease = ref(allReleases.value[0]?._id || '');
+const selectedReleaseItem = computed(() => {
+  return allReleases.value.find(r => r._id === selectedRelease.value) || {};
+});
+const openSelectedRelease = () => {
+  router.push({ name: 'sandbox', params: { repositoryID: props.repositoryID, releaseID: selectedRelease.value } });
+}
+
+const releaseOptions = computed(() => {
+  return allReleases.value.map(r => ({
+    label: r.name,
+    value: r._id
+  }))
+})
+
+watch(allReleases, (newVal) => {
+  if (newVal.length && !selectedRelease.value) {
+    selectedRelease.value = newVal[0]._id;
+  }
+});
 
 const ratingCount = computed(() => Array.isArray(repo.value.ratings) ? repo.value.ratings.length : 0);
 
@@ -40,15 +62,18 @@ const comment = ref({
 
 const showRatingModal = ref(false);
 
+const openRatingModal = () => {
+  const userRating = repo.value.ratings?.find(r => r.userId === localStorage.getItem('userID'));
+  currentRating.value = userRating ? userRating.rating : 0;
+  showRatingModal.value = true;
+}
+
 const openReleaseModal = () => (showReleaseModal.value = true)
 const closeReleaseModal = () => (showReleaseModal.value = false)
-const openCommentModal = () => (showCommentModal.value = true)
-const closeCommentModal = () => (showCommentModal.value = false)
 
 const handleSubmitComment = (commentText) => {
   newCommentText.value = commentText;
   addComment();
-  closeCommentModal();
 };
 
 const sortedComments = computed(() => {
@@ -86,7 +111,7 @@ const fetchReleases = async () => {
   try {
     const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/release/repository/${props.repositoryID}`
     const { data } = await axios.get(url)
-    allReleases.value = data.result;
+    allReleases.value = data.result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   } catch (err) {
     console.error('Error fetching releases:', err)
   }
@@ -98,6 +123,13 @@ const addRating = async (rating) => {
     const { data } = await axios.post(url, { rating, userId: localStorage.getItem('userID') })
     if (data.result) {
       repo.value.totalRating = data.result.totalRating;
+      
+      const index = repo.value.ratings.findIndex(r => r.userId === localStorage.getItem('userID'));
+      if (index >= 0) {
+        repo.value.ratings[index].rating = rating;
+      } else {
+        repo.value.ratings.push({ userId: localStorage.getItem('userID'), rating });
+      }
     }
   } catch (err) {
     console.error('Error adding rating:', err)
@@ -134,9 +166,7 @@ const fetchImageUrl = async (userID) => {
 
 const checkAuthor = () => localStorage.getItem('userID') === repo.value.userID;
 const getUserLink = () => `/user/${repo.value.userID}`;
-const goToEdit = (id) => router.push(`/repository/${id}/edit`);
 const verify = (releaseID) => router.push(`/verification/${releaseID}`);
-const run = (releaseID) => router.push(`/sandbox/${props.repositoryID}/${releaseID}`);
 
 onMounted(() => {
   fetchData();
@@ -152,7 +182,8 @@ onMounted(() => {
         {{ repo.title }}
         <ColoredButton
           is="button"
-          variant="icon-button"
+          class="icon-button"
+          variant="black"
           iconName="bi-github"
           :to="repo.repositoryUrl"
         />
@@ -188,7 +219,7 @@ onMounted(() => {
       <ColoredButton
         v-if="!checkAuthor() && !isGuest"
         variant="night"
-        @click="showRatingModal = true"
+        @click="openRatingModal"
       >
         {{ $t('repositoryDetailed.actions.rate') }}
       </ColoredButton>
@@ -211,49 +242,66 @@ onMounted(() => {
 
     <div style="display: flex; justify-content: center;">
       <div class="repo-container">
-        <div class="release-container">
-          <div class="comment-table-header">
-            {{ $t('repositoryDetailed.header.description') }}
-          </div>
-          <div class="text-body">{{ repo.repositoryDesc }}</div>
-        </div>
-
         <div class="image-container">
           <img class="repo-image" :src="repo.imageURL" />
         </div>
 
         <div class="release-container">
-          <div class="release-button" v-if="checkAuthor()">
-            <ColoredButton
-              class="wide-button"
-              variant="night"
-              @click="openReleaseModal"
-            >
-              {{ $t('repositoryDetailed.actions.addVersion') }}
-            </ColoredButton>
-            <ReleaseModal 
-              v-if="showReleaseModal" 
-              :repositoryID="props.repositoryID"  
-              @close="closeReleaseModal" 
-              @refresh="fetchReleases"
-            />
-          </div>
-
+          <!-- Release section title -->
           <div class="release-header">
             {{ $t('repositoryDetailed.header.release') }}
           </div>
-          <div
-            class="release-row"
-            v-for="item in allReleases"
-            :key="item._id"
-          >
-            <div>{{ item.name }}</div>
-            <div>{{ item.verified }}</div>
+          <div class="release-section">
+            <!-- Button to add new release -->
+            <div class="release-button" v-if="checkAuthor()">
+              <ColoredButton
+                class="icon-button"
+                variant="night"
+                iconName="md-add-round"
+                @click="openReleaseModal"
+              >
+              </ColoredButton>
+              <ReleaseModal 
+                v-if="showReleaseModal" 
+                :repositoryID="props.repositoryID"  
+                @close="closeReleaseModal" 
+                @refresh="fetchReleases"
+              />
+            </div>
+
+            <!-- Release select -->
+            <CustomSelect
+              v-model="selectedRelease"
+              :options="releaseOptions"
+            />
+
+            <!-- Verification Status -->
+            <div class="release-verification" v-if="selectedReleaseItem">
+             {{ selectedReleaseItem.verified 
+                ?  $t('repositoryDetailed.verification.verified') 
+                :  $t('repositoryDetailed.verification.pending') }}
+            </div>
+
+            <!-- Go to demo button -->
             <ColoredButton
-              :to="{ name: 'sandbox', params: { repositoryID: props.repositoryID, releaseID: item._id } }"
+              @click="openSelectedRelease"
             >
               {{ $t('repositoryDetailed.actions.toDemo') }}
             </ColoredButton>
+          </div>
+          <!-- Release description -->
+          <div class="release-desc-container" v-if="selectedReleaseItem">
+            <p class="release-desc">{{ $t('repositoryDetailed.header.description') }}:</p>
+            <p class="release-desc-body"> {{ selectedReleaseItem.description }} </p>
+          </div>
+          <!-- Repository section and description -->
+          <div class="release-header">
+            {{ $t('repositoryDetailed.header.description') }}
+          </div>
+          <div class="text-container">
+            <div class="text-body">
+              {{ repo.repositoryDesc }}
+            </div>
           </div>
         </div>
       </div>
@@ -261,24 +309,14 @@ onMounted(() => {
   </div>
 
   <div class="comment-container">
-    <div class="release-button" v-if="!isGuest">
-      <ColoredButton
-        class="wide-button"
-        variant="wine"
-        @click="openCommentModal"
-      >
-        {{ $t('repositoryDetailed.actions.addComment') }}
-      </ColoredButton>
-      <CommentModal 
-        v-if="showCommentModal" 
-        :repositoryID="props.repositoryID"  
-        @close="closeCommentModal" 
-        @submit="handleSubmitComment"
-      />
-    </div>
     <div class="comment-table-header">
       {{ $t('repositoryDetailed.header.comment') }}
     </div>
+    <EmbededComment
+      v-if="!isGuest"
+      :repositoryID="props.repositoryID"
+      @submit="handleSubmitComment"
+    />
     <div class="comments-list" v-if="allComments.length">
       <div 
         v-for="comment in sortedComments" 
@@ -384,10 +422,16 @@ body {
   background-color: #ebeef3;
 }
 
+.text-container {
+  flex: 1 1 auto;  
+  overflow-y: auto;
+  padding: 5px;
+}
+
 .text-body {
   padding: 10px;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   color: #000;
   font-family: 'Poppins-Medium';
   font-size: 18px;
@@ -406,12 +450,16 @@ body {
   border: 2px solid #313131a5;
 }
 
+.custom-select {
+  width: 300px;
+}
+
 .repo-container {
   padding: 10px;
   margin-bottom: 10px;
   display: flex;
   gap: 10px;
-  width: auto;
+  width: 80%;
 }
 
 .repo-image {
@@ -433,10 +481,45 @@ body {
 }
 
 .release-container {
-  width: 300px;
+  width: 50%;
   height: 450px;
-  background-color: #00000020;
+  background-color: #ffffff;
   border: 1px solid #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.release-section {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.release-verification {
+  font-family: 'Poppins-Bold';
+  justify-content: center;
+}
+
+.release-desc-container {
+  display: flex;
+  gap: 5px;
+  flex-direction: row;
+  padding-left: 10px;
+}
+
+.release-desc {
+  font-family: 'Poppins-Bold';
+  justify-content: center;
+}
+
+.release-body {
+  font-family: 'Poppins';
+  justify-content: center;
 }
 
 .release-button {

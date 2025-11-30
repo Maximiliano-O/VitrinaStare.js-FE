@@ -184,14 +184,17 @@ function handleClick(event) {
 }
 
 .icon-button {
-  background-color: #fff;
-  color: #000;
+  /* background-color: #fff;
+  color: #000; */
   border-radius: 20px;
   width: 40px;
   height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.icon-button:hover {
+/* .icon-button:hover {
   background-color: #B2B2B2;
   color: #000;
   border-radius: 20px;
@@ -205,5 +208,5 @@ function handleClick(event) {
   border-radius: 20px;
   width: 40px;
   height: 40px;
-}
+} */
 </style>

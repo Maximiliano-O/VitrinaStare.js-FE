@@ -23,6 +23,10 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  backgroundColor: {
+    type: String,
+    default: 'transparent'
+  },
   errorMessage: {
     type: String,
     default: ''
@@ -134,7 +138,7 @@ function onBlur() {
   border: 1px solid #818181;
   border-radius: 8px;
   outline: none;
-  background: transparent;
+  background: v-bind(backgroundColor);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 

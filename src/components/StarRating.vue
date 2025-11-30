@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -29,14 +29,27 @@ const setRating = (index, half) => {
 }
 
 const getStarClass = (starIndex) => {
-  if (localValue.value >= starIndex) {
-    return 'full'
-  }
-  if (localValue.value >= starIndex - 0.5) {
-    return 'half'
-  }
+  const val = displayValue.value
+  if (val >= starIndex) return 'full'
+  if (val >= starIndex - 0.5) return 'half'
   return 'empty'
 }
+
+const hoverValue = ref(0)
+
+const handleMouseEnter = (starIndex, half) => {
+  let value = starIndex - 1
+  if (half === 'left') value += 0.5
+  else value += 1
+  hoverValue.value = value
+}
+
+const handleMouseLeave = () => {
+  hoverValue.value = 0
+}
+
+const displayValue = computed(() => hoverValue.value || localValue.value)
+
 </script>
 
 <template>
@@ -48,8 +61,20 @@ const getStarClass = (starIndex) => {
       role="radio"
       :aria-checked="localValue >= star - 0.5 && localValue < star ? 'mixed' : localValue >= star ? 'true' : 'false'"
     >
-      <span class="half left" @click="setRating(star, 'left')" aria-label="Half star"></span>
-      <span class="half right" @click="setRating(star, 'right')" aria-label="Full star"></span>
+      <span
+        class="half left"
+        @click="setRating(star, 'left')"
+        @mouseenter="handleMouseEnter(star, 'left')"
+        @mouseleave="handleMouseLeave"
+        aria-label="Half star"
+      ></span>
+      <span
+        class="half right"
+        @click="setRating(star, 'right')"
+        @mouseenter="handleMouseEnter(star, 'right')"
+        @mouseleave="handleMouseLeave"
+        aria-label="Full star"
+      ></span>
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -106,10 +131,15 @@ const getStarClass = (starIndex) => {
   right: 0;
 }
 
+
 /* Prevent SVG from intercepting clicks */
 svg {
   width: 100%;
   height: 100%;
   pointer-events: none;
+}
+
+.star path {
+  transition: fill 0.25s ease, stroke 0.25s ease;
 }
 </style>

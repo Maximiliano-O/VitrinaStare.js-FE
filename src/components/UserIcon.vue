@@ -1,12 +1,15 @@
 <script setup>
 import { FaRegularUserCircle } from "oh-vue-icons/icons";
 import { BiGithub } from "oh-vue-icons/icons";
+import { MdAddRound } from "oh-vue-icons/icons";
 import { addIcons } from "oh-vue-icons";
 import { OhVueIcon } from "oh-vue-icons";
 import { ref } from 'vue'
 
 addIcons(FaRegularUserCircle);
 addIcons(BiGithub);
+addIcons(MdAddRound);
+
 
 const imageError = ref(false)
 const props = defineProps({
@@ -37,6 +40,7 @@ const props = defineProps({
 .icon :deep(svg) {
   width: 40px;
   height: 40px;
+  transform: translateY(2px);
 }
 
 .image-icon img{

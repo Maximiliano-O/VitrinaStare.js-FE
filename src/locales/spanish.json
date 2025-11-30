@@ -148,15 +148,18 @@
   "repositoryDetailed": {
     "actions": {
       "rate": "Calificar",
-      "addVersion": "Agregar Versión",
       "addComment": "Comentar",
-      "toDemo": "Ver Demo",
+      "toDemo": "Editar en Sandbox",
       "editRepository": "Editar Repositorio"
     },
     "header": {
       "description": "Descripción",
       "release": "Versiones",
       "comment": "Comentarios"
+    },
+    "verification": {
+      "verified": "Verificada",
+      "pending": "No Verificacada"
     }
   },
   "release": {
@@ -190,7 +193,7 @@
   },
   "comment":{
     "title": "Comenta",
-    "placeholder": "Comentario...",
+    "placeholder": "Haz un comentario...",
     "actions": {
       "submit": "Enviar"
     }

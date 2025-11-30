@@ -34,7 +34,7 @@
       "updated": "Repository updated"
     },
     "release": {
-      "created": "Version added successfully"
+      "created": "Release added successfully"
     },
     "user": {
       "updated": "User data updated"
@@ -148,24 +148,27 @@
   "repositoryDetailed": {
     "actions": {
       "rate": "Rate",
-      "addVersion": "Add Version",
       "addComment": "Comment",
-      "toDemo": "View Demo",
+      "toDemo": "Edit in Sandbox",
       "editRepository": "Edit Repository"
     },
     "header": {
       "description": "Description",
-      "release": "Versions",
+      "release": "Releases",
       "comment": "Comments"
+    },
+    "verification": {
+      "verified": "Verified",
+      "pending": "Not Verified"
     }
   },
   "release": {
     "form": {
-      "title": "New Version Data",
+      "title": "New Release Data",
       "fields": {
         "release": {
-          "label": "Version",
-          "placeholder": "Version"
+          "label": "Release",
+          "placeholder": "Release"
         },
         "description": {
           "label": "Description",
@@ -178,7 +181,7 @@
       }
     },
     "actions": {
-      "submit": "Add Version"
+      "submit": "Add Release"
     }
   },
   "rate": {
@@ -190,7 +193,7 @@
   },
   "comment": {
     "title": "Leave a Comment",
-    "placeholder": "Comment...",
+    "placeholder": "Make a comment...",
     "actions": {
       "submit": "Submit"
     }
@@ -248,23 +251,23 @@
     }
   },
   "verification": {
-    "title": "Version Verification",
+    "title": "Release Verification",
     "loadingSandbox": "Loading Sandbox...",
     "alreadyVerified": "Thank you for submitting your release verification.",
     "actions": {
-      "approve": "Approve Version",
-      "reject": "Reject Version"
+      "approve": "Approve Release",
+      "reject": "Reject Release"
     },
     "observations": "Observations"
   },
   "approveModal": {
-    "title": "Do you confirm the approval of this version?",
+    "title": "Do you confirm the approval of this release?",
     "actions": {
       "confirm": "Confirm Approval"
     }
   },
   "rejectModal": {
-    "title": "Do you confirm the rejection of this version?",
+    "title": "Do you confirm the rejection of this release?",
     "actions": {
       "confirm": "Confirm Rejection"
     }
