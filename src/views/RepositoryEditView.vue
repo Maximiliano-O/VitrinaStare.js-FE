@@ -4,6 +4,12 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 import ColoredButton from '../components/buttons/ColoredButton.vue'
 import FormInput from '../components/FormInput.vue'
+import { useI18n } from 'vue-i18n';
+
+import { useToast } from "vue-toastification";
+
+const { t } = useI18n()
+const toast = useToast();
 
 const props = defineProps({
   repositoryID: { type: String, required: true }
@@ -56,7 +62,8 @@ const updateRepository = async () => {
     );
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
+    
+    toast.success(t("notifications.repository.updated"));
     goToRepo(props.repositoryID);
   } catch (error) {
     console.error('Error updating repository:', error);

@@ -4,6 +4,12 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 import ColoredButton from '../components/buttons/ColoredButton.vue';
 import FormInput from '../components/FormInput.vue';
+import { useI18n } from 'vue-i18n';
+
+import { useToast } from "vue-toastification";
+
+const { t } = useI18n()
+const toast = useToast();
 
 const router = useRouter();
 const userID = localStorage.getItem('userID');
@@ -35,10 +41,10 @@ const checkGitHubOwnership = async () => {
   try {
     const encodedRepoUrl = encodeURIComponent(repoUrl.value);
     const encodedUserUrl = encodeURIComponent(currentUserGithub.value);
-    const { data } = await axios.get(
-      `${import.meta.env.VITE_APP_EXPRESS_URL}/checkRepoExistsAndMatchesUser/${encodedUserUrl}/${encodedRepoUrl}`
-    )
-    return data.result.success;
+    const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/checkRepoExistsAndMatchesUser?userUrl=${encodedUserUrl}&repoUrl=${encodedRepoUrl}`
+    const response = await axios.get(url);
+    console.log('Github repo endpoint response: ', response.data.result)
+    return response.data.result.success;
   } catch (err) {
     console.error('Error verifying GitHub repo ownership:', err)
     return false;
@@ -76,6 +82,7 @@ const registerRepository = async () => {
     }
 
     await axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/repository`, payload)
+    toast.success(t("notifications.repository.created"));
     router.push({ name: 'repositories' })
   } catch (err) {
     console.error('Error registering repository:', err)

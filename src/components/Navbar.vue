@@ -2,13 +2,20 @@
 import ColoredButton from './buttons/ColoredButton.vue';
 import CustomSelect from './CustomSelect.vue';
 import LoginModal from './LoginModal.vue';
+import globalState from '@/store/globalState.js';
+import { clearUser } from '@/store/globalState.js';
 
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { useToast } from "vue-toastification";
+
 const route = useRoute();
+const router = useRouter();
 const { t, locale } = useI18n();
+
+const toast = useToast();
 
 const showLoginModal = ref(false);
 const selectedLocale = ref(locale.value);
@@ -18,9 +25,9 @@ const locales = computed(() => [
   { label: t('locales.spanish'), value: 'spanish' }
 ]);
 
-const isGuest = ref(localStorage.getItem('guest') === 'true');
-const userName = ref(localStorage.getItem('user') || '');
-const userImg = ref(localStorage.getItem('userIcon') || '');
+const isGuest = computed(() => globalState.guest);
+const userName = computed(() => globalState.user);
+const userImg = computed(() => globalState.userIcon);
 
 function openLogin() {
   showLoginModal.value = true;
@@ -31,11 +38,10 @@ function closeLogin() {
 };
 
 function logOut() {
-  localStorage.setItem('user', 'Invitado');
-  localStorage.setItem('guest', 'true');
-  localStorage.removeItem('userID');
-  window.location.href = '/';
-};
+  clearUser();
+  toast.success(t('notifications.auth.logoutSuccess'));
+  router.push({ name: 'repositories'});
+}
 
 function getUserLink() {
   const id = localStorage.getItem('userID');

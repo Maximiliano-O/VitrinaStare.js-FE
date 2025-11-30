@@ -7,6 +7,10 @@ import axios from 'axios';
 import logo from '/src/assets/Stare.js-Only-Eye-Logo.png';
 import { useI18n } from 'vue-i18n';
 
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
+
 const { t } = useI18n()
 
 // Helper function remains the same
@@ -51,6 +55,7 @@ const register = async () => {
     try {
       const response = await registerUser(user.value);
       console.log('User registered:', response);
+      toast.success(t("notifications.auth.signupSuccess"));
       router.push({ name: 'repositories' });
     } catch (error) {
       console.error('Error registering user:', error);
@@ -64,8 +69,8 @@ const register = async () => {
 const checkGitHubUserExists = async () => {
   try {
     const encodedUrl = encodeURIComponent(user.value.urlGithubProfile);
-    const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/checkUserExists/${encodedUrl}`;
-    const response = await axios.get(url); // Notice: Using `axios` directly, not `this.axios`
+    const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/checkUserExists?userUrl=${encodedUrl}`;
+    const response = await axios.get(url);
     return response.data.result;
   } catch (err) {
     console.log('Error fetching data:', err);

@@ -96,9 +96,8 @@ const addRating = async (rating) => {
   try {
     const url = `${import.meta.env.VITE_APP_EXPRESS_URL}/repository/${props.repositoryID}/ratings`
     const { data } = await axios.post(url, { rating, userId: localStorage.getItem('userID') })
-    if (data.success) {
-      repo.value.totalRating = data.result;
-      fetchData()
+    if (data.result) {
+      repo.value.totalRating = data.result.totalRating;
     }
   } catch (err) {
     console.error('Error adding rating:', err)
@@ -164,7 +163,7 @@ onMounted(() => {
           variant="night"
           :to="`/repository/${props.repositoryID}/edit`"
         >
-          Editar Repositorio
+          {{ $t('repositoryDetailed.actions.editRepository') }}
         </ColoredButton>
         <ColoredButton :to="{ name: 'repositories' }">
           {{ $t('common.actions.backToRepos') }}

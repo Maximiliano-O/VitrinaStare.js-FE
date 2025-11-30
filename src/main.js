@@ -6,6 +6,10 @@ import App from './App.vue';
 import router from './router';
 import { messages } from './locales'; 
 
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
+import './assets/style.css'
+
 import 'bootstrap/dist/js/bootstrap.js';
 
 if (localStorage.getItem('guest') === null) {
@@ -26,4 +30,10 @@ app.use(router);
 app.use(VueAxios, axios);
 app.use(i18n);
 app.provide('axios', app.config.globalProperties.axios);
+app.use(Toast, {
+  position: "bottom-left",
+  timeout: 3000,
+  closeOnClick: true,
+  pauseOnHover: true,
+});
 app.mount('#app');

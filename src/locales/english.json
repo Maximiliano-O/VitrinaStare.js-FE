@@ -20,6 +20,26 @@
       }
     }
   },
+  "notifications": {
+    "auth": {
+      "loginSuccess": "Login successful",
+      "logoutSuccess": "You have been logged out",
+      "signupSuccess": "Registration successful"
+    },
+    "rating": {
+      "updated": "Rating updated"
+    },
+    "repository": {
+      "created": "Repository successfully created",
+      "updated": "Repository updated"
+    },
+    "release": {
+      "created": "Version added successfully"
+    },
+    "user": {
+      "updated": "User data updated"
+    }
+  },
   "navbar": {
     "repositories": "Repositories",
     "about": "What is StArE?",
@@ -130,7 +150,8 @@
       "rate": "Rate",
       "addVersion": "Add Version",
       "addComment": "Comment",
-      "toDemo": "View Demo"
+      "toDemo": "View Demo",
+      "editRepository": "Edit Repository"
     },
     "header": {
       "description": "Description",
@@ -219,11 +240,11 @@
           "label": "New Password",
           "placeholder": "New Password (Optional)"
         }
-      },
-      "actions": {
-        "update": "Update",
-        "updating": "Updating..."
       }
+    },
+    "actions": {
+      "update": "Update",
+      "updating": "Updating..."
     }
   },
   "verification": {

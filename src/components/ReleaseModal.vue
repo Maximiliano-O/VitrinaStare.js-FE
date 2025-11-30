@@ -4,6 +4,12 @@ import axios from 'axios'
 import ColoredButton from './buttons/ColoredButton.vue'
 import FormInput from './FormInput.vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n';
+
+import { useToast } from "vue-toastification";
+
+const { t } = useI18n()
+const toast = useToast();
 
 const props = defineProps({
   repositoryID: String,
@@ -58,7 +64,7 @@ const fetchAdminUser = async () => {
 const addRelease = async () => {
   if (!version.value || !sandboxUrl.value) {
     showError.value = true
-    errorMessage.value = 'Los campos requeridos no pueden estar vacíos.'
+    errorMessage.value = t('common.form.errors.emptyRequired');
     return
   }
 
@@ -74,47 +80,52 @@ const addRelease = async () => {
     const newRelease = data.result;
 
     emit('close');
+    toast.success(t("notifications.release.created"));
     emit('refresh');
+    
+    try {
+      // Fetch admin user
+      await fetchAdminUser();
 
-    // Fetch admin user
-    await fetchAdminUser();
-
-    // Assign admin as reviewer if available
-    if (fetchedUsers.value.length > 0) {
-      await Promise.all(
-        fetchedUsers.value.map(user =>
-          axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/release/${newRelease._id}/status`, {
-            releaseID: newRelease._id,
-            reviewerID: user._id,
-            isReviewed: false,
-            isSafe: false,
-            additionalComments: '',
-          })
+      // Assign admin as reviewer if available
+      if (fetchedUsers.value.length > 0) {
+        await Promise.all(
+          fetchedUsers.value.map(user =>
+            axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/release/${newRelease._id}/status`, {
+              releaseID: newRelease._id,
+              reviewerID: user._id,
+              isReviewed: false,
+              isSafe: false,
+              additionalComments: '',
+            })
+          )
         )
-      )
+      }
+
+      // // Assign reviewers
+      // To use when verification is made by users again
+      // await Promise.all(
+      //   fetchedUsers.value.map(user =>
+      //     axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/release/${newRelease._id}/status`, {
+      //       releaseID: newRelease._id,
+      //       reviewerID: user._id,
+      //       isReviewed: false,
+      //       isSafe: false,
+      //       additionalComments: '',
+      //     })
+      //   )
+      // )
+
+      // Send review request emails
+      await axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/send-emails`, {
+        emails: fetchedEmails.value,
+        repositoryLink: `${window.location.origin}/verification/${newRelease._id}`,
+      });
+
+    } catch (emailError) {
+      console.warn("Couldn't send email for verification: ", emailError);
+      // toast.warning(t("notifications.release.emailFailed"));
     }
-
-    // // Assign reviewers
-    // To use when verification is made by users again
-    // await Promise.all(
-    //   fetchedUsers.value.map(user =>
-    //     axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/release/${newRelease._id}/status`, {
-    //       releaseID: newRelease._id,
-    //       reviewerID: user._id,
-    //       isReviewed: false,
-    //       isSafe: false,
-    //       additionalComments: '',
-    //     })
-    //   )
-    // )
-
-    // Send review request emails
-    await axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/send-emails`, {
-      emails: fetchedEmails.value,
-      repositoryLink: `${window.location.origin}/verification/${newRelease._id}`,
-    })
-
-    router.push({ name: 'detalleRepo', params: { repositoryID: props.repositoryID } })
   } catch (err) {
     console.error('Error creating release:', err)
     showError.value = true

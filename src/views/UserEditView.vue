@@ -4,6 +4,14 @@ import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 import ColoredButton from '../components/buttons/ColoredButton.vue'
 import FormInput from '../components/FormInput.vue'
+import { useI18n } from 'vue-i18n';
+import { setUser } from '@/store/globalState.js';
+
+import { useToast } from "vue-toastification";
+
+const { t } = useI18n()
+
+const toast = useToast();
 
 const route = useRoute()
 const router = useRouter()
@@ -47,6 +55,13 @@ const updateUser = async () => {
   try {
     isSubmitting.value = true
     await axios.put(`${import.meta.env.VITE_APP_EXPRESS_URL}/users/${userID}`, payload)
+    const updatedUser = {
+      username: username.value,
+      _id: userID,
+      imageURL: imageUrl.value
+    };
+    setUser(updatedUser);
+    toast.success(t("notifications.user.updated"));
     router.push({ path: `/user/${userID}` })
   } catch (err) {
     console.error('Error updating user:', err)

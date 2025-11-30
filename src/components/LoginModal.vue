@@ -3,8 +3,18 @@ import { ref } from 'vue'
 import axios from 'axios'
 import ColoredButton from './buttons/ColoredButton.vue'
 import FormInput from './FormInput.vue'
+import { useRouter } from "vue-router";
+import { setUser } from '@/store/globalState.js';
 import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase/firebaseConfig";
+
+import { useI18n } from 'vue-i18n';
+
+import { useToast } from "vue-toastification";
+
+const router = useRouter();
+const { t, locale } = useI18n();
+const toast = useToast();
 
 const emit = defineEmits(['close']);
 
@@ -16,62 +26,75 @@ const input_email = ref('');
 const input_password = ref('');
 const showError = ref(false);
 
-function logIn() {
-  const email = input_email.value;
-  const password = input_password.value;
+async function logIn() {
+  showError.value = false;
 
-  axios.post(`${import.meta.env.VITE_APP_EXPRESS_URL}/login`, { email, password })
-    .then(response => {
-      const user = response.data.result;
-      if (user) {
-        localStorage.setItem("user", user.username);
-        localStorage.setItem("guest", 'false');
-        localStorage.setItem("userID", user._id);
-        localStorage.setItem("userIcon", user.imageURL);
-        window.location.href = '/';
-      } else {
-        showError.value = true;
-      }
-    })
-    .catch(error => {
-      console.error(error);
+  try {
+    const email = input_email.value;
+    const password = input_password.value;
+
+    const response = await axios.post(
+      `${import.meta.env.VITE_APP_EXPRESS_URL}/login`,
+      { email, password }
+    );
+
+    const user = response.data.result;
+
+    if (user) {
+      setUser(user);
+      emit('close');
+      toast.success(t("notifications.auth.loginSuccess"));
+      router.replace(router.currentRoute.value.fullPath);
+    } else {
       showError.value = true;
-    })
-};
+    }
+  } catch (error) {
+    console.error(error);
+    showError.value = true;
+  }
+}
+
 
 const loginButtonDisabled = ref(false);
 
-function logInWithGithub() {
+async function logInWithGithub() {
   loginButtonDisabled.value = true;
-  const provider = new GithubAuthProvider();
 
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      const user = result.user;
+  try {
+    const provider = new GithubAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
 
-      fetch(`${import.meta.env.VITE_APP_EXPRESS_URL}/users/email/${user.email}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data === null) {
-            alert('Este correo no existe en la base de datos');
-          } else {
-            localStorage.setItem("user", data.username);
-            localStorage.setItem("userID", data._id);
-            localStorage.setItem("guest", 'false');
-            window.location.href = '/';
-          }
-        })
-        .catch(error => console.error('Error:', error))
-    })
-    .catch((error) => {
-      if (error.code === 'auth/popup-closed-by-user') {
-        console.log('Inicio cancelado. Intenta nuevamente.');
-      }
-    })
-    .finally(() => {
-      loginButtonDisabled.value = false;
-    })
-};
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_EXPRESS_URL}/users/email/${user.email}`
+    );
+
+    const data = await response.json();
+
+    if (data === null) {
+      alert("No se encuentra el email");
+    } else {
+      localStorage.setItem("user", data.username);
+      localStorage.setItem("userID", data._id);
+      localStorage.setItem("guest", 'false');
+
+      toast.success(t("notifications.auth.loginSuccess"));
+
+      emit('close');
+      router.replace(router.currentRoute.value.fullPath);
+    }
+
+  } catch (error) {
+    if (error.code === 'auth/popup-closed-by-user') {
+      console.log('Inicio cancelado. Intenta nuevamente.');
+    } else {
+      console.error(error);
+    }
+  } finally {
+    loginButtonDisabled.value = false;
+  }
+}
+
 </script>
 
 

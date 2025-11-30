@@ -2,6 +2,12 @@
 import { ref, watch } from 'vue'
 import ColoredButton from './buttons/ColoredButton.vue'
 import StarRating from './StarRating.vue'
+import { useI18n } from 'vue-i18n';
+
+import { useToast } from "vue-toastification";
+
+const { t } = useI18n()
+const toast = useToast();
 
 const props = defineProps({
   visible: Boolean,
@@ -19,6 +25,7 @@ watch(() => props.modelValue, (newVal) => {
 const confirm = () => {
   emit('confirm', localRating.value);
   emit('update:visible', false);
+  toast.success(t('notifications.rating.updated'));
 }
 </script>
 
