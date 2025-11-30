@@ -1,5 +1,9 @@
+<script setup>
+import Breadcrumbs from '../components/Breadcrumbs.vue'
+</script>
 <template>
   <div class="view-content">
+    <Breadcrumbs />
     <div class="content-header">
       <div class="title">
         {{ $t('about.title') }}

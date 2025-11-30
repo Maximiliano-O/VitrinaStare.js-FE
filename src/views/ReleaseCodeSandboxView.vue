@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import Breadcrumbs from '../components/Breadcrumbs.vue';
 import ColoredButton from '../components/buttons/ColoredButton.vue';
 import GitHubCodeSandbox from '@/components/GitSB.vue';
 
@@ -41,20 +42,16 @@ onMounted(() => {
 
 <template>
   <div class="overflow-hidden">
+    <Breadcrumbs 
+      :parentLabel="repositoryName"
+      :title="releaseName"
+      parentName="repositoryDetails"
+      :repositoryID="repositoryIDValue"
+    />
     <div class="row">
       <div class="header">
         <div class="title">
           {{ $t('sandBox.title') }}: {{ releaseName }}
-        </div>
-        <div class="button-container">
-          <ColoredButton variant="black" to="/">{{ $t('common.actions.backToRepos') }}</ColoredButton>
-          <ColoredButton
-            variant="black"
-            v-if="repositoryIDValue"
-            :to="{ name: 'repositoryDetails', params: { repositoryID: repositoryIDValue } }"
-          >
-            {{ $t('common.actions.backTo') }} {{ repositoryName }}
-          </ColoredButton>
         </div>
       </div>
       <div class="sb-container">

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 import axios from 'axios'
 import { useI18n } from 'vue-i18n'
 
@@ -70,109 +71,109 @@ onMounted(() => {
 
 
 <template>
-  <div class="overflow-auto" style="max-height: 100%">
-    <div class="header">
-      <div class="title">
-        <UserIcon 
-          iconName="fa-regular-user-circle"
-          :imageUrl="user.imageURL"
+  <div class="profile-header">
+    <!-- Avatar -->
+    <UserIcon
+      class="avatar-large"
+      iconName="fa-regular-user-circle"
+      :imageUrl="user.imageURL"
+    />
+
+    <!-- User info -->
+    <div class="user-info">
+      
+      <div class="title-container">
+        <div class="username">{{ user.username }}</div>
+        <!-- GitHub button -->
+        <ColoredButton
+          is="button"
+          class="icon-button"
+          variant="black"
+          style="transform: scale(0.75); transform-origin: left center;"
+          iconName="bi-github"
+          :to="user.urlGithubProfile"
         />
-        {{ user.username }}
       </div>
-      <div class="button-container">
-        <ColoredButton variant="black" :to="{ name: 'repositories' }">
-          {{ $t('common.actions.backToRepos') }}
-        </ColoredButton>
-        <ColoredButton 
-          variant="night" 
-          v-if="currentUserID === profileUserID" 
-          @click="goToEdit(userID)"
-        >
-          {{ $t('userProfile.actions.editProfile') }}
-        </ColoredButton>
-      </div>
+      <div class="email">{{ user.email }}</div>
     </div>
-    <div>
-      <div class="info">
-        <div class="info-bold">
-          {{ $t('userProfile.email') }}:
-        </div>
-        {{ user.email }}
-        <span class="divider"></span>
-        <div class="info-bold">
-          {{ $t('userProfile.github') }}: 
-        </div>
-        {{ user.urlGithubProfile }}
-      </div>
-      <div class="sub-title header">
-        {{ $t('userProfile.publications') }}
-      </div>
-      <div class="repo-container">
-        <RepositoryCard 
-          v-for="repo in repositories" 
-          :key="repo.repositoryID"
-          :repository="repo"
-          @click="goToRepo(repo._id)"
-        />
-      </div>
+
+    <!-- Edit button -->
+    <div
+      class="actions"
+      v-if="currentUserID === profileUserID"
+    >
+      <ColoredButton variant="night" @click="goToEdit(userID)">
+        {{ $t('userProfile.actions.editProfile') }}
+      </ColoredButton>
     </div>
   </div>
+
+  <!-- Repo publication -->
+  <div class="sub-title">
+    {{ $t('userProfile.publications') }}
+  </div>
+  <div class="repo-container">
+    <RepositoryCard 
+      v-for="repo in repositories" 
+      :key="repo.repositoryID"
+      :repository="repo"
+      @click="goToRepo(repo._id)"
+    />
+  </div>
+
 </template>
 
   
 <style scoped>
-.header {
-  padding: 10px 20px;
+.profile-header {
+  padding: 20px 20px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  min-width: 100%;
-  max-height: 75px;
+  gap: 25px;
+  width: 100%;
   color: #000;
 }
 
-.title {
-  align-items: center;
-  /* background: #9bb2eb; */
-  font-family: 'Poppins-Bold', sans-serif;
+.avatar-large :deep(img),
+.avatar-large :deep(svg) {
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 50%;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-grow: 1;
+}
+
+.username {
   font-size: 32px;
-}
-
-.button-container {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.divider {
-  padding: 0px;
-  display: inline-block;
-  width: 2px;
-  height: 45px;
-  background-color: #000;
-  color: #000;
-}
-
-.info-bold {
   font-family: 'Poppins-Bold';
 }
 
-.info {
-  padding: 10px 20px;
+.email {
+  font-size: 20px;
+  color: #333;
+}
+
+.actions {
   display: flex;
   align-items: center;
-  gap: 10px;
-  width: 100%;
-  height: 65px;
-  color: #000;
-  font-family: 'Poppins';
-  font-size: 24px;
+}
+
+.title-container {
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
 .sub-title {
   align-items: center;
   font-family: 'Poppins-SemiBold', sans-serif;
   font-size: 28px;
+  padding-left: 15px;
 }
 
 .repo-container {
@@ -183,4 +184,6 @@ onMounted(() => {
   row-gap: 30px;
   margin: 20px 0px;
 }
+
+
 </style>

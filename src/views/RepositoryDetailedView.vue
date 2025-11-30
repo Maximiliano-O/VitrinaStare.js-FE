@@ -2,6 +2,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
 import ColoredButton from '../components/buttons/ColoredButton.vue'
 import CustomSelect from '../components/CustomSelect.vue'
 import ReleaseModal from '../components/ReleaseModal.vue'
@@ -177,6 +178,7 @@ onMounted(() => {
 
 <template>
   <div class="overflow-hidden" style="max-height: 100%">
+    <Breadcrumbs :title="repo.title" />
     <div class="header">
       <div class="title">
         {{ repo.title }}
@@ -184,6 +186,7 @@ onMounted(() => {
           is="button"
           class="icon-button"
           variant="black"
+          style="transform: scale(0.75); transform-origin: left center;"
           iconName="bi-github"
           :to="repo.repositoryUrl"
         />
@@ -195,9 +198,6 @@ onMounted(() => {
           :to="`/repository/${props.repositoryID}/edit`"
         >
           {{ $t('repositoryDetailed.actions.editRepository') }}
-        </ColoredButton>
-        <ColoredButton :to="{ name: 'repositories' }">
-          {{ $t('common.actions.backToRepos') }}
         </ColoredButton>
       </div>
     </div>

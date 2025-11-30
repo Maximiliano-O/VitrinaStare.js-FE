@@ -48,6 +48,10 @@ function getUserLink() {
   return `/user/${id}`;
 };
 
+function goHome() {
+  router.push({ name: 'repositories' });
+}
+
 watch(selectedLocale, (newLocale) => {
   locale.value = newLocale;
   localStorage.setItem('locale', newLocale);
@@ -56,7 +60,7 @@ watch(selectedLocale, (newLocale) => {
 
 <template>
   <nav id="navbar" v-if=!route.meta.hideNavbar>
-    <div class="navbar-header">
+    <div class="navbar-header" @click="goHome" style="cursor: pointer;">
       <img src="../assets/Stare.js-Only-Eye-Logo.png" width="85" height="55" />
       StArE.js
     </div>

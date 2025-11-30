@@ -44,8 +44,8 @@ const props = defineProps({
 }
 
 .image-icon img{
-  width: 38px;
-  height: 38px;
+  width: 35px;
+  height: 35px;
   border-radius: 20px;
 }
 </style>

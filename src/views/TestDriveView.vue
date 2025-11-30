@@ -1,4 +1,9 @@
+<script setup>
+import Breadcrumbs from '../components/Breadcrumbs.vue'
+</script>
+
 <template>
+  <Breadcrumbs />
   <div class="iframe-wrapper">
     <iframe
       src="https://codesandbox.io/embed/sj55my?view=preview&fontsize=14&hidenavigation=1&theme=light"
