@@ -130,7 +130,7 @@ onMounted(() => {
           <div class="repo-container">
             <RepositoryCard 
               v-for="repo in filteredRepositories" 
-              :key="repo.repositoryID"
+              :key="repo._id"
               :repository="repo"
               @click="goToDetails(repo._id)"
             />
