@@ -72,6 +72,7 @@ watch(selectedLocale, (newLocale) => {
         :default-text="t('locales.spanish')"
       />
       <div class="button-container" v-if="isGuest">
+        <ColoredButton variant="transparent" :to="{ name: 'testDrive' }">{{ $t('navbar.testDrive') }}</ColoredButton>
         <ColoredButton variant="transparent" :to="{ name: 'repositories' }">{{ $t('navbar.repositories') }}</ColoredButton>
         <ColoredButton variant="transparent" :to="{ name: 'aboutStare' }">{{ $t('navbar.about') }}</ColoredButton>
         <ColoredButton variant="wine" @click="openLogin">{{ $t('navbar.login') }}</ColoredButton>
